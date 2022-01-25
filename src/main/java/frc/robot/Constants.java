@@ -25,5 +25,11 @@ public final class Constants {
     public static final int rightForWheelsPort = 2;
     public static final int leftBackWheelsPort = 3;
     public static final int rightBackWheelsPort = 0;
-    
+    public static final int intakePort = 20;
+    public static final int frontConveyorMotorPort = 21;
+    public static final int backConveyorMotorPort = 22;
+    public static final int rightShooterMotorPort = 24;
+    public static final int leftShooterMotorPort = 25;
+    public static final int kickerMotorPort = 26;
+    public static final int winchMotorPort = 27;
 }
