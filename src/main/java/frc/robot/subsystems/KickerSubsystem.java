@@ -8,26 +8,14 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class IntakeSubsystem extends SubsystemBase {
-  /** Creates a new IntakeSubsystem. */
-  //Initializes the intake motor
-  private final PWMVictorSPX intakeMotor = new PWMVictorSPX(Constants.intakePort);
+public class KickerSubsystem extends SubsystemBase {
+  /** Creates a new KickerSubsystem. */
+  private final PWMVictorSPX kickerMotor = new PWMVictorSPX(Constants.kickerMotorPort);
 
-  private double speed = 0;
-
-  public IntakeSubsystem() {}
+  public KickerSubsystem() {}
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    intakeMotor.set(speed);
-  }
-
-  public void motorOn() {
-    speed = 1;
-  }
-
-  public void motorOff() {
-    speed = 0;
   }
 }

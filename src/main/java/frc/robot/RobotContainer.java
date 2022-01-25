@@ -11,6 +11,8 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.KickerSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -24,6 +26,8 @@ public class RobotContainer {
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
+  private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
+  private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
 
