@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final PWMVictorSPX leftMotor = new PWMVictorSPX(Constants.leftShooterMotorPort);
-  private final PWMVictorSPX rightMotor = new PWMVictorSPX(Constants.rightShooterMotorPort);
+  private final PWMVictorSPX leftMotor = new PWMVictorSPX(Constants.leftShooterMotorID);
+  private final PWMVictorSPX rightMotor = new PWMVictorSPX(Constants.rightShooterMotorID);
   
   private final MotorControllerGroup motors = new MotorControllerGroup(leftMotor, rightMotor);
 

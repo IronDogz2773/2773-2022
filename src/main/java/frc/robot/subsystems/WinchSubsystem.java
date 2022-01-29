@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class WinchSubsystem extends SubsystemBase {
   /** Creates a new WinchSubsystem. */
-  private final PWMVictorSPX winchMotor = new PWMVictorSPX(Constants.winchMotorPort);
+  private final PWMVictorSPX winchMotor = new PWMVictorSPX(Constants.winchMotorID);
 
   public WinchSubsystem() {}
 
