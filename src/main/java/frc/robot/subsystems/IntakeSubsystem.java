@@ -11,7 +11,7 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   //Initializes the intake motor
-  private final PWMVictorSPX intakeMotor = new PWMVictorSPX(Constants.intakeID);
+  private final PWMVictorSPX intakeMotor = new PWMVictorSPX(Constants.intakePWMID);
 
   private double speed = 0;
 
@@ -29,5 +29,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void motorOff() {
     speed = 0;
+  }
+
+  public double getSpeed() {
+    return speed;
   }
 }
