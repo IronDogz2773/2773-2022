@@ -14,22 +14,30 @@ package frc.robot;
  */
 public final class Constants {
     
+    //USB
     public static final int gamepadPort = 0;
+    public static final int joystickPort = 1;
 
     public static final int lStickY = 1;
     public static final int rStickY = 5;
 
     public static final double speedFactor = 2.0/3.0;
 
-    public static final int leftForWheelsPort = 1;
-    public static final int rightForWheelsPort = 2;
-    public static final int leftBackWheelsPort = 3;
-    public static final int rightBackWheelsPort = 0;
-    public static final int intakePort = 20;
-    public static final int frontConveyorMotorPort = 21;
-    public static final int backConveyorMotorPort = 22;
-    public static final int rightShooterMotorPort = 24;
-    public static final int leftShooterMotorPort = 25;
-    public static final int kickerMotorPort = 26;
-    public static final int winchMotorPort = 27;
+    //Motors
+    //CANID - CAN SPARK MAX Motors
+    //PWMID - PWN Motors
+    public static final int leftForWheelsCANID = 21;
+    public static final int rightForWheelsCANID = 18;
+    public static final int leftBackWheelsCANID = 17;
+    public static final int rightBackWheelsCANID = 20;
+    public static final int intakePWMID = 0;
+    public static final int frontConveyorMotorPWMID = 1;
+    public static final int backConveyorMotorPWMID = 2;
+    public static final int rightShooterMotorPWMID = 3;
+    public static final int leftShooterMotorPWMID = 4;
+    public static final int kickerMotorPWMID = 5;
+    public static final int winchMotorPWMID = 6;
+
+    //Joystick buttons
+    public static final int activateIntake = 1;
 }

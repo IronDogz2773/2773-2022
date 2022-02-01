@@ -6,17 +6,19 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
 
-  private final PWMVictorSPX leftForMotor = new PWMVictorSPX(Constants.leftForWheelsPort);
-  private final PWMVictorSPX rightForMotor = new PWMVictorSPX(Constants.rightForWheelsPort);
-  private final PWMVictorSPX leftBackMotor = new PWMVictorSPX(Constants.leftBackWheelsPort);
-  private final PWMVictorSPX rightBackMotor = new PWMVictorSPX(Constants.rightBackWheelsPort);
+  private final CANSparkMax leftForMotor = new CANSparkMax(Constants.leftForWheelsCANID, MotorType.kBrushed);
+  private final CANSparkMax rightForMotor = new CANSparkMax(Constants.rightForWheelsCANID, MotorType.kBrushed);
+  private final CANSparkMax leftBackMotor = new CANSparkMax(Constants.leftBackWheelsCANID, MotorType.kBrushed);
+  private final CANSparkMax rightBackMotor = new CANSparkMax(Constants.rightBackWheelsCANID, MotorType.kBrushed);
   
 
   // Speed controller groups
@@ -40,7 +42,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
-    drive.tankDrive(leftSpeed, rightSpeed);
+    drive.tankDrive(-leftSpeed, -rightSpeed);
 }
 }
 

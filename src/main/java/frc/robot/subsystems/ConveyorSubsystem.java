@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ConveyorSubsystem extends SubsystemBase {
-  private final PWMVictorSPX frontMotor = new PWMVictorSPX(Constants.frontConveyorMotorPort);
-  private final PWMVictorSPX backMotor = new PWMVictorSPX(Constants.backConveyorMotorPort);
+  private final PWMVictorSPX frontMotor = new PWMVictorSPX(Constants.frontConveyorMotorPWMID);
+  private final PWMVictorSPX backMotor = new PWMVictorSPX(Constants.backConveyorMotorPWMID);
 
   private final MotorControllerGroup motors = new MotorControllerGroup(frontMotor, backMotor);
 
