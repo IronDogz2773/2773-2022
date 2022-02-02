@@ -15,10 +15,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
 
-  private final CANSparkMax leftForMotor = new CANSparkMax(Constants.leftForWheelsID, MotorType.kBrushed);
-  private final CANSparkMax rightForMotor = new CANSparkMax(Constants.rightForWheelsID, MotorType.kBrushed);
-  private final CANSparkMax leftBackMotor = new CANSparkMax(Constants.leftBackWheelsID, MotorType.kBrushed);
-  private final CANSparkMax rightBackMotor = new CANSparkMax(Constants.rightBackWheelsID, MotorType.kBrushed);
+  private final CANSparkMax leftForMotor = new CANSparkMax(Constants.leftForWheelsCANID, MotorType.kBrushless);
+  private final CANSparkMax rightForMotor = new CANSparkMax(Constants.rightForWheelsCANID, MotorType.kBrushless);
+  private final CANSparkMax leftBackMotor = new CANSparkMax(Constants.leftBackWheelsCANID, MotorType.kBrushless);
+  private final CANSparkMax rightBackMotor = new CANSparkMax(Constants.rightBackWheelsCANID, MotorType.kBrushless);
   
 
   // Speed controller groups
@@ -42,7 +42,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
-    drive.tankDrive(leftSpeed, rightSpeed);
+    drive.tankDrive(-leftSpeed, -rightSpeed);
 }
 }
 

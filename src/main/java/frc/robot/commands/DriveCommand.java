@@ -12,7 +12,7 @@ import frc.robot.Constants;
 
 public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_subsystem;
+  private final DriveSubsystem drive;
   private final Joystick gamepad;
   /**
    * Creates a new DriveCommand.
@@ -20,7 +20,7 @@ public class DriveCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public DriveCommand(DriveSubsystem subsystem, Joystick gamepad) {
-    m_subsystem = subsystem;
+    drive = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
     this.gamepad = gamepad;
@@ -38,10 +38,10 @@ public class DriveCommand extends CommandBase {
   public void execute() {
 
     //negation here might have broken code idk we couldnt test
-    double leftSpeed = -gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
-    double rightSpeed = gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
+    double leftSpeed = gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
+    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
 
-    m_subsystem.rawDrive(leftSpeed, rightSpeed);
+    drive.rawDrive(leftSpeed, rightSpeed);
   }
 
 

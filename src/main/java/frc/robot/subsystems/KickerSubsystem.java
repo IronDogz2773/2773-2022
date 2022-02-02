@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class KickerSubsystem extends SubsystemBase {
   /** Creates a new KickerSubsystem. */
-  private final PWMVictorSPX kickerMotor = new PWMVictorSPX(Constants.kickerMotorID);
+  private final PWMVictorSPX kickerMotor = new PWMVictorSPX(Constants.kickerMotorPWMID);
 
   public KickerSubsystem() {}
 
