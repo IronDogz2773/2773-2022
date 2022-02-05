@@ -14,6 +14,12 @@ public class DriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem drive;
   private final Joystick gamepad;
+
+  private double prevLeftSpeed;
+  private double prevRightSpeed;
+
+  private double alpha;
+
   /**
    * Creates a new DriveCommand.
    *
@@ -29,6 +35,10 @@ public class DriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    prevLeftSpeed = 0.0;
+    prevRightSpeed = 0.0;
+
+    alpha = 0.85;
 
   }
 
@@ -37,11 +47,23 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    //negation here might have broken code idk we couldnt test
+    /*
+    OLD CODE
     double leftSpeed = gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
     double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
+    */
+
+    double leftRawSpeed = gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
+    double rightRawSpeed = -gamepad.getRawAxis(Constants.rStickY )* Constants.speedFactor;
+
+    // prev% + current%
+    double leftSpeed = prevLeftSpeed * (1- alpha) + leftRawSpeed*alpha;
+    double rightSpeed = prevRightSpeed * (1- alpha) + rightRawSpeed*alpha;
 
     drive.rawDrive(leftSpeed, rightSpeed);
+
+    prevLeftSpeed = leftSpeed;
+    prevRightSpeed = rightSpeed;
   }
 
 

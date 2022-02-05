@@ -21,7 +21,7 @@ public final class Constants {
     public static final int lStickY = 1;
     public static final int rStickY = 5;
 
-    public static final double speedFactor = 2.0/3.0;
+    public static final double speedFactor = .5 /* 2.0/3.0 */;
 
     //Motors
     //CANID - CAN SPARK MAX Motors
