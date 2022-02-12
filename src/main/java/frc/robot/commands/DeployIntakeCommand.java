@@ -33,10 +33,8 @@ public class DeployIntakeCommand extends CommandBase {
   public void execute() {
     if(gamepad.getRawButton(Constants.LB)) {
       intake.deployIntake();
-      System.out.println("This should deploy");
     } else if (gamepad.getRawButton(Constants.RB)) {
       intake.retractIntake();
-      System.out.println("This should retract");
     }
   }
 
