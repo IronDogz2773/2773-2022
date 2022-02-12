@@ -45,6 +45,11 @@ public final class Constants {
 
     //Joystick buttons
     public static final int A = 1; //Activate intake
+    public static final int B = 2;
+    public static final int X = 3;
+    public static final int Y = 4;
     public static final int LB = 5; //Deploy intake
     public static final int RB = 6; //Retract intake
+    public static final int LT = 11;
+    public static final int Rt = 12;
 }
