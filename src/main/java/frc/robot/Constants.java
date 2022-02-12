@@ -23,8 +23,10 @@ public final class Constants {
 
     public static final double speedFactor = 2.0/3.0;
 
-    //Pneumatics controllers
+    //Pneumatics
     public static final int intakePneumaticsController = 0;
+    public static final int leftSolenoidPCM = 1;
+    public static final int rightSolenoidPCM = 0;
 
     //Motors
     //CANID - CAN SPARK MAX Motors
@@ -42,5 +44,7 @@ public final class Constants {
     public static final int winchMotorPWMID = 6;
 
     //Joystick buttons
-    public static final int activateIntake = 1;
+    public static final int A = 1; //Activate intake
+    public static final int LB = 5; //Deploy intake
+    public static final int RB = 6; //Retract intake
 }

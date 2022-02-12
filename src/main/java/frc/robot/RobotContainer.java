@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -33,12 +34,12 @@ public class RobotContainer {
   private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   //Commands
-  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);\
+  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);
+  private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
+  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
 
   private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
-
-  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -46,6 +47,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(driveCommand);
+    intakeSubsystem.setDefaultCommand(deployIntakeCommand);
 
   }
 
@@ -56,8 +58,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton intakeButton = new JoystickButton(joystick, Constants.activateIntake);
-    intakeButton.whenPressed(activateIntakeCommand, true);
+    /*final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.A);
+    intakeButton.whenPressed(activateIntakeCommand, false);
+    final JoystickButton deployButton = new JoystickButton(gamepad, Constants.LB);
+    deployButton.whenPressed(deployIntakeCommand, false);*/
   }
 
   /**
