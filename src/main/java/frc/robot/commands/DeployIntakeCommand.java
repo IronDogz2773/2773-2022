@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -24,7 +25,7 @@ public class DeployIntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.disableCompressor();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,8 +33,10 @@ public class DeployIntakeCommand extends CommandBase {
   public void execute() {
     if(gamepad.getRawButton(Constants.LB)) {
       intake.deployIntake();
+      System.out.println("This should deploy");
     } else if (gamepad.getRawButton(Constants.RB)) {
       intake.retractIntake();
+      System.out.println("This should retract");
     }
   }
 

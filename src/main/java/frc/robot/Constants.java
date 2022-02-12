@@ -18,9 +18,6 @@ public final class Constants {
     public static final int gamepadPort = 0;
     public static final int joystickPort = 1;
 
-    public static final int lStickY = 1;
-    public static final int rStickY = 5;
-
     public static final double speedFactor = 2.0/3.0;
 
     //Pneumatics
@@ -43,7 +40,11 @@ public final class Constants {
     public static final int kickerMotorPWMID = 5;
     public static final int winchMotorPWMID = 6;
 
-    //Joystick buttons
+    //Gamepad buttons
+    //Axis
+    public static final int lStickY = 1;
+    public static final int rStickY = 5;
+
     public static final int A = 1; //Activate intake
     public static final int B = 2;
     public static final int X = 3;

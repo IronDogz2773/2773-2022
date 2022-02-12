@@ -41,7 +41,7 @@ public class DriveCommand extends CommandBase {
     double leftSpeed = gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
     double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
 
-    drive.rawDrive(leftSpeed, rightSpeed);
+    drive.rawDrive(-leftSpeed, rightSpeed);
   }
 
 

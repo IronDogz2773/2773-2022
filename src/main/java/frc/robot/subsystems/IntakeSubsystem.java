@@ -15,13 +15,14 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   //Initializes the intake motor
   private final PWMVictorSPX intakeMotor = new PWMVictorSPX(Constants.intakePWMID);
-  private final Compressor pcmCompressor = new Compressor(Constants.A, PneumaticsModuleType.CTREPCM);
   private final Solenoid leftSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.leftSolenoidPCM);
   private final Solenoid rightSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.rightSolenoidPCM);
 
   private double speed = 0;
 
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {
+
+  }
 
   @Override
   public void periodic() {
@@ -41,11 +42,6 @@ public class IntakeSubsystem extends SubsystemBase {
     return speed;
   }
 
-  public void disableCompressor() {
-    pcmCompressor.enableDigital();
-    pcmCompressor.disable();
-  }
-
   public void deployIntake() {
     leftSolenoidPCM.set(true);
     rightSolenoidPCM.set(false);
@@ -55,4 +51,5 @@ public class IntakeSubsystem extends SubsystemBase {
     leftSolenoidPCM.set(false);
     rightSolenoidPCM.set(true);
   }
+
 }
