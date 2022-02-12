@@ -33,19 +33,19 @@ public class RobotContainer {
   private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   //Commands
-  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);
+  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);\
 
   private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
 
-  private final DriveCommand m_autoCommand = new DriveCommand(driveSubsystem, gamepad);
+  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(m_autoCommand);
+    driveSubsystem.setDefaultCommand(driveCommand);
 
   }
 

@@ -23,6 +23,9 @@ public final class Constants {
 
     public static final double speedFactor = 2.0/3.0;
 
+    //Pneumatics controllers
+    public static final int intakePneumaticsController = 0;
+
     //Motors
     //CANID - CAN SPARK MAX Motors
     //PWMID - PWN Motors
