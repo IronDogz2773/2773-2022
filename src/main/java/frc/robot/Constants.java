@@ -32,7 +32,7 @@ public final class Constants {
     public static final int rightForWheelsCANID = 21;
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
-    public static final int intakePWMID = 0;
+    public static final int intakeCANID = 22; //Placeholder value
     public static final int frontConveyorMotorPWMID = 1;
     public static final int backConveyorMotorPWMID = 2;
     public static final int rightShooterMotorPWMID = 3;
@@ -42,15 +42,16 @@ public final class Constants {
 
     //Gamepad buttons
     //Axis
-    public static final int lStickY = 1;
-    public static final int rStickY = 5;
+    public static final int lStickY = 1; //Left drivetrain speed
+    public static final int rStickY = 5; //Right drivetrain speed
+    public static final int lTrigger = 2; //Activate intake
+    public static final int rTrigger = 3;
 
-    public static final int A = 1; //Activate intake
+    //Buttons
+    public static final int A = 1;
     public static final int B = 2;
     public static final int X = 3;
     public static final int Y = 4;
     public static final int LB = 5; //Deploy intake
     public static final int RB = 6; //Retract intake
-    public static final int LT = 11;
-    public static final int Rt = 12;
 }

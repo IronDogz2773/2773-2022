@@ -34,7 +34,7 @@ public class RobotContainer {
   private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   //Commands
-  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);
+  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
   private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
 
