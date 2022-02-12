@@ -35,7 +35,7 @@ public class RobotContainer {
   //Commands
   private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);
 
-  private static Joystick joystick = new Joystick(Constants.joystickPort);
+  //private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
 
   private final DriveCommand m_autoCommand = new DriveCommand(driveSubsystem, gamepad);
@@ -56,7 +56,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton intakeButton = new JoystickButton(joystick, Constants.activateIntake);
+    final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.activateIntake);
     intakeButton.whenPressed(activateIntakeCommand, true);
   }
 
