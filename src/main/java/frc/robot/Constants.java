@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -40,6 +42,14 @@ public final class Constants {
     public static final int kickerMotorPWMID = 5;
     public static final int winchMotorPWMID = 6;
 
+
+    //Encoder ports
+    public static final int leftEncoderPortA = 1;
+    public static final int leftEncoderPortB = 0;
+    public static final int rightEncoderPortA = 4;
+    public static final int rightEncoderPortB = 3;
+
+
     //Gamepad buttons
     //Axis
     public static final int lStickY = 1; //Left drivetrain speed
@@ -54,4 +64,27 @@ public final class Constants {
     public static final int Y = 4;
     public static final int LB = 5; //Deploy intake
     public static final int RB = 6; //Retract intake
+
+    //PID values
+    //ALL CURRENT VALUES ARE PLASEHOLDERS
+    //DO NOT USE THESE CURRENT VALUES AND EXPECT IT TO WORK
+    public static final double ksVolts = 0.22;
+    public static final double kvVoltSecondsPerMeter = 1.98;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+
+    public static final double kPDriveVel = 8.5;
+
+    public static final double kTrackwidthMeters = 0.69;
+    public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(kTrackwidthMeters);
+    public static final double kMaxSpeedMetersPerSecond = 3;
+
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
+
+    public static final double kP = 0.22;
+    public static final double kI = 0.22;
+    public static final double kD = 0.22;
 }
