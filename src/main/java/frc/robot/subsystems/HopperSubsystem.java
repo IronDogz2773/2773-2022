@@ -5,20 +5,21 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ConveyorSubsystem extends SubsystemBase {
-  private final PWMVictorSPX frontMotor = new PWMVictorSPX(Constants.frontConveyorMotorPWMID);
-  private final PWMVictorSPX backMotor = new PWMVictorSPX(Constants.backConveyorMotorPWMID);
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
 
-  private final MotorControllerGroup motors = new MotorControllerGroup(frontMotor, backMotor);
+public class HopperSubsystem extends SubsystemBase {
+  private final CANSparkMax leftHopperCAN = new CANSparkMax(Constants.leftHopperCANID, MotorType.kBrushless);
+  private final CANSparkMax rightHopperCAN = new CANSparkMax(Constants.rightHopperCANID, MotorType.kBrushless);
+  private final MotorControllerGroup motors = new MotorControllerGroup(leftHopperCAN, rightHopperCAN);
 
   private double speed = 0;
 
   /** Creates a new ConveyorSubsystem. */
-  public ConveyorSubsystem() {
+  public HopperSubsystem() {
   }
 
   @Override
@@ -34,6 +35,10 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   public void motorOff() {
     speed = 0;
+  }
+
+  public double getSpeed() {
+    return speed;
   }
 
 }

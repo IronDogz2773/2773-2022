@@ -1,5 +1,5 @@
 {
-  "counts per rotation": 8192.0,
+  "counts per rotation": 2048.0,
   "encoder type": "roboRIO quadrature",
   "encoding": false,
   "gearing denominator": 1.0,
@@ -8,8 +8,8 @@
   "gyro ctor": "SPI.kMXP",
   "is drivetrain": true,
   "motor controllers": [
-    "SPARK MAX (Brushless)",
-    "SPARK MAX (Brushless)"
+    "SPARK MAX (Brushed)",
+    "SPARK MAX (Brushed)"
   ],
   "number of samples per average": 1,
   "primary encoder inverted": false,

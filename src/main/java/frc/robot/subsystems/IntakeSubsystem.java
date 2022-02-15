@@ -18,8 +18,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   //Initializes the intake motor
   private final CANSparkMax intakeCAN = new CANSparkMax(Constants.intakeCANID, MotorType.kBrushless);
-  private final Solenoid leftSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.leftSolenoidPCM);
-  private final Solenoid rightSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.rightSolenoidPCM);
+  private final Solenoid deploySolendoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.deploySolenoidPCM);
+  private final Solenoid retractSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.retractSolenoidPCM);
 
   public double speed = 0;
 
@@ -54,13 +54,21 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void deployIntake() {
-    leftSolenoidPCM.set(true);
-    rightSolenoidPCM.set(false);
+    deploySolendoidPCM.set(true);
+    retractSolenoidPCM.set(false);
   }
 
   public void retractIntake() {
-    leftSolenoidPCM.set(false);
-    rightSolenoidPCM.set(true);
+    deploySolendoidPCM.set(false);
+    retractSolenoidPCM.set(true);
+  }
+
+  public boolean isDeployed() {
+    if(deploySolendoidPCM.get() == true && retractSolenoidPCM.get() == false) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

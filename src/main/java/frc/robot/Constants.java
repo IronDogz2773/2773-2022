@@ -22,8 +22,8 @@ public final class Constants {
 
     //Pneumatics
     public static final int intakePneumaticsController = 0;
-    public static final int leftSolenoidPCM = 1;
-    public static final int rightSolenoidPCM = 0;
+    public static final int deploySolenoidPCM = 0;
+    public static final int retractSolenoidPCM = 1;
 
     //Motors
     //CANID - CAN SPARK MAX Motors
@@ -32,9 +32,9 @@ public final class Constants {
     public static final int rightForWheelsCANID = 21;
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
-    public static final int intakeCANID = 22; //Placeholder value
-    public static final int frontConveyorMotorPWMID = 1;
-    public static final int backConveyorMotorPWMID = 2;
+    public static final int intakeCANID = 16; //Placeholder value
+    public static final int leftHopperCANID = 1;
+    public static final int rightHopperCANID = 2;
     public static final int rightShooterMotorPWMID = 3;
     public static final int leftShooterMotorPWMID = 4;
     public static final int kickerMotorPWMID = 5;
@@ -48,7 +48,7 @@ public final class Constants {
     public static final int rTrigger = 3;
 
     //Buttons
-    public static final int A = 1;
+    public static final int A = 1; 
     public static final int B = 2;
     public static final int X = 3;
     public static final int Y = 4;
