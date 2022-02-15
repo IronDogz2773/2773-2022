@@ -64,8 +64,8 @@ public class RobotContainer {
     intakeButton.whenHeld(activateIntakeCommand, true);
     final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
     deployButton.whenPressed(deployIntakeCommand, true);
-    final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
-    hopperButton.whenPressed(hopperCommand, true);
+    //final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
+    //hopperButton.whenPressed(hopperCommand, true);
   }
 
   /**
