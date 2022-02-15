@@ -30,15 +30,15 @@ public class RobotContainer {
   //Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-  private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
-  private final WinchSubsystem winchSubsystem = new WinchSubsystem();
+  //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+  //private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
+  //private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   //Commands
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
   private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
   private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
-  private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
+  //private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
   
 
   private static Joystick joystick = new Joystick(Constants.joystickPort);
