@@ -67,7 +67,7 @@ public class RobotContainer {
     deployButton.whenPressed(deployIntakeCommand, false);*/
 
     final JoystickButton turnButton = new JoystickButton(gamepad, Constants.B);
-    turnButton.whenPressed(turnDegreesCommand, false);
+    turnButton.whenHeld(turnDegreesCommand, false);
   }
 
   /**

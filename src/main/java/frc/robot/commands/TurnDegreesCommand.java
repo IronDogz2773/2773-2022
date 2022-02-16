@@ -44,21 +44,20 @@ public class TurnDegreesCommand extends CommandBase {
     double kD = Constants.kD;
 
     pidController = new PIDController(kP, kI, kD);
+    nav.resetGyroAngle();
     angle = testAngle;
 
     target = nav.getGyroAngle() + angle;
-    pidController.setTolerance(0);
+    pidController.setTolerance(5);
     pidController.setSetpoint(target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!pidController.atSetpoint()) {
       rotation = pidController.calculate(nav.getGyroAngle());
       rotation = MathUtil.clamp(rotation, -.5, .5);
       drive.arcadeDrive(0, rotation, false);
-      }
   }
 
   // Called once the command ends or is interrupted.
@@ -68,6 +67,6 @@ public class TurnDegreesCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return pidController.atSetpoint();
   }
 }
