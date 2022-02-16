@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.KickerSubsystem;
+import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,11 +34,13 @@ public class RobotContainer {
   private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
   private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
   private final WinchSubsystem winchSubsystem = new WinchSubsystem();
+  private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
 
   //Commands
   private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
   private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
+  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, gamepad);
 
   //private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
@@ -61,6 +65,9 @@ public class RobotContainer {
     intakeButton.whenPressed(activateIntakeCommand, false);
     final JoystickButton deployButton = new JoystickButton(gamepad, Constants.LB);
     deployButton.whenPressed(deployIntakeCommand, false);*/
+
+    final JoystickButton turnButton = new JoystickButton(gamepad, Constants.B);
+    turnButton.whenPressed(turnDegreesCommand, false);
   }
 
   /**

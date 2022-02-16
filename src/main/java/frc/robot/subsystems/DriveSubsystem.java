@@ -43,6 +43,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
     drive.tankDrive(leftSpeed, -rightSpeed);
-}
+  }
+
+  public void arcadeDrive(final double speed, final double rotation){
+    drive.arcadeDrive(speed, rotation);
+  }
+
+  public void arcadeDrive(final double speed, final double rotation, final boolean accel){
+    drive.arcadeDrive(speed, rotation, accel);
+  }
 }
 
