@@ -34,7 +34,9 @@ public class PathCommandBuilder {
     }
 
     public Command build(){
+        return null;
         // Create a voltage constraint to ensure we don't accelerate too fast
+        /*
     var autoVoltageConstraint =
     new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(
@@ -65,7 +67,7 @@ Trajectory exampleTrajectory =
         new Pose2d(3, 0, new Rotation2d(0)),
         // Pass config
         config);
-
+/*
 RamseteCommand ramseteCommand =
     new RamseteCommand(
         exampleTrajectory,
@@ -88,6 +90,6 @@ nav.resetOdometry(exampleTrajectory.getInitialPose());
 
 // Run path following command, then stop at the end.
 return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
-}
+}*/
     }
 }
