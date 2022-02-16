@@ -30,7 +30,7 @@ public final class Constants {
     public static final int rightForWheelsCANID = 21;
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
-    public static final int intakePWMID = 0;
+    public static final int intakePWMID = 15;
     public static final int frontConveyorMotorPWMID = 1;
     public static final int backConveyorMotorPWMID = 2;
     public static final int rightShooterMotorPWMID = 3;
