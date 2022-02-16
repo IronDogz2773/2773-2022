@@ -11,6 +11,7 @@ import frc.robot.subsystems.HopperSubsystem;
 public class HopperCommand extends CommandBase {
   private final HopperSubsystem hopper;
   private final Joystick gamepad;
+
   /** Creates a new HopperCommand. */
   public HopperCommand(HopperSubsystem subsystem, Joystick gamepad) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,25 +22,27 @@ public class HopperCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if(hopper.getSpeed() > 1) {
+  public void initialize() {
+    if (hopper.getSpeed() > 1) {
       hopper.motorOn();
     } else {
       hopper.motorOff();
     }
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+  }
+
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

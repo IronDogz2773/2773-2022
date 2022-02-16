@@ -33,6 +33,8 @@ public class ActivateIntakeCommand extends CommandBase {
   public void execute() {
     if(gamepad.getRawAxis(Constants.lTrigger) > .3) {
       intake.motorOn();
+    } else {
+      intake.motorOff();
     }
   }
 
@@ -45,6 +47,6 @@ public class ActivateIntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

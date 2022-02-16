@@ -32,7 +32,7 @@ public final class Constants {
     public static final int rightForWheelsCANID = 21;
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
-    public static final int intakeCANID = 16; //Placeholder value
+    public static final int intakeCANID = 15; //Placeholder value
     public static final int leftHopperCANID = 1;
     public static final int rightHopperCANID = 2;
     public static final int rightShooterMotorPWMID = 3;
