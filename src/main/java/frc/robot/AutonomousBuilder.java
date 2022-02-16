@@ -23,7 +23,6 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.RamseteCommandPlus;
 
 public class AutonomousBuilder {
     String trajectoryJSON;

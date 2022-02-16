@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants;
@@ -22,7 +23,7 @@ public class TurnDegreesCommand extends CommandBase {
 
   private double rotation;
   private double angle;
-  private double testAn
+  private double testAngle = 90;
   private double target;
 
   public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive, Joystick gamepad) {
@@ -43,12 +44,22 @@ public class TurnDegreesCommand extends CommandBase {
     double kD = Constants.kD;
 
     pidController = new PIDController(kP, kI, kD);
-    angle = 
+    angle = testAngle;
+
+    target = nav.getGyroAngle() + angle;
+    pidController.setTolerance(0);
+    pidController.setSetpoint(target);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (!pidController.atSetpoint()) {
+      rotation = pidController.calculate(nav.getGyroAngle());
+      rotation = MathUtil.clamp(rotation, -.5, .5);
+      drive.arcadeDrive(0, rotation, false);
+      }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
