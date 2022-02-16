@@ -18,10 +18,12 @@ public final class Constants {
     public static final int gamepadPort = 0;
     public static final int joystickPort = 1;
 
-    public static final int lStickY = 1;
-    public static final int rStickY = 5;
-
     public static final double speedFactor = 2.0/3.0;
+
+    //Pneumatics
+    public static final int intakePneumaticsController = 0;
+    public static final int deploySolenoidPCM = 0;
+    public static final int retractSolenoidPCM = 1;
 
     //Motors
     //CANID - CAN SPARK MAX Motors
@@ -30,14 +32,26 @@ public final class Constants {
     public static final int rightForWheelsCANID = 21;
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
-    public static final int intakePWMID = 15;
-    public static final int frontConveyorMotorPWMID = 1;
-    public static final int backConveyorMotorPWMID = 2;
+    public static final int intakeCANID = 15; //Placeholder value
+    public static final int leftHopperCANID = 1;
+    public static final int rightHopperCANID = 2;
     public static final int rightShooterMotorPWMID = 3;
     public static final int leftShooterMotorPWMID = 4;
     public static final int kickerMotorPWMID = 5;
     public static final int winchMotorPWMID = 6;
 
-    //Joystick buttons
-    public static final int activateIntake = 1;
+    //Gamepad buttons
+    //Axis
+    public static final int lStickY = 1; //Left drivetrain speed
+    public static final int rStickY = 5; //Right drivetrain speed
+    public static final int lTrigger = 2; //Activate intake
+    public static final int rTrigger = 3;
+
+    //Buttons
+    public static final int A = 1; 
+    public static final int B = 2;
+    public static final int X = 3;
+    public static final int Y = 4;
+    public static final int LB = 5; //Deploy intake
+    public static final int RB = 6; //Retract intake
 }

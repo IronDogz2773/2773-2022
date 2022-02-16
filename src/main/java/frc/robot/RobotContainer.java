@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.commands.HopperCommand;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.KickerSubsystem;
@@ -28,25 +30,27 @@ public class RobotContainer {
   //Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
-  private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
-  private final WinchSubsystem winchSubsystem = new WinchSubsystem();
+  //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+  //private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
+  //private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   //Commands
-  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem);
+  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
+  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
+  private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
+  //private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
+  
 
   //private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
-
-  private final DriveCommand m_autoCommand = new DriveCommand(driveSubsystem, gamepad);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(m_autoCommand);
-
+    driveSubsystem.setDefaultCommand(driveCommand);
+    intakeSubsystem.setDefaultCommand(activateIntakeCommand);
   }
 
   /**
@@ -56,8 +60,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.activateIntake);
-    intakeButton.whenPressed(activateIntakeCommand, true);
+    final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
+    deployButton.whenPressed(deployIntakeCommand, true);
+    //final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
+    //hopperButton.whenPressed(hopperCommand, true);
   }
 
   /**
