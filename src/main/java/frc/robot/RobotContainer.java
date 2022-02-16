@@ -50,6 +50,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(driveCommand);
+    intakeSubsystem.setDefaultCommand(activateIntakeCommand);
   }
 
   /**
@@ -59,9 +60,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.lTrigger);
-    intakeButton.whenHeld(activateIntakeCommand, true);
     final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
     deployButton.whenPressed(deployIntakeCommand, true);
     //final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
