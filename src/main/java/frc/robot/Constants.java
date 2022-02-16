@@ -28,10 +28,10 @@ public final class Constants {
     //Motors
     //CANID - CAN SPARK MAX Motors
     //PWMID - PWN Motors
-    public static final int leftForWheelsCANID = 17;
-    public static final int rightForWheelsCANID = 21;
-    public static final int leftBackWheelsCANID = 20;
-    public static final int rightBackWheelsCANID = 18;
+    public static final int leftForWheelsCANID = 12;
+    public static final int rightForWheelsCANID = 16;
+    public static final int leftBackWheelsCANID = 11;
+    public static final int rightBackWheelsCANID = 13;
     public static final int intakeCANID = 15; //Placeholder value
     public static final int leftHopperCANID = 1;
     public static final int rightHopperCANID = 2;
