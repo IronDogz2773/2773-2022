@@ -34,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void motorOn() {
-    speed = .5;
+    speed = .35;
   }
 
   public void motorOff() {
