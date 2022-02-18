@@ -41,7 +41,7 @@ public class RobotContainer {
   //private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
   
 
-  private static Joystick joystick = new Joystick(Constants.joystickPort);
+  //private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

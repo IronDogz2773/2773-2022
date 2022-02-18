@@ -42,7 +42,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
-    drive.tankDrive(-leftSpeed, -rightSpeed);
+    drive.tankDrive(leftSpeed, -rightSpeed);
 }
 }
 
