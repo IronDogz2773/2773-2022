@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.PathCommandBuilder;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -77,6 +78,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An DriveCommand will run in autonomous
-    return null;
+    PathCommandBuilder builder = new PathCommandBuilder(driveSubsystem, navigationSubsystem);
+    return builder.build();
   }
 }

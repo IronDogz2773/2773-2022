@@ -5,7 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
@@ -15,7 +21,12 @@ public class NavigationSubsystem extends SubsystemBase {
 
   private final Encoder leftEncoder = new Encoder(Constants.leftEncoderPortA, Constants.leftEncoderPortB);
   private final Encoder rightEncoder = new Encoder(Constants.rightEncoderPortA, Constants.rightEncoderPortB);
+  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
+    new Rotation2d(0)
+  );
   public NavigationSubsystem() {
+    leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
+    rightEncoder.setDistancePerPulse(Constants.distancePerPulse);
       if(gyroscope.isConnected()){
        gyroscope.reset();
        gyroscope.calibrate();
@@ -24,14 +35,27 @@ public class NavigationSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    DriverStation.reportWarning(">>>" + leftEncoder.getRate() + " " + rightEncoder.getRate(), false);
   }
 
   
   public void resetGyroAngle(){
       gyroscope.reset();
   }
+
   public double getGyroAngle(){
       return gyroscope.getAngle();
+  }
+
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(-leftEncoder.getRate(), rightEncoder.getRate());
+  }
+
+  public void resetOdometry(Pose2d initialPose) {
+    odometry.resetPosition(initialPose, gyroscope.getRotation2d());
   }
 }

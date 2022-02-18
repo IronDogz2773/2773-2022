@@ -30,10 +30,10 @@ public final class Constants {
     //Motors
     //CANID - CAN SPARK MAX Motors
     //PWMID - PWN Motors
-    public static final int leftForWheelsCANID = 12;
-    public static final int rightForWheelsCANID = 16;
-    public static final int leftBackWheelsCANID = 11;
-    public static final int rightBackWheelsCANID = 13;
+    public static final int leftForWheelsCANID = 17;
+    public static final int rightForWheelsCANID = 21;
+    public static final int leftBackWheelsCANID = 20;
+    public static final int rightBackWheelsCANID = 18;
     public static final int intakeCANID = 15; //Placeholder value
     public static final int frontConveyorMotorPWMID = 1;
     public static final int backConveyorMotorPWMID = 2;
@@ -44,10 +44,10 @@ public final class Constants {
 
 
     //Encoder ports
-    public static final int leftEncoderPortA = 1;
-    public static final int leftEncoderPortB = 0;
-    public static final int rightEncoderPortA = 4;
-    public static final int rightEncoderPortB = 3;
+    public static final int leftEncoderPortA = 0;
+    public static final int leftEncoderPortB = 1;
+    public static final int rightEncoderPortA = 3;
+    public static final int rightEncoderPortB = 4;
 
 
     //Gamepad buttons
@@ -68,18 +68,18 @@ public final class Constants {
     //PID values
     //ALL CURRENT VALUES ARE PLASEHOLDERS
     //DO NOT USE THESE CURRENT VALUES AND EXPECT IT TO WORK
-    public static final double ksVolts = 0.22;
-    public static final double kvVoltSecondsPerMeter = 1.98;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+    public static final double ksVolts = 0.67642;
+    public static final double kvVoltSecondsPerMeter = 1.5682;
+    public static final double kaVoltSecondsSquaredPerMeter = 2.844;
 
-    public static final double kPDriveVel = 8.5;
+    public static final double kPDriveVel = 3.2972;
 
-    public static final double kTrackwidthMeters = 0.69;
+    public static final double kTrackwidthMeters = 0.53;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = .05;
 
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.01;
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
@@ -87,4 +87,8 @@ public final class Constants {
     public static final double kP = 0.22;
     public static final double kI = 0.22;
     public static final double kD = 0.22;
+
+    public static final double maxMotorVolts = 12.0;
+
+    public static final double distancePerPulse = .16 * Math.PI / 2048;
 }

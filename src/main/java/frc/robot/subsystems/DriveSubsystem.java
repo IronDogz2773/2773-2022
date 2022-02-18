@@ -52,5 +52,14 @@ public class DriveSubsystem extends SubsystemBase {
   public void arcadeDrive(final double speed, final double rotation, final boolean accel){
     drive.arcadeDrive(speed, rotation, accel);
   }
+
+  private static double clamp(double x, double min, double max) {
+    return x < min ? min : x > max ? max : x;
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMotors.setVoltage(clamp(leftVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
+    rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
+  }
 }
 
