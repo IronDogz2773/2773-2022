@@ -68,18 +68,18 @@ public final class Constants {
     //PID values
     //ALL CURRENT VALUES ARE PLASEHOLDERS
     //DO NOT USE THESE CURRENT VALUES AND EXPECT IT TO WORK
-    public static final double ksVolts = 0.22;
-    public static final double kvVoltSecondsPerMeter = 1.98;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+    public static final double ksVolts = 0.67642;
+    public static final double kvVoltSecondsPerMeter = 1.5682;
+    public static final double kaVoltSecondsSquaredPerMeter = 2.844;
 
-    public static final double kPDriveVel = 8.5;
+    public static final double kPDriveVel = 3.2972;
 
-    public static final double kTrackwidthMeters = 0.69;
+    public static final double kTrackwidthMeters = 0.53;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = .05;
 
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.01;
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
@@ -87,4 +87,8 @@ public final class Constants {
     public static final double kP = 0.04;
     public static final double kI = 0;
     public static final double kD = 0;
+
+    public static final double maxMotorVolts = 12.0;
+
+    public static final double distancePerPulse = .16 * Math.PI / 2048;
 }

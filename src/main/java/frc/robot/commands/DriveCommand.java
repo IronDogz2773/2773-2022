@@ -39,9 +39,9 @@ public class DriveCommand extends CommandBase {
 
     //negation here might have broken code idk we couldnt test
     double leftSpeed = gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
-    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
+    double rightSpeed = gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
 
-    drive.rawDrive(-leftSpeed, rightSpeed);
+    drive.rawDrive(leftSpeed, rightSpeed);
   }
 
   // Called once the command ends or is interrupted.
