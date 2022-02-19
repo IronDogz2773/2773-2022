@@ -17,7 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   //Initializes the intake motor
-  private final CANSparkMax intakeCAN = new CANSparkMax(Constants.intakeCANID, MotorType.kBrushless);
+  //private final CANSparkMax intakeCAN = new CANSparkMax(Constants.intakeCANID, MotorType.kBrushless);
   private final Solenoid leftSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.leftSolenoidPCM);
   private final Solenoid rightSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.rightSolenoidPCM);
 
@@ -30,7 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    intakeCAN.set(speed);
+    //intakeCAN.set(speed);
   }
 
   public void motorOn() {

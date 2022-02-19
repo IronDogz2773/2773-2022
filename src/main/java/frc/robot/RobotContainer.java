@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -69,6 +70,13 @@ public class RobotContainer {
 
     final JoystickButton turnButton = new JoystickButton(gamepad, Constants.B);
     turnButton.whenHeld(turnDegreesCommand, true);
+
+    final JoystickButton resetPose = new JoystickButton(gamepad, Constants.Start);
+    resetPose.whenPressed(() -> {
+      navigationSubsystem.resetGyroAngle();
+      navigationSubsystem.resetEncoder();
+      navigationSubsystem.resetOdometry(new Pose2d());
+     });
   }
 
   /**

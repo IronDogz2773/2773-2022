@@ -38,8 +38,8 @@ public class DriveCommand extends CommandBase {
   public void execute() {
 
     //negation here might have broken code idk we couldnt test
-    double leftSpeed = gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
-    double rightSpeed = gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
+    double leftSpeed = -gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
+    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
 
     drive.rawDrive(leftSpeed, rightSpeed);
   }

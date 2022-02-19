@@ -64,22 +64,23 @@ public final class Constants {
     public static final int Y = 4;
     public static final int LB = 5; //Deploy intake
     public static final int RB = 6; //Retract intake
+    public static final int Start = 8;
 
     //PID values
     //ALL CURRENT VALUES ARE PLASEHOLDERS
     //DO NOT USE THESE CURRENT VALUES AND EXPECT IT TO WORK
-    public static final double ksVolts = 0.67642;
-    public static final double kvVoltSecondsPerMeter = 1.5682;
-    public static final double kaVoltSecondsSquaredPerMeter = 2.844;
+    public static final double ksVolts = 0.62975;
+    public static final double kvVoltSecondsPerMeter = 2.9196;
+    public static final double kaVoltSecondsSquaredPerMeter = 1.732;
 
-    public static final double kPDriveVel = 3.2972;
+    public static final double kPDriveVel = 2.5036;
 
     public static final double kTrackwidthMeters = 0.53;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
-    public static final double kMaxSpeedMetersPerSecond = .05;
 
-    public static final double kMaxAccelerationMetersPerSecondSquared = 0.01;
+    public static final double kMaxSpeedMetersPerSecond = .6;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.3;
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;

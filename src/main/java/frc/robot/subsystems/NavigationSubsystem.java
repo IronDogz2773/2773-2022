@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
@@ -22,28 +23,44 @@ public class NavigationSubsystem extends SubsystemBase {
   private final Encoder leftEncoder = new Encoder(Constants.leftEncoderPortA, Constants.leftEncoderPortB);
   private final Encoder rightEncoder = new Encoder(Constants.rightEncoderPortA, Constants.rightEncoderPortB);
   private DifferentialDriveOdometry odometry;
+
   public NavigationSubsystem() {
-    leftEncoder.setDistancePerPulse(-Constants.distancePerPulse);
-    rightEncoder.setDistancePerPulse(Constants.distancePerPulse);
-      if(gyroscope.isConnected()){
-       gyroscope.reset();
-       gyroscope.calibrate();
+    leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
+    rightEncoder.setDistancePerPulse(-Constants.distancePerPulse);
+    if (gyroscope.isConnected()) {
+      odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d());
+      gyroscope.reset();
+      gyroscope.calibrate();
+    } else {
+      odometry = new DifferentialDriveOdometry(new Rotation2d(0));
     }
-    odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d());
   }
 
   @Override
   public void periodic() {
     odometry.update(gyroscope.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+
+
+    var table = NetworkTableInstance.getDefault().getTable("troubleshooting");
+    var angle = table.getEntry("pose_a");
+    var x = table.getEntry("pose_x");
+    var y = table.getEntry("pose_y");
+    var p = getPose();
+    angle.setNumber(p.getRotation().getDegrees());
+    x.setNumber(p.getX());
+    y.setNumber(p.getY());
   }
 
-  
-  public void resetGyroAngle(){
-      gyroscope.reset();
+  public void resetEncoder() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+  public void resetGyroAngle() {
+    gyroscope.reset();
   }
 
-  public double getGyroAngle(){
-      return gyroscope.getAngle();
+  public double getGyroAngle() {
+    return gyroscope.getAngle();
   }
 
   public Pose2d getPose() {
