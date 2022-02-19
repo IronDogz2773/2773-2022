@@ -23,7 +23,7 @@ public class TurnDegreesCommand extends CommandBase {
 
   private double rotation;
   private double angle;
-  private double testAngle = 90;
+  private double testAngle = 10;
   private double target;
 
   public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive, Joystick gamepad) {
@@ -48,7 +48,7 @@ public class TurnDegreesCommand extends CommandBase {
     angle = testAngle;
 
     target = nav.getGyroAngle() + angle;
-    pidController.setTolerance(5);
+    pidController.setTolerance(.5);
     pidController.setSetpoint(target);
   }
 
@@ -56,7 +56,7 @@ public class TurnDegreesCommand extends CommandBase {
   @Override
   public void execute() {
       rotation = pidController.calculate(nav.getGyroAngle());
-      rotation = MathUtil.clamp(rotation, -.5, .5);
+      rotation = MathUtil.clamp(rotation, -1, 1);
       drive.arcadeDrive(0, rotation, false);
   }
 
