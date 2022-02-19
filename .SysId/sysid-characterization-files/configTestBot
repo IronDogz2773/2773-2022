@@ -9,7 +9,7 @@
   "is drivetrain": true,
   "motor controllers": [
     "SPARK MAX (Brushed)",
-    "SPARK MAX (Brushed)"
+    "SPARK MAX (Brushless)"
   ],
   "number of samples per average": 1,
   "primary encoder inverted": false,
@@ -22,8 +22,8 @@
     20
   ],
   "primary motors inverted": [
-    true,
-    true
+    false,
+    false
   ],
   "secondary encoder inverted": true,
   "secondary encoder ports": [
@@ -35,8 +35,8 @@
     18
   ],
   "secondary motors inverted": [
-    false,
-    false
+    true,
+    true
   ],
   "velocity measurement period": 100
 }

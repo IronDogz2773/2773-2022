@@ -4,17 +4,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.PathCommandBuilder;
+import frc.robot.commands.TurnDegreesCommand;
+//import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.commands.HopperCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.KickerSubsystem;
+import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,14 +35,17 @@ public class RobotContainer {
   //Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  //private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
+  private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
+  private final WinchSubsystem winchSubsystem = new WinchSubsystem();
+  private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
-  //private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
-  //private final WinchSubsystem winchSubsystem = new WinchSubsystem();
 
   //Commands
-  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
   private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
   private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
+  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
+  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, gamepad);
   //private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
   
 
@@ -60,6 +68,20 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    /*final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.A);
+    intakeButton.whenPressed(activateIntakeCommand, false);
+    final JoystickButton deployButton = new JoystickButton(gamepad, Constants.LB);
+    deployButton.whenPressed(deployIntakeCommand, false);*/
+
+    final JoystickButton turnButton = new JoystickButton(gamepad, Constants.B);
+    turnButton.whenHeld(turnDegreesCommand, true);
+
+    final JoystickButton resetPose = new JoystickButton(gamepad, Constants.Start);
+    resetPose.whenPressed(() -> {
+      navigationSubsystem.resetGyroAngle();
+      navigationSubsystem.resetEncoder();
+      navigationSubsystem.resetOdometry(new Pose2d());
+     });
     final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
     deployButton.whenPressed(deployIntakeCommand, true);
     //final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
@@ -73,6 +95,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An DriveCommand will run in autonomous
-    return null;
+    PathCommandBuilder builder = new PathCommandBuilder(driveSubsystem, navigationSubsystem);
+    return builder.build();
   }
 }

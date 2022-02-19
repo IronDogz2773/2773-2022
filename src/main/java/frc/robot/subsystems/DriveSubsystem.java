@@ -29,7 +29,9 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
 
-  public DriveSubsystem() {}
+  public DriveSubsystem() {
+    leftMotors.setInverted(true);
+  }
 
   @Override
   public void periodic() {
@@ -42,7 +44,24 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
-    drive.tankDrive(leftSpeed, -rightSpeed);
-}
+    drive.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void arcadeDrive(final double speed, final double rotation){
+    drive.arcadeDrive(speed, rotation);
+  }
+
+  public void arcadeDrive(final double speed, final double rotation, final boolean accel){
+    drive.arcadeDrive(speed, rotation, accel);
+  }
+
+  private static double clamp(double x, double min, double max) {
+    return x < min ? min : x > max ? max : x;
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMotors.setVoltage(clamp(leftVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
+    rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
+  }
 }
 
