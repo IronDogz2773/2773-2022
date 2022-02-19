@@ -10,16 +10,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
 
-  private final CANSparkMax leftForMotor = new CANSparkMax(Constants.leftForWheelsCANID, MotorType.kBrushless);
-  private final CANSparkMax rightForMotor = new CANSparkMax(Constants.rightForWheelsCANID, MotorType.kBrushless);
-  private final CANSparkMax leftBackMotor = new CANSparkMax(Constants.leftBackWheelsCANID, MotorType.kBrushless);
-  private final CANSparkMax rightBackMotor = new CANSparkMax(Constants.rightBackWheelsCANID, MotorType.kBrushless);
-  
+  private final CANSparkMax leftForMotor = new CANSparkMax(Constants.leftForWheelsCANID, MotorType.kBrushed);
+  private final CANSparkMax rightForMotor = new CANSparkMax(Constants.rightForWheelsCANID, MotorType.kBrushed);
+  private final CANSparkMax leftBackMotor = new CANSparkMax(Constants.leftBackWheelsCANID, MotorType.kBrushed);
+  private final CANSparkMax rightBackMotor = new CANSparkMax(Constants.rightBackWheelsCANID, MotorType.kBrushed);
 
   // Speed controller groups
   private final MotorControllerGroup leftMotors = new MotorControllerGroup(leftForMotor, leftBackMotor);
@@ -27,7 +26,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Differential drive
   private final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
-
 
   public DriveSubsystem() {
     leftMotors.setInverted(true);
@@ -47,11 +45,11 @@ public class DriveSubsystem extends SubsystemBase {
     drive.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void arcadeDrive(final double speed, final double rotation){
+  public void arcadeDrive(final double speed, final double rotation) {
     drive.arcadeDrive(speed, rotation);
   }
 
-  public void arcadeDrive(final double speed, final double rotation, final boolean accel){
+  public void arcadeDrive(final double speed, final double rotation, final boolean accel) {
     drive.arcadeDrive(speed, rotation, accel);
   }
 
@@ -64,4 +62,3 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
   }
 }
-

@@ -25,34 +25,39 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
 
-  //Subsystems
+  // Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  //private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
   private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
   private final WinchSubsystem winchSubsystem = new WinchSubsystem();
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
-  //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+  // private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
 
-  //Commands
+  // Commands
   private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
   private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
-  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, gamepad);
-  //private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
-  
+  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
+      gamepad);
+  // private final HopperCommand hopperCommand = new
+  // HopperCommand(hopperSubsystem, gamepad);
 
-  //private static Joystick joystick = new Joystick(Constants.joystickPort);
+  // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -62,16 +67,21 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    /*final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.A);
-    intakeButton.whenPressed(activateIntakeCommand, false);
-    final JoystickButton deployButton = new JoystickButton(gamepad, Constants.LB);
-    deployButton.whenPressed(deployIntakeCommand, false);*/
+    /*
+     * final JoystickButton intakeButton = new JoystickButton(gamepad, Constants.A);
+     * intakeButton.whenPressed(activateIntakeCommand, false);
+     * final JoystickButton deployButton = new JoystickButton(gamepad,
+     * Constants.LB);
+     * deployButton.whenPressed(deployIntakeCommand, false);
+     */
 
     final JoystickButton turnButton = new JoystickButton(gamepad, Constants.B);
     turnButton.whenHeld(turnDegreesCommand, true);
@@ -81,11 +91,11 @@ public class RobotContainer {
       navigationSubsystem.resetGyroAngle();
       navigationSubsystem.resetEncoder();
       navigationSubsystem.resetOdometry(new Pose2d());
-     });
+    });
     final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
     deployButton.whenPressed(deployIntakeCommand, true);
-    //final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
-    //hopperButton.whenPressed(hopperCommand, true);
+    // final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
+    // hopperButton.whenPressed(hopperCommand, true);
   }
 
   /**
