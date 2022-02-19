@@ -6,26 +6,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class DeployIntakeCommand extends CommandBase {
   private final IntakeSubsystem intake;
-  private final Joystick gamepad;
+
   /** Creates a new DeployIntakeCommand. */
-  public DeployIntakeCommand(IntakeSubsystem subsystem, Joystick gamepad) {
+  public DeployIntakeCommand(IntakeSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
     intake = subsystem;
-    this.gamepad = gamepad;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(intake.isDeployed() == false) {
+    if (intake.isDeployed() == false) {
       intake.deployIntake();
     } else {
       intake.retractIntake();

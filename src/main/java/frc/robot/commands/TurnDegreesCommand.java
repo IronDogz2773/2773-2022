@@ -7,17 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants;
 
 public class TurnDegreesCommand extends CommandBase {
   /** Creates a new NavigationCommand. */
   private final NavigationSubsystem nav;
   private final DriveSubsystem drive;
-  private final Joystick gamepad;
 
   PIDController pidController;
 
@@ -26,14 +23,13 @@ public class TurnDegreesCommand extends CommandBase {
   private double testAngle = 10;
   private double target;
 
-  public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive, Joystick gamepad) {
+  public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive) {
     this.nav = nav;
     this.drive = drive;
     // Use addRequirements() here to declare subsystem dependencies.
-    //navigation can be used by multiple commands at once without a problem so
-    //it is not a dependency
+    // navigation can be used by multiple commands at once without a problem so
+    // it is not a dependency
     addRequirements(drive);
-    this.gamepad = gamepad;
   }
 
   // Called when the command is initially scheduled.
@@ -55,14 +51,15 @@ public class TurnDegreesCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      rotation = pidController.calculate(nav.getGyroAngle());
-      rotation = MathUtil.clamp(rotation, -1, 1);
-      drive.arcadeDrive(0, rotation, false);
+    rotation = pidController.calculate(nav.getGyroAngle());
+    rotation = MathUtil.clamp(rotation, -1, 1);
+    drive.arcadeDrive(0, rotation, false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -7,12 +7,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
@@ -40,7 +38,6 @@ public class NavigationSubsystem extends SubsystemBase {
   public void periodic() {
     odometry.update(gyroscope.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
 
-
     var table = NetworkTableInstance.getDefault().getTable("troubleshooting");
     var angle = table.getEntry("pose_a");
     var x = table.getEntry("pose_x");
@@ -55,6 +52,7 @@ public class NavigationSubsystem extends SubsystemBase {
     leftEncoder.reset();
     rightEncoder.reset();
   }
+
   public void resetGyroAngle() {
     gyroscope.reset();
   }
