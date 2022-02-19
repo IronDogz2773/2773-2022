@@ -34,16 +34,20 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
-  private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+  private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
 
   // Commands
-  private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
-  private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem);
+  private final ActivateIntakeCommand activateIntakeCommand = Constants.intakePresent
+      ? new ActivateIntakeCommand(intakeSubsystem, gamepad)
+      : null;
+  private final DeployIntakeCommand deployIntakeCommand = Constants.intakePresent
+      ? new DeployIntakeCommand(intakeSubsystem)
+      : null;
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem);
-  private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem);
+  private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
 
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
@@ -56,7 +60,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(driveCommand);
-    intakeSubsystem.setDefaultCommand(activateIntakeCommand);
+    if (Constants.intakePresent) {
+      intakeSubsystem.setDefaultCommand(activateIntakeCommand);
+    }
   }
 
   /**
@@ -79,11 +85,15 @@ public class RobotContainer {
       navigationSubsystem.resetOdometry(new Pose2d());
     });
 
-    final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
-    deployButton.whenPressed(deployIntakeCommand, true);
+    if (Constants.intakePresent) {
+      final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
+      deployButton.whenPressed(deployIntakeCommand, true);
+    }
 
-    final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
-    hopperButton.whenPressed(hopperCommand, true);
+    if (Constants.hopperPresent) {
+      final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
+      hopperButton.whenPressed(hopperCommand, true);
+    }
   }
 
   /**
