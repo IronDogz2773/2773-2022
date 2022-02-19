@@ -13,7 +13,9 @@ import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.PathCommandBuilder;
 import frc.robot.commands.TurnDegreesCommand;
-import frc.robot.subsystems.ConveyorSubsystem;
+//import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.commands.HopperCommand;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.KickerSubsystem;
@@ -33,16 +35,19 @@ public class RobotContainer {
   //Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
+  //private final ConveyorSubsystem conveyorSubsystem = new ConveyorSubsystem();
   private final KickerSubsystem kickerSubsystem = new KickerSubsystem();
   private final WinchSubsystem winchSubsystem = new WinchSubsystem();
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
+  //private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
 
   //Commands
   private final ActivateIntakeCommand activateIntakeCommand = new ActivateIntakeCommand(intakeSubsystem, gamepad);
   private final DeployIntakeCommand deployIntakeCommand = new DeployIntakeCommand(intakeSubsystem, gamepad);
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, gamepad);
+  //private final HopperCommand hopperCommand = new HopperCommand(hopperSubsystem, gamepad);
+  
 
   //private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
@@ -53,7 +58,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(driveCommand);
-    intakeSubsystem.setDefaultCommand(deployIntakeCommand);
+    intakeSubsystem.setDefaultCommand(activateIntakeCommand);
   }
 
   /**
@@ -77,6 +82,10 @@ public class RobotContainer {
       navigationSubsystem.resetEncoder();
       navigationSubsystem.resetOdometry(new Pose2d());
      });
+    final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
+    deployButton.whenPressed(deployIntakeCommand, true);
+    //final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
+    //hopperButton.whenPressed(hopperCommand, true);
   }
 
   /**

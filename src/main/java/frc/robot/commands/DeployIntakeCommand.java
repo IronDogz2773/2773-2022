@@ -25,28 +25,26 @@ public class DeployIntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    if(intake.isDeployed() == false) {
+      intake.deployIntake();
+    } else {
+      intake.retractIntake();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(gamepad.getRawButton(Constants.LB)) {
-      intake.deployIntake();
-      System.out.println("This should deploy");
-    } else if (gamepad.getRawButton(Constants.RB)) {
-      intake.retractIntake();
-      System.out.println("This should retract");
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
