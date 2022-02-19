@@ -21,21 +21,20 @@ public class NavigationSubsystem extends SubsystemBase {
 
   private final Encoder leftEncoder = new Encoder(Constants.leftEncoderPortA, Constants.leftEncoderPortB);
   private final Encoder rightEncoder = new Encoder(Constants.rightEncoderPortA, Constants.rightEncoderPortB);
-  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
-    new Rotation2d(0)
-  );
+  private DifferentialDriveOdometry odometry;
   public NavigationSubsystem() {
-    leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
+    leftEncoder.setDistancePerPulse(-Constants.distancePerPulse);
     rightEncoder.setDistancePerPulse(Constants.distancePerPulse);
       if(gyroscope.isConnected()){
        gyroscope.reset();
        gyroscope.calibrate();
     }
+    odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d());
   }
 
   @Override
   public void periodic() {
-    DriverStation.reportWarning(">>>" + leftEncoder.getRate() + " " + rightEncoder.getRate(), false);
+    odometry.update(gyroscope.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
   }
 
   
@@ -52,7 +51,7 @@ public class NavigationSubsystem extends SubsystemBase {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(-leftEncoder.getRate(), rightEncoder.getRate());
+    return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
   }
 
   public void resetOdometry(Pose2d initialPose) {
