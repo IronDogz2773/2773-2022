@@ -30,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   public DriveSubsystem() {
-    //leftMotors.setInverted(true);
+    leftMotors.setInverted(true);
   }
 
   @Override
