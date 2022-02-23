@@ -13,6 +13,7 @@ import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.PathCommandBuilder;
 import frc.robot.commands.ShotCommand;
+import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
 import frc.robot.commands.IndexCommand;
@@ -22,6 +23,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -71,7 +74,6 @@ public class RobotContainer {
     if (Constants.intakePresent) {
       intakeSubsystem.setDefaultCommand(activateIntakeCommand);
     }
-    shooter.setDefaultCommand(shotCommand);
   }
 
   /**
@@ -86,9 +88,6 @@ public class RobotContainer {
     final JoystickButton turnButton = new JoystickButton(gamepad, Constants.X);
     turnButton.whenHeld(turnDegreesCommand, true);
 
-    final JoystickButton indexButton = new JoystickButton(gamepad, Constants.RB);
-    indexButton.whenHeld(indexCommand, true);
-
     final JoystickButton resetPose = new JoystickButton(gamepad, Constants.Start);
     resetPose.whenPressed(() -> {
       // command to reset all gyro and coordanates
@@ -96,6 +95,16 @@ public class RobotContainer {
       navigationSubsystem.resetEncoder();
       navigationSubsystem.resetOdometry(new Pose2d());
     });
+
+    //when RB is pressed, set rpm to a specific value, extend the indexer to touch the ball, wait, then turn off
+    final JoystickButton autoShootButton = new JoystickButton(gamepad, Constants.RB);
+    final Command autoShootCommand = new ShotRpmCommand(shooter, 500).andThen(() -> {
+      shooter.extendIndex();
+    }).andThen(new WaitCommand(1)).andThen(() -> {
+      shooter.setRpm(0);
+      shooter.retractIndex();
+    });
+    autoShootButton.whenPressed(autoShootCommand, true);
 
     if (Constants.intakePresent) {
       final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);

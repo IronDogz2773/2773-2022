@@ -4,30 +4,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShotCommand extends CommandBase {
-  private final ShooterSubsystem subsystem;
-  private final Joystick gamepad;
+public class ShotRpmCommand extends CommandBase {
+  private final ShooterSubsystem shooter;
+  private final double rpm;
 
-  /** Creates a new ShotCommand. */
-  public ShotCommand(ShooterSubsystem subsystem, Joystick gamepad) {
-    this.subsystem = subsystem;
-    addRequirements(subsystem);
-    this.gamepad = gamepad;
+  /** Sets shoot motor to a specified rpm */
+  public ShotRpmCommand(ShooterSubsystem shooter, double rpm) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.rpm = rpm;
+    this.shooter = shooter;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    shooter.setRpm(rpm);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    subsystem.setRpm(gamepad.getRawAxis(2) *1400);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -36,6 +36,6 @@ public class ShotCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return shooter.atSetpoint();
   }
 }

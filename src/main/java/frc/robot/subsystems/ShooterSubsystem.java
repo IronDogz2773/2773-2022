@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
   private final Spark motor = new Spark(0);
-  private final Spark indexer = new Spark(0);
+  private final Spark indexer = new Spark(1);
   private final Encoder encoder = new Encoder(6, 7);
   private final PIDController pid = new PIDController(0.00006, 0, 0.00002);
 
@@ -25,6 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     encoder.setDistancePerPulse(-60.0 / 8192);
     pid.setSetpoint(rpm);
+    pid.setTolerance(30);
   }
 
   @Override
@@ -39,11 +40,15 @@ public class ShooterSubsystem extends SubsystemBase {
       pid.setSetpoint(rpm);
   }
 
+  public boolean atSetpoint(){
+    return pid.atSetpoint();
+  }
+
   public void extendIndex(){
-    indexer.set(0.2);
+    indexer.set(-0.5);
   }
 
   public void retractIndex(){
-    indexer.set(0);
+    indexer.set(.1);
   }
 }
