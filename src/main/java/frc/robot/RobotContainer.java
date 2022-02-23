@@ -15,6 +15,7 @@ import frc.robot.commands.PathCommandBuilder;
 import frc.robot.commands.ShotCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
+import frc.robot.commands.IndexCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -54,6 +55,8 @@ public class RobotContainer {
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final ShotCommand shotCommand = new ShotCommand(shooter, gamepad);
 
+  private final IndexCommand indexCommand = new IndexCommand(shooter);
+
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
 
@@ -83,6 +86,9 @@ public class RobotContainer {
     final JoystickButton turnButton = new JoystickButton(gamepad, Constants.X);
     turnButton.whenHeld(turnDegreesCommand, true);
 
+    final JoystickButton indexButton = new JoystickButton(gamepad, Constants.RB);
+    indexButton.whenHeld(indexCommand, true);
+
     final JoystickButton resetPose = new JoystickButton(gamepad, Constants.Start);
     resetPose.whenPressed(() -> {
       // command to reset all gyro and coordanates
@@ -100,6 +106,8 @@ public class RobotContainer {
       final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
       hopperButton.whenPressed(hopperCommand, true);
     }
+
+    
   }
 
   /**

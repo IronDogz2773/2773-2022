@@ -25,8 +25,8 @@ public final class Constants extends ConstantsForTestRobot {
     public static final int B = 2;
     public static final int X = 3;
     public static final int Y = 4;
-    public static final int LB = 5; // Deploy intake
-    public static final int RB = 6; // Retract intake
+    public static final int LB = 5; 
+    public static final int RB = 6; 
     public static final int Start = 8;
 
     public static final double kRamseteB = 2;
