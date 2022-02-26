@@ -51,6 +51,17 @@ public class TurnDegreesCommand extends CommandBase {
     target = nav.getGyroAngle() + angle;
     pidController.setTolerance(.5);
     pidController.setSetpoint(target);
+    
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+    NetworkTable table = inst.getTable("pivision");
+
+    NetworkTableEntry angleEntry = table.getEntry("red_1_x");
+    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
+
+    angle = angleEntry.getDouble(0);
+    onScreen = onScreenEntry.getBoolean(false);
+    DriverStation.reportWarning("angle = " + angle, false);
   }
 
   private double getNetwrokTableAngle() {
