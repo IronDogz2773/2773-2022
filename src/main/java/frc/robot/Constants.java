@@ -38,4 +38,6 @@ public final class Constants extends ConstantsForTestRobot {
     public static final double distancePerPulse = .16 * Math.PI / 2048;
 
     public static final double maxShooterSpeed = 750;
+
+    public static final double turnCmdTimeOut = 3;
 }

@@ -12,6 +12,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 
 public class TurnDegreesCommand extends CommandBase {
@@ -24,12 +26,15 @@ public class TurnDegreesCommand extends CommandBase {
   private double rotation;
   private double target;
 
-  private double angle;
+  private double timeOut;
   private double lastAngleFromNT;
 
-  public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive) {
+  private final Timer timer = new Timer();
+
+  public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive, double timeOut) {
     this.nav = nav;
     this.drive = drive;
+    this.timeOut = timeOut;
     // Use addRequirements() here to declare subsystem dependencies.
     // navigation can be used by multiple commands at once without a problem so
     // it is not a dependency
@@ -48,7 +53,8 @@ public class TurnDegreesCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    timer.reset();
+    timer.start();
   }
 
   void resetPid(double angle) {
@@ -90,21 +96,30 @@ public class TurnDegreesCommand extends CommandBase {
     double angleFromNT = getNetworkTableAngle();
     if (angleFromNT != 0) {
       resetPid(angleFromNT);
+      DriverStation.reportWarning("angleNT = " + angleFromNT, false);
     }
-    // calls from pid to give values to rotate
-    rotation = pidController.calculate(nav.getGyroAngle());
-    rotation = MathUtil.clamp(rotation, -Constants.maxRotationVolts, Constants.maxRotationVolts);
-    drive.rawDrive(rotation, -rotation);
+    if (!pidController.atSetpoint()) {
+      DriverStation.reportWarning("angle = " + pidController.getSetpoint() + "; " + nav.getGyroAngle(), false);
+      // calls from pid to give values to rotate
+      rotation = pidController.calculate(nav.getGyroAngle());
+      rotation = MathUtil.clamp(rotation, -Constants.maxRotationVolts, Constants.maxRotationVolts);
+      drive.rawDrive(rotation, -rotation);
+    } else {
+      drive.rawDrive(0, 0);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    drive.rawDrive(0, 0);
+    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;// pidController.atSetpoint();
+    return timer.hasElapsed(timeOut);
   }
 }

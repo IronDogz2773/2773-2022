@@ -49,7 +49,7 @@ public class RobotContainer {
       ? new DeployIntakeCommand(intakeSubsystem)
       : null;
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
-  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem);
+  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, Constants.turnCmdTimeOut);
   private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
 
   private final ShooterSubsystem shooter = new ShooterSubsystem();
