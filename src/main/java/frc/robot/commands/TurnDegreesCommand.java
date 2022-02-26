@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 
 public class TurnDegreesCommand extends CommandBase {
@@ -27,9 +28,6 @@ public class TurnDegreesCommand extends CommandBase {
 
   private double angle;
   private boolean onScreen;
-
-  NetworkTableEntry angleEntry;
-  NetworkTableEntry onScreenEntry; //i don't know if this is the right name :)
 
   public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive) {
     this.nav = nav;
@@ -54,21 +52,22 @@ public class TurnDegreesCommand extends CommandBase {
     target = nav.getGyroAngle() + angle;
     pidController.setTolerance(.5);
     pidController.setSetpoint(target);
-
+    
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
     NetworkTable table = inst.getTable("pivision");
 
-    angleEntry = table.getEntry("red_1_x");
-    onScreenEntry = table.getEntry("red_1_onScreen"); //idk if this is the right name, ask preston
+    NetworkTableEntry angleEntry = table.getEntry("red_1_x");
+    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
+
+    angle = angleEntry.getDouble(0);
+    onScreen = onScreenEntry.getBoolean(false);
+    DriverStation.reportWarning("angle = " + angle, false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    angle = angleEntry.getDouble(0);
-    onScreen = onScreenEntry.getBoolean(false);
-
     rotation = pidController.calculate(nav.getGyroAngle());
     rotation = MathUtil.clamp(rotation, -1, 1);
     drive.arcadeDrive(0, rotation, false);

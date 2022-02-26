@@ -3,6 +3,12 @@
     "mode": "Client",
     "serverTeam": "2773"
   },
+  "Table": {
+    "open": true
+  },
+  "pivision": {
+    "open": true
+  },
   "troubleshooting_sh": {
     "open": true
   }
