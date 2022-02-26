@@ -25,6 +25,7 @@ public class TurnDegreesCommand extends CommandBase {
   private double target;
 
   private double angle;
+  private double lastAngleFromNT;
 
   public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive) {
     this.nav = nav;
@@ -39,14 +40,19 @@ public class TurnDegreesCommand extends CommandBase {
     double kD = Constants.turnControllerD;
 
     pidController = new PIDController(kP, kI, kD);
+
+    lastAngleFromNT = 0;
+    resetPid(0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
+  }
 
+  void resetPid(double angle) {
     nav.resetGyroAngle();
-    angle = getNetworkTableAngle(); // testAngle;
 
     target = nav.getGyroAngle() + angle;
     pidController.setTolerance(.2);
@@ -54,23 +60,38 @@ public class TurnDegreesCommand extends CommandBase {
     pidController.reset();
   }
 
+  // returns 0 if angle did not change in network tables
   private double getNetworkTableAngle() {
+    // creates instance of table with pivision
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
-
     NetworkTable table = inst.getTable("pivision");
+    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
+    boolean onScreen = onScreenEntry.getBoolean(false);
+    // if there is no angle on screen, no angle/0 angle
+    if (!onScreen) {
+      lastAngleFromNT = 0;
+      return 0;
+    }
 
     NetworkTableEntry angleEntry = table.getEntry("red_1_x");
-    //NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
-
     double angle = angleEntry.getDouble(0);
-    // boolean onScreen = onScreenEntry.getBoolean(false);
-    // DriverStation.reportWarning("angle = " + angle, false);
+
+    if (lastAngleFromNT == angle) {
+      // angle did not change
+      return 0;
+    }
+    lastAngleFromNT = angle;
     return angle;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double angleFromNT = getNetworkTableAngle();
+    if (angleFromNT != 0) {
+      resetPid(angleFromNT);
+    }
+    // calls from pid to give values to rotate
     rotation = pidController.calculate(nav.getGyroAngle());
     rotation = MathUtil.clamp(rotation, -Constants.maxRotationVolts, Constants.maxRotationVolts);
     drive.rawDrive(rotation, -rotation);
@@ -84,6 +105,6 @@ public class TurnDegreesCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return pidController.atSetpoint();
+    return false;// pidController.atSetpoint();
   }
 }
