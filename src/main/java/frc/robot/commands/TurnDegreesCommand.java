@@ -9,6 +9,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Constants;
 
 public class TurnDegreesCommand extends CommandBase {
@@ -19,9 +22,14 @@ public class TurnDegreesCommand extends CommandBase {
   PIDController pidController;
 
   private double rotation;
-  private double angle;
   private double testAngle = 10;
   private double target;
+
+  private double angle;
+  private boolean onScreen;
+
+  NetworkTableEntry angleEntry;
+  NetworkTableEntry onScreenEntry; //i don't know if this is the right name :)
 
   public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive) {
     this.nav = nav;
@@ -46,11 +54,21 @@ public class TurnDegreesCommand extends CommandBase {
     target = nav.getGyroAngle() + angle;
     pidController.setTolerance(.5);
     pidController.setSetpoint(target);
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+    NetworkTable table = inst.getTable("pivision");
+
+    angleEntry = table.getEntry("red_1_x");
+    onScreenEntry = table.getEntry("red_1_onScreen"); //idk if this is the right name, ask preston
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    angle = angleEntry.getDouble(0);
+    onScreen = onScreenEntry.getBoolean(false);
+
     rotation = pidController.calculate(nav.getGyroAngle());
     rotation = MathUtil.clamp(rotation, -1, 1);
     drive.arcadeDrive(0, rotation, false);
