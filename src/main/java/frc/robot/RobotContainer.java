@@ -95,7 +95,7 @@ public class RobotContainer {
 
     //when RB is pressed, set rpm to a specific value, extend the indexer to touch the ball, wait, then turn off
     final JoystickButton autoShootButton = new JoystickButton(gamepad, Constants.RB);
-    final Command autoShootCommand = new ShotRpmCommand(shooter, 500).andThen(() -> {
+    final Command autoShootCommand = new ShotRpmCommand(shooter, Constants.maxShooterSpeed).andThen(() -> {
       shooter.extendIndex();
     }).andThen(new WaitCommand(1)).andThen(() -> {
       shooter.setRpm(0);

@@ -36,4 +36,6 @@ public final class Constants extends ConstantsForTestRobot {
     public static final double kRamseteZeta = 0.7;
 
     public static final double distancePerPulse = .16 * Math.PI / 2048;
+
+    public static final double maxShooterSpeed = 750;
 }
