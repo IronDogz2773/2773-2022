@@ -6,24 +6,23 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.trajectory.TrajectoryParameterizer.TrajectoryGenerationException;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final Spark motor = new Spark(0);
-  private final Spark indexer = new Spark(1);
-  private final Encoder encoder = new Encoder(6, 7);
-  private final PIDController pid = new PIDController(0.00006, 0, 0.00002);
+  private final Spark motor = new Spark(Constants.shooterMotorPWMID);
+  private final Spark kicker = new Spark(Constants.kickerMotorPWMID);
+  private final Encoder encoder = new Encoder(Constants.rightShooterEncoderPort, Constants.leftShooterEncoderPort);
+  private final PIDController pid = new PIDController(Constants.shooterControllerP, Constants.shooterControllerI, Constants.shooterControllerD);
 
   private double rpm = 0.0;
-  private double speed = 0.0;
+  private double speed = 0.0; 
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    encoder.setDistancePerPulse(-60.0 / 8192);
+    encoder.setDistancePerPulse(-60.0 / Constants.shooterEncoderResolution); //8192
     pid.setSetpoint(rpm);
     pid.setTolerance(30);
   }
@@ -45,10 +44,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void extendIndex(){
-    indexer.set(-0.5);
+    kicker.set(-0.5);
   }
 
   public void retractIndex(){
-    indexer.set(.1);
+    kicker.set(.1);
   }
 }

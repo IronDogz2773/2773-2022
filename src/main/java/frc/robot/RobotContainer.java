@@ -12,18 +12,15 @@ import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.PathCommandBuilder;
-import frc.robot.commands.ShotCommand;
 import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
-import frc.robot.commands.IndexCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -56,9 +53,9 @@ public class RobotContainer {
   private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
 
   private final ShooterSubsystem shooter = new ShooterSubsystem();
-  private final ShotCommand shotCommand = new ShotCommand(shooter, gamepad);
+  //private final ShotCommand shotCommand = new ShotCommand(shooter, gamepad);
 
-  private final IndexCommand indexCommand = new IndexCommand(shooter);
+  //private final IndexCommand indexCommand = new IndexCommand(shooter);
 
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);

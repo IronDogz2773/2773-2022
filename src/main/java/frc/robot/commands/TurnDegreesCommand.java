@@ -35,9 +35,9 @@ public class TurnDegreesCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double kP = Constants.kP;
-    double kI = Constants.kI;
-    double kD = Constants.kD;
+    double kP = Constants.turnControllerP;
+    double kI = Constants.turnControllerI;
+    double kD = Constants.turnControllerD;
 
     pidController = new PIDController(kP, kI, kD);
     nav.resetGyroAngle();

@@ -30,9 +30,8 @@ public class ConstantsForTestRobot {
     public static final int intakeCANID = 15; // Placeholder value
     public static final int leftHopperCANID = 1;
     public static final int rightHopperCANID = 2;
-    public static final int rightShooterMotorPWMID = 3;
-    public static final int leftShooterMotorPWMID = 4;
-    public static final int kickerMotorPWMID = 5;
+    public static final int shooterMotorPWMID = 0;
+    public static final int kickerMotorPWMID = 1;
     public static final int winchMotorPWMID = 6;
 
     public static final MotorType motorType = MotorType.kBrushed;
@@ -42,6 +41,8 @@ public class ConstantsForTestRobot {
     public static final int leftEncoderPortB = 1;
     public static final int rightEncoderPortA = 3;
     public static final int rightEncoderPortB = 4;
+    public static final int rightShooterEncoderPort = 6;
+    public static final int leftShooterEncoderPort = 7;
 
     // PID values
     // ALL CURRENT VALUES ARE PLASEHOLDERS
@@ -59,9 +60,15 @@ public class ConstantsForTestRobot {
     public static final double kMaxSpeedMetersPerSecond = .6;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.3;
 
-    public static final double kP = 0.04;
-    public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double turnControllerP = 0.04;
+    public static final double turnControllerI = 0;
+    public static final double turnControllerD = 0;
+
+    public static final double shooterControllerP = 0.00006;
+    public static final double shooterControllerI = 0;
+    public static final double shooterControllerD = 0.00002;
+
+    public static final double shooterEncoderResolution = 8192;
 
     public static final double maxMotorVolts = 12.0;
 }
