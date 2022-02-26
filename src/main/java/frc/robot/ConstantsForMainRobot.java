@@ -71,4 +71,5 @@ public class ConstantsForMainRobot {
     public static final double shooterEncoderResolution = 8192;
 
     public static final double maxMotorVolts = 12.0;
+    public static final double maxRotationVolts = 4;// placeholder
 }

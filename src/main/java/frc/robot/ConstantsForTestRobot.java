@@ -60,8 +60,8 @@ public class ConstantsForTestRobot {
     public static final double kMaxSpeedMetersPerSecond = .6;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.3;
 
-    public static final double turnControllerP = 0.04;
-    public static final double turnControllerI = 0;
+    public static final double turnControllerP = 0.02;
+    public static final double turnControllerI = 0.06;
     public static final double turnControllerD = 0;
 
     public static final double shooterControllerP = 0.00006;
@@ -71,4 +71,5 @@ public class ConstantsForTestRobot {
     public static final double shooterEncoderResolution = 8192;
 
     public static final double maxMotorVolts = 12.0;
+    public static final double maxRotationVolts = 4;
 }

@@ -12,7 +12,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 
 public class TurnDegreesCommand extends CommandBase {
@@ -23,7 +22,6 @@ public class TurnDegreesCommand extends CommandBase {
   PIDController pidController;
 
   private double rotation;
-  private double testAngle = 10;
   private double target;
 
   private double angle;
@@ -35,46 +33,38 @@ public class TurnDegreesCommand extends CommandBase {
     // navigation can be used by multiple commands at once without a problem so
     // it is not a dependency
     addRequirements(drive);
-  }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
     double kP = Constants.turnControllerP;
     double kI = Constants.turnControllerI;
     double kD = Constants.turnControllerD;
 
     pidController = new PIDController(kP, kI, kD);
-    nav.resetGyroAngle();
-    angle = getNetwrokTableAngle(); // testAngle;
-
-    target = nav.getGyroAngle() + angle;
-    pidController.setTolerance(.5);
-    pidController.setSetpoint(target);
-    
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-
-    NetworkTable table = inst.getTable("pivision");
-
-    NetworkTableEntry angleEntry = table.getEntry("red_1_x");
-    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
-
-    angle = angleEntry.getDouble(0);
-    onScreen = onScreenEntry.getBoolean(false);
-    DriverStation.reportWarning("angle = " + angle, false);
   }
 
-  private double getNetwrokTableAngle() {
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+
+    nav.resetGyroAngle();
+    angle = getNetworkTableAngle(); // testAngle;
+
+    target = nav.getGyroAngle() + angle;
+    pidController.setTolerance(.2);
+    pidController.setSetpoint(target);
+    pidController.reset();
+  }
+
+  private double getNetworkTableAngle() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
     NetworkTable table = inst.getTable("pivision");
 
     NetworkTableEntry angleEntry = table.getEntry("red_1_x");
-    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
+    //NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
 
     double angle = angleEntry.getDouble(0);
-    boolean onScreen = onScreenEntry.getBoolean(false);
-    DriverStation.reportWarning("angle = " + angle, false);
+    // boolean onScreen = onScreenEntry.getBoolean(false);
+    // DriverStation.reportWarning("angle = " + angle, false);
     return angle;
   }
 
@@ -82,8 +72,8 @@ public class TurnDegreesCommand extends CommandBase {
   @Override
   public void execute() {
     rotation = pidController.calculate(nav.getGyroAngle());
-    rotation = MathUtil.clamp(rotation, -1, 1);
-    drive.arcadeDrive(0, rotation, false);
+    rotation = MathUtil.clamp(rotation, -Constants.maxRotationVolts, Constants.maxRotationVolts);
+    drive.rawDrive(rotation, -rotation);
   }
 
   // Called once the command ends or is interrupted.
