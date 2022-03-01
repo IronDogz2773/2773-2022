@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterBaseSubsystem;
 
 public class ShotRpmCommand extends CommandBase {
-  private final ShooterSubsystem shooter;
+  private final ShooterBaseSubsystem shooter;
   private final double rpm;
 
   /** Sets shoot motor to a specified rpm */
-  public ShotRpmCommand(ShooterSubsystem shooter, double rpm) {
+  public ShotRpmCommand(ShooterBaseSubsystem shooter, double rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.rpm = rpm;
     this.shooter = shooter;

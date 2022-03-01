@@ -15,6 +15,10 @@ public class ConstantsForMainRobot {
     public static final boolean hopperPresent = false;
     public static final boolean intakePresent = true;
 
+    //autonomous shooting checks
+    public static final boolean manual = false;
+    public static final boolean vision = false;
+
     // Pneumatics
     public static final int intakePneumaticsController = 0;
     public static final int deploySolenoidPCM = 0;
@@ -27,7 +31,12 @@ public class ConstantsForMainRobot {
     public static final int rightForWheelsCANID = 21;
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
-    public static final int intakeCANID = 15; // Placeholder value
+
+    public static final int frontShooterCANID = 40; //PLACEHOLDER
+    public static final int backShooterCANID = 41; //PLACEHOLDER
+    public static final int indexerCANID = 42; //PLACEHOLDER
+
+    public static final int intakeCANID = 15; 
     public static final int leftHopperCANID = 1;
     public static final int rightHopperCANID = 2;
     public static final int shooterMotorPWMID = 0;

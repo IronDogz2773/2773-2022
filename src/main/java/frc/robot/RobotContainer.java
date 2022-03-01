@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.PathCommandBuilder;
+import frc.robot.commands.ShotCommand;
 import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
@@ -19,7 +21,10 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ShooterBaseSubsystem;
+import frc.robot.subsystems.ShooterTestSubsystem;
+import frc.robot.commands.AutoShootBuilder;
+import frc.robot.commands.ShotRpmCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -37,6 +42,7 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final ShooterBaseSubsystem shooterSubsystem = new ShooterTestSubsystem();
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
@@ -52,8 +58,7 @@ public class RobotContainer {
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, Constants.turnCmdTimeOut);
   private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
 
-  private final ShooterSubsystem shooter = new ShooterSubsystem();
-  //private final ShotCommand shotCommand = new ShotCommand(shooter, gamepad);
+  private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem, gamepad);
 
   //private final IndexCommand indexCommand = new IndexCommand(shooter);
 
@@ -71,6 +76,7 @@ public class RobotContainer {
     if (Constants.intakePresent) {
       intakeSubsystem.setDefaultCommand(activateIntakeCommand);
     }
+    shooterSubsystem.setDefaultCommand(shotCommand);
   }
 
   /**
@@ -95,12 +101,7 @@ public class RobotContainer {
 
     //when RB is pressed, set rpm to a specific value, extend the indexer to touch the ball, wait, then turn off
     final JoystickButton autoShootButton = new JoystickButton(gamepad, Constants.RB);
-    final Command autoShootCommand = new ShotRpmCommand(shooter, Constants.maxShooterSpeed).andThen(() -> {
-      shooter.extendIndex();
-    }).andThen(new WaitCommand(1)).andThen(() -> {
-      shooter.setRpm(0);
-      shooter.retractIndex();
-    });
+    Command autoShootCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, Constants.manual, Constants.vision).build();
     autoShootButton.whenPressed(autoShootCommand, true);
 
     if (Constants.intakePresent) {
