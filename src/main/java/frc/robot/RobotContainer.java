@@ -75,7 +75,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    //driveSubsystem.setDefaultCommand(driveCommand);
+    driveSubsystem.setDefaultCommand(driveCommand);
     if (Constants.intakePresent) {
       intakeSubsystem.setDefaultCommand(activateIntakeCommand);
     }

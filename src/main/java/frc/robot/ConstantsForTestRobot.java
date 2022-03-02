@@ -20,7 +20,7 @@ public class ConstantsForTestRobot {
     public static final boolean vision = true;
 
     //2 motor shooter
-    public static final boolean dosShooter = true;
+    public static final boolean dosShooter = false;
 
     // Pneumatics
     public static final int intakePneumaticsController = 0;
