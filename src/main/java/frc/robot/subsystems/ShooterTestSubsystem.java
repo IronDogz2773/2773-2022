@@ -39,8 +39,8 @@ public class ShooterTestSubsystem extends ShooterBaseSubsystem{
   }
 
   @Override
-  public void setRpm(double rpm) {
-    this.rpm = rpm;
+  public void setRpm(double rpmFront, double rpmBack) {
+    this.rpm = rpmFront;
     this.viaPid = true;
     pid.setSetpoint(rpm);
   }

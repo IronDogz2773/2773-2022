@@ -19,6 +19,9 @@ public class ConstantsForTestRobot {
     public static final boolean manual = true;
     public static final boolean vision = true;
 
+    //2 motor shooter
+    public static final boolean dosShooter = true;
+
     // Pneumatics
     public static final int intakePneumaticsController = 0;
     public static final int deploySolenoidPCM = 0;
@@ -32,8 +35,8 @@ public class ConstantsForTestRobot {
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
 
-    public static final int frontShooterCANID = 40; //PLACEHOLDER
-    public static final int backShooterCANID = 41; //PLACEHOLDER
+    public static final int frontShooterCANID = 11; //PLACEHOLDER
+    public static final int backShooterCANID = 12; //PLACEHOLDER
     public static final int indexerCANID = 42; //PLACEHOLDER
     
     public static final int intakeCANID = 15; // Placeholder value

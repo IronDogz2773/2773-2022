@@ -19,6 +19,9 @@ public class ConstantsForMainRobot {
     public static final boolean manual = false;
     public static final boolean vision = false;
 
+    //2 motor shooter
+    public static final boolean dosShooter = true;
+
     // Pneumatics
     public static final int intakePneumaticsController = 0;
     public static final int deploySolenoidPCM = 0;

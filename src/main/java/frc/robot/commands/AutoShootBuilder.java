@@ -47,7 +47,7 @@ public class AutoShootBuilder {
       }.andThen(new WaitCommand(1));
     }
     else{
-      shootCommand = new ShotRpmCommand(shooter, Constants.maxShooterSpeed);
+      shootCommand = new ShotRpmCommand(shooter, Constants.maxShooterSpeed, 0);
     }
 
     //sets up shot using vision if vision if presence, creates a command that will instantly end if not

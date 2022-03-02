@@ -13,7 +13,7 @@ import frc.robot.Constants;
 
 public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
-  public abstract void setRpm(double rpm);
+  public abstract void setRpm(double rpmFront, double rpmBack);
 
   public abstract void setSpeed(double speedFront, double speedBack);
 

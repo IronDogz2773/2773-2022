@@ -11,6 +11,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -24,12 +26,32 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
   private final RelativeEncoder backEncoder = backMotor.getEncoder();
   private final RelativeEncoder frontEncoder = frontMotor.getEncoder();
 
+  private final PIDController pidFront = new PIDController(Constants.shooterControllerP, Constants.shooterControllerI,
+      Constants.shooterControllerD);
+  private final PIDController pidBack = new PIDController(Constants.shooterControllerP, Constants.shooterControllerI,
+      Constants.shooterControllerD);
+
+  private double speedFront = 0.0;
+  private double speedBack = 0.0;
+
+  private double rpmFront = 0.0;
+  private double rpmBack = 0.0;
+
   private boolean extended = false;
+  private boolean viaPid = false;
+
   private final Timer timer = new Timer();
 
   /** Creates a new ShooterSubsystem. */
   public ShooterMainSubsystem() {
+    pidFront.setSetpoint(rpmFront);
+    pidFront.setTolerance(20);
 
+    pidBack.setSetpoint(rpmBack);
+    pidBack.setTolerance(20);
+
+    frontMotor.setInverted(true);
+    backMotor.setInverted(true);
   }
 
   @Override
@@ -37,22 +59,37 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
     if (extended && timer.hasElapsed(1)){
       retractIndex();
     }
+    if (viaPid) {
+      var deltaFront = pidFront.calculate(frontEncoder.getVelocity());
+      speedFront = MathUtil.clamp(speedFront + deltaFront, 0, 1);
+      var deltaBack = pidBack.calculate(backEncoder.getVelocity());
+      speedBack = MathUtil.clamp(speedBack + deltaBack, 0, 1);
+    }
+    frontMotor.set(speedFront);
+    backMotor.set(speedBack);
+    DriverStation.reportWarning("front " + frontEncoder.getVelocity() + " back " + backEncoder.getVelocity(), false);
   }
 
   @Override
-  public void setRpm(double rpm) {
-    
+  public void setRpm(double rpmFront, double rpmBack) {
+    viaPid = true;
+    this.rpmBack = rpmBack;
+    this.rpmFront = rpmFront;
+
+    pidFront.setSetpoint(rpmFront);
+    pidBack.setSetpoint(rpmBack);
   }
 
   @Override
   public void setSpeed(double speedFront, double speedBack) {
-    backMotor.set(speedFront);
-    frontMotor.set(speedBack);
+    viaPid = false;
+    this.speedFront = speedFront;
+    this.speedBack = speedBack;
   }
 
   @Override
   public boolean atSetpoint() {
-    return false;
+    return pidFront.atSetpoint() && pidBack.atSetpoint();
   }
 
   @Override
@@ -72,6 +109,9 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
 
   @Override
   public void stop() {
-    
+    this.speedBack = 0;
+    this.speedFront = 0;
+    backMotor.set(speedBack);
+    frontMotor.set(speedFront);
   }
 }

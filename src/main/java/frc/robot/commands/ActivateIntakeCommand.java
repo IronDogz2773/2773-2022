@@ -31,7 +31,7 @@ public class ActivateIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(gamepad.getRawAxis(Constants.rTrigger) > .3) {
+    if(gamepad.getRawButton(Constants.A)) {
       intake.motorOn();
     } else {
       intake.motorOff();

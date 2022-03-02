@@ -17,11 +17,13 @@ import frc.robot.commands.ShotCommand;
 import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
+import frc.robot.commands.MultistepAutoBuilder;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
+import frc.robot.subsystems.ShooterMainSubsystem;
 import frc.robot.subsystems.ShooterTestSubsystem;
 import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.ShotRpmCommand;
@@ -42,7 +44,7 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final ShooterBaseSubsystem shooterSubsystem = new ShooterTestSubsystem();
+  private final ShooterBaseSubsystem shooterSubsystem = Constants.dosShooter ? new ShooterMainSubsystem(): new ShooterTestSubsystem();
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
@@ -59,6 +61,7 @@ public class RobotContainer {
   private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
 
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem, gamepad);
+  //private final ShotRpmCommand shotRpmCommand = new ShotRpmCommand(shooterSubsystem, 1000, 1000);
 
   //private final IndexCommand indexCommand = new IndexCommand(shooter);
 
@@ -72,7 +75,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    driveSubsystem.setDefaultCommand(driveCommand);
+    //driveSubsystem.setDefaultCommand(driveCommand);
     if (Constants.intakePresent) {
       intakeSubsystem.setDefaultCommand(activateIntakeCommand);
     }
@@ -124,7 +127,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An DriveCommand will run in autonomous
-    PathCommandBuilder builder = new PathCommandBuilder(driveSubsystem, navigationSubsystem);
-    return builder.build();
+    return new MultistepAutoBuilder(driveSubsystem, navigationSubsystem, shooterSubsystem).build();
   }
 }

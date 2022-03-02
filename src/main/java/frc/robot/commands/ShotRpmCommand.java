@@ -9,12 +9,14 @@ import frc.robot.subsystems.ShooterBaseSubsystem;
 
 public class ShotRpmCommand extends CommandBase {
   private final ShooterBaseSubsystem shooter;
-  private final double rpm;
+  private final double rpmFront;
+  private final double rpmBack;
 
   /** Sets shoot motor to a specified rpm */
-  public ShotRpmCommand(ShooterBaseSubsystem shooter, double rpm) {
+  public ShotRpmCommand(ShooterBaseSubsystem shooter, double rpmFront, double rpmBack) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.rpm = rpm;
+    this.rpmFront = rpmFront;
+    this.rpmBack = rpmBack;
     this.shooter = shooter;
     addRequirements(shooter);
   }
@@ -22,7 +24,7 @@ public class ShotRpmCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.setRpm(rpm);
+    shooter.setRpm(rpmFront, rpmBack);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
