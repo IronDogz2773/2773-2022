@@ -30,18 +30,18 @@ public class ConstantsForMainRobot {
     // Motors
     // CANID - CAN SPARK MAX Motors
     // PWMID - PWN Motors
-    public static final int leftForWheelsCANID = 17;
-    public static final int rightForWheelsCANID = 21;
-    public static final int leftBackWheelsCANID = 20;
-    public static final int rightBackWheelsCANID = 18;
+    public static final int leftForWheelsCANID = 10;
+    public static final int rightForWheelsCANID = 23;
+    public static final int leftBackWheelsCANID = 19;
+    public static final int rightBackWheelsCANID = 22;
 
-    public static final int frontShooterCANID = 40; //PLACEHOLDER
-    public static final int backShooterCANID = 41; //PLACEHOLDER
+    public static final int frontShooterCANID = 11; //PLACEHOLDER
+    public static final int backShooterCANID = 12; //PLACEHOLDER
     public static final int indexerCANID = 42; //PLACEHOLDER
 
-    public static final int intakeCANID = 15; 
-    public static final int leftHopperCANID = 1;
-    public static final int rightHopperCANID = 2;
+    public static final int intakeCANID = 14; 
+    public static final int leftHopperCANID = 16;
+    public static final int rightHopperCANID = 13;
     public static final int shooterMotorPWMID = 0;
     public static final int kickerMotorPWMID = 1;
     public static final int winchMotorPWMID = 6;

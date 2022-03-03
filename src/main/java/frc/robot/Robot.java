@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 
     NetworkTable table = inst.getTable("pivision");
     NetworkTableEntry angleEntry = table.getEntry("red_1_x");
-    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
+    NetworkTableEntry onScreenEntry = table.getEntry("red_1_present");
 
     angleEntry.setDouble(0.0);
     onScreenEntry.setBoolean(false);
