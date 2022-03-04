@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.PIDUtil;
 
 public class ShooterMainSubsystem extends ShooterBaseSubsystem{
   private final CANSparkMax backMotor = new CANSparkMax(Constants.frontShooterCANID, MotorType.kBrushless);
@@ -30,6 +31,8 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
       Constants.shooterControllerD);
   private final PIDController pidBack = new PIDController(Constants.shooterControllerP, Constants.shooterControllerI,
       Constants.shooterControllerD);
+
+      private PIDUtil pidu = new PIDUtil(pidFront, "tune_f");
 
   private double speedFront = 0.0;
   private double speedBack = 0.0;
@@ -44,7 +47,7 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
 
   /** Creates a new ShooterSubsystem. */
   public ShooterMainSubsystem() {
-    pidFront.setSetpoint(rpmFront);
+    pidu.setSetpoint(rpmFront);
     pidFront.setTolerance(20);
 
     pidBack.setSetpoint(rpmBack);
@@ -60,10 +63,17 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
       retractIndex();
     }
     if (viaPid) {
-      var deltaFront = pidFront.calculate(frontEncoder.getVelocity());
+      pidu.update();
+      var deltaFront = pidu.calculate(frontEncoder.getVelocity());
       speedFront = MathUtil.clamp(speedFront + deltaFront, 0, 1);
       var deltaBack = pidBack.calculate(backEncoder.getVelocity());
       speedBack = MathUtil.clamp(speedBack + deltaBack, 0, 1);
+      // if(rpmBack == 0){
+      //   speedBack = 0;
+      // }
+      // if(rpmFront == 0){
+      //   speedFront = 0;
+      // }
     }
     frontMotor.set(speedFront);
     backMotor.set(speedBack);
@@ -76,7 +86,7 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
     this.rpmBack = rpmBack;
     this.rpmFront = rpmFront;
 
-    pidFront.setSetpoint(rpmFront);
+    pidu.setSetpoint(rpmFront);
     pidBack.setSetpoint(rpmBack);
   }
 

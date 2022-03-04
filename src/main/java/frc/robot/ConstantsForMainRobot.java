@@ -15,11 +15,13 @@ public class ConstantsForMainRobot {
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
 
-    //autonomous shooting checks
+    public static final double speedFactor = 1.0 / 2.0;
+
+    // autonomous shooting checks
     public static final boolean manual = false;
     public static final boolean vision = false;
 
-    //2 motor shooter
+    // 2 motor shooter
     public static final boolean dosShooter = true;
 
     // Pneumatics
@@ -38,11 +40,11 @@ public class ConstantsForMainRobot {
     public static final boolean leftWheelsInverted = false;
     public static final boolean rightWheelsInverted = true;
 
-    public static final int frontShooterCANID = 11; //PLACEHOLDER
-    public static final int backShooterCANID = 12; //PLACEHOLDER
-    public static final int indexerCANID = 42; //PLACEHOLDER
+    public static final int frontShooterCANID = 11; // PLACEHOLDER
+    public static final int backShooterCANID = 12; // PLACEHOLDER
+    public static final int indexerCANID = 42; // PLACEHOLDER
 
-    public static final int intakeCANID = 15; 
+    public static final int intakeCANID = 15;
     public static final int leftHopperCANID = 16;
     public static final int rightHopperCANID = 13;
     public static final int shooterMotorPWMID = 0;
@@ -79,9 +81,9 @@ public class ConstantsForMainRobot {
     public static final double turnControllerI = 0;
     public static final double turnControllerD = 0;
 
-    public static final double shooterControllerP = 0.00006; // placeholder
-    public static final double shooterControllerI = 0; // placeholder
-    public static final double shooterControllerD = 0.00002; // placeholder
+    public static final double shooterControllerP = 0.00001;
+    public static final double shooterControllerI = 0;
+    public static final double shooterControllerD = 0.000002;
 
     public static final double shooterEncoderResolution = 8192;
 

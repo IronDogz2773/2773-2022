@@ -26,27 +26,24 @@ public class ActivateIntakeCommand extends CommandBase {
   public void initialize() {
     //If the motor is on (speed is greater than 1), then turn off motor when button pressed
     //Otherwise turn motor on when button pressed
+    intake.motorToggle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(gamepad.getRawButton(Constants.Y)) {
-      intake.motorOn();
-    } else {
-      intake.motorOff();
-    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.motorOff();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

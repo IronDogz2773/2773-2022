@@ -14,8 +14,6 @@ public final class Constants extends ConstantsForTestRobot {
     public static final int gamepadPort = 0;
     public static final int joystickPort = 1;
 
-    public static final double speedFactor = 2.0 / 3.0;
-
     // Gamepad buttons
     // Axis
     public static final int lStickY = 1; // Left drivetrain speed

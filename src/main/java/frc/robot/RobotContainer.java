@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,6 +17,7 @@ import frc.robot.commands.PathCommandBuilder;
 import frc.robot.commands.ShotCommand;
 import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
+import frc.robot.commands.TurnTrajectoryCommand;
 import frc.robot.commands.HopperCommand;
 import frc.robot.commands.MultistepAutoBuilder;
 import frc.robot.subsystems.HopperSubsystem;
@@ -76,9 +78,6 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveSubsystem.setDefaultCommand(driveCommand);
-    if (Constants.intakePresent) {
-      intakeSubsystem.setDefaultCommand(activateIntakeCommand);
-    }
     shooterSubsystem.setDefaultCommand(shotCommand);
   }
 
@@ -109,14 +108,19 @@ public class RobotContainer {
 
     if (Constants.intakePresent) {
       final JoystickButton deployButton = new JoystickButton(gamepad, Constants.A);
+      final JoystickButton activateButton = new JoystickButton(gamepad, Constants.LB);
       deployButton.whenPressed(deployIntakeCommand, true);
+      activateButton.whenPressed(activateIntakeCommand, true);
     }
 
     if (Constants.hopperPresent) {
-      final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.B);
+      final JoystickButton hopperButton = new JoystickButton(gamepad, Constants.LB);
       hopperButton.whenPressed(hopperCommand, true);
     }
 
+    final JoystickButton turnTrajectoryButton = new JoystickButton(gamepad, Constants.A);
+    Command turnTrajectoryCommand = new TurnTrajectoryCommand(driveSubsystem, navigationSubsystem);
+    turnTrajectoryButton.whenPressed(turnTrajectoryCommand);
     
   }
 

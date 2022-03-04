@@ -15,6 +15,8 @@ public class ConstantsForTestRobot {
     public static final boolean hopperPresent = false;
     public static final boolean intakePresent = false;
 
+    public static final double speedFactor = 2.0 / 3.0;
+
     //autonomous shooting checks
     public static final boolean manual = true;
     public static final boolean vision = true;
@@ -86,5 +88,5 @@ public class ConstantsForTestRobot {
     public static final double shooterEncoderResolution = 2048;
 
     public static final double maxMotorVolts = 12.0;
-    public static final double maxRotationVolts = 4;
+    public static final double maxRotationVolts = 2;
 }

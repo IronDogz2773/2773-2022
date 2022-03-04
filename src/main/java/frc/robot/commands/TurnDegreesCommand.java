@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
+import frc.robot.PIDUtil;
 
 public class TurnDegreesCommand extends CommandBase {
   /** Creates a new NavigationCommand. */
@@ -22,6 +23,7 @@ public class TurnDegreesCommand extends CommandBase {
   private final DriveSubsystem drive;
 
   PIDController pidController;
+  PIDUtil pidu;
 
   private double rotation;
   private double target;
@@ -45,9 +47,10 @@ public class TurnDegreesCommand extends CommandBase {
     double kD = Constants.turnControllerD;
 
     pidController = new PIDController(kP, kI, kD);
+    pidu = new PIDUtil(pidController, "turn");
 
     lastAngleFromNT = 0;
-    resetPid(0);
+  //  resetPid(getNetworkTableAngle());
   }
 
   // Called when the command is initially scheduled.
@@ -55,6 +58,7 @@ public class TurnDegreesCommand extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
+    resetPid(getNetworkTableAngle());
   }
 
   void resetPid(double angle) {
@@ -62,7 +66,7 @@ public class TurnDegreesCommand extends CommandBase {
 
     target = nav.getGyroAngle() + angle;
     pidController.setTolerance(.2);
-    pidController.setSetpoint(target);
+    pidu.setSetpoint(target);
     pidController.reset();
   }
 
@@ -71,10 +75,10 @@ public class TurnDegreesCommand extends CommandBase {
     // creates instance of table with pivision
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("pivision");
-    NetworkTableEntry onScreenEntry = table.getEntry("red_1_onScreen");
-    boolean onScreen = onScreenEntry.getBoolean(false);
+    NetworkTableEntry presentEntry = table.getEntry("red_1_present");
+    boolean present = presentEntry.getBoolean(false);
     // if there is no angle on screen, no angle/0 angle
-    if (!onScreen) {
+    if (!present) {
       lastAngleFromNT = 0;
       return 0;
     }
@@ -93,15 +97,11 @@ public class TurnDegreesCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double angleFromNT = getNetworkTableAngle();
-    if (angleFromNT != 0) {
-      resetPid(angleFromNT);
-      DriverStation.reportWarning("angleNT = " + angleFromNT, false);
-    }
+    pidu.update();
     if (!pidController.atSetpoint()) {
       DriverStation.reportWarning("angle = " + pidController.getSetpoint() + "; " + nav.getGyroAngle(), false);
       // calls from pid to give values to rotate
-      rotation = pidController.calculate(nav.getGyroAngle());
+      rotation = pidu.calculate(nav.getGyroAngle());
       rotation = MathUtil.clamp(rotation, -Constants.maxRotationVolts, Constants.maxRotationVolts);
       drive.rawDrive(rotation, -rotation);
     } else {
