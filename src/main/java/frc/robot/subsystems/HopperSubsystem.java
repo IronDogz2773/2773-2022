@@ -20,6 +20,7 @@ public class HopperSubsystem extends SubsystemBase {
 
   /** Creates a new ConveyorSubsystem. */
   public HopperSubsystem() {
+    leftHopperCAN.setInverted(true);
   }
 
   @Override

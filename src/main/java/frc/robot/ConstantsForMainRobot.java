@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public class ConstantsForMainRobot {
 
     // Presence of subsystems
-    public static final boolean hopperPresent = false;
+    public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
 
     //autonomous shooting checks
@@ -42,7 +42,7 @@ public class ConstantsForMainRobot {
     public static final int backShooterCANID = 12; //PLACEHOLDER
     public static final int indexerCANID = 42; //PLACEHOLDER
 
-    public static final int intakeCANID = 14; 
+    public static final int intakeCANID = 15; 
     public static final int leftHopperCANID = 16;
     public static final int rightHopperCANID = 13;
     public static final int shooterMotorPWMID = 0;

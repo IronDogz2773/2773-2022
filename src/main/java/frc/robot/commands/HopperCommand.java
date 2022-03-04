@@ -21,7 +21,7 @@ public class HopperCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (hopper.getSpeed() > 1) {
+    if (hopper.getSpeed() == 0) {
       hopper.motorOn();
     } else {
       hopper.motorOff();
