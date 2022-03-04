@@ -89,6 +89,9 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
 
   @Override
   public boolean atSetpoint() {
+    if (!viaPid) {
+      return true;
+    }
     return pidFront.atSetpoint() && pidBack.atSetpoint();
   }
 
@@ -109,6 +112,7 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
 
   @Override
   public void stop() {
+    viaPid = false;
     this.speedBack = 0;
     this.speedFront = 0;
     backMotor.set(speedBack);

@@ -35,6 +35,9 @@ public class ConstantsForTestRobot {
     public static final int leftBackWheelsCANID = 20;
     public static final int rightBackWheelsCANID = 18;
 
+    public static final boolean leftWheelsInverted = true;
+    public static final boolean rightWheelsInverted = false;
+
     public static final int frontShooterCANID = 11; //PLACEHOLDER
     public static final int backShooterCANID = 12; //PLACEHOLDER
     public static final int indexerCANID = 42; //PLACEHOLDER
