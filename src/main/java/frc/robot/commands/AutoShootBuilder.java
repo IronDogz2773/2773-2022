@@ -67,6 +67,7 @@ public class AutoShootBuilder {
       };
     }
 
+    
     //calls vision command, shoot command, pulls indexer up to touch ball to flywheel, wait for a second, then releases indexer
     Command autoShootCommand = visionCommand.andThen(shootCommand).andThen(() -> {
       indexer.motorOn();

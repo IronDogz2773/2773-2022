@@ -85,7 +85,7 @@ public class RobotContainer {
 
     // default commands
     driveSubsystem.setDefaultCommand(driveCommand);
-    shooterSubsystem.setDefaultCommand(shotCommand);
+    //shooterSubsystem.setDefaultCommand(shotCommand);
   }
 
   /**
@@ -175,7 +175,6 @@ public class RobotContainer {
     // Select pressed, toggle intake pneumatic
     final JoystickButton deployIntakeButton = new JoystickButton(gamepadPilot, Constants.Select);
     deployIntakeButton.whenPressed(deployIntakeCommand);
-
   }
 
   private static Command doNothing() {
