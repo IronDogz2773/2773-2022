@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IndexerBaseSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
 
@@ -18,12 +18,12 @@ public class AutoShootBuilder {
   private final ShooterBaseSubsystem shooter;
   private final DriveSubsystem drive;
   private final NavigationSubsystem nav;
-  private final IndexerSubsystem indexer;
+  private final IndexerBaseSubsystem indexer;
   private final boolean vision;
   private final boolean manual;
   
   /** Creates a new AutoShootBuilder. */
-  public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav, IndexerSubsystem indexer, boolean manual, boolean vision) {
+  public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav, IndexerBaseSubsystem indexer, boolean manual, boolean vision) {
     this.shooter = shooter;
     this.drive = drive;
     this.nav = nav;

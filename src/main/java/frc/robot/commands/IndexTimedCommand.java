@@ -6,13 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IndexerBaseSubsystem;
 
 public class IndexTimedCommand extends CommandBase {
-  private final IndexerSubsystem indexer;
+  private final IndexerBaseSubsystem indexer;
   private final Timer timer;
   /** Creates a new IndexTimedCommand. */
-  public IndexTimedCommand(IndexerSubsystem indexer) {
+  public IndexTimedCommand(IndexerBaseSubsystem indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.indexer = indexer;
     addRequirements(indexer);

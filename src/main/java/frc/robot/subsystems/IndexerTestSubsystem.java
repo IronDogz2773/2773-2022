@@ -4,35 +4,35 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants;
 
-public class IndexerSubsystem extends SubsystemBase {
-  private final CANSparkMax indexMotor = new CANSparkMax(Constants.frontShooterCANID, MotorType.kBrushless);
+public class IndexerTestSubsystem extends IndexerBaseSubsystem {
+  private final Spark kicker = new Spark(Constants.kickerMotorPWMID);
 
   private double speed = 0;
 
   /** Creates a new IndexSubsystem. */
-  public IndexerSubsystem() {}
+  public IndexerTestSubsystem() {}
 
   @Override
   public void periodic() {
-    indexMotor.set(speed);
+    kicker.set(speed);
   }
 
+  @Override
   public void motorOn() {
-    speed = .5;
+    speed = -.5;
   }
 
+  @Override
   public void motorOff() {
      speed = 0;
   }
 
+  @Override
   public void reverseMotor() {
-     speed = -.5;
+     speed = .2;
   }
 }
 

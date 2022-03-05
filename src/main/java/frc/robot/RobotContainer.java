@@ -18,7 +18,9 @@ import frc.robot.commands.IndexCommand;
 import frc.robot.commands.IndexTimedCommand;
 import frc.robot.commands.MultistepAutoBuilder;
 import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IndexerBaseSubsystem;
+import frc.robot.subsystems.IndexerMainSubsystem;
+import frc.robot.subsystems.IndexerTestSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
@@ -48,7 +50,8 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
-  private final IndexerSubsystem indexerSubsystem = Constants.hopperPresent ? new IndexerSubsystem() : null;
+  private final IndexerBaseSubsystem indexerSubsystem = Constants.indexerPresent ? new IndexerMainSubsystem()
+      : new IndexerTestSubsystem();
 
   // Commands
   private final Command doNothing = new CommandBase() {

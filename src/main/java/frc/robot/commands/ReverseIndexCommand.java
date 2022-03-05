@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IndexerBaseSubsystem;
 
 public class ReverseIndexCommand extends CommandBase {
-  private final IndexerSubsystem indexer;
+  private final IndexerBaseSubsystem indexer;
   /** Creates a new ReverseIndexCommand. */
-  public ReverseIndexCommand(IndexerSubsystem indexer) {
+  public ReverseIndexCommand(IndexerBaseSubsystem indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.indexer = indexer;
     addRequirements(indexer);

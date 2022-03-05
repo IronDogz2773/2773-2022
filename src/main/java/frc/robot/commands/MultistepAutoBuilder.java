@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IndexerBaseSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
 
@@ -22,10 +22,10 @@ public class MultistepAutoBuilder {
     private final DriveSubsystem drive;
     private final NavigationSubsystem nav;
     private final ShooterBaseSubsystem shooter;
-    private final IndexerSubsystem indexer;
+    private final IndexerBaseSubsystem indexer;
 
     public MultistepAutoBuilder(DriveSubsystem drive, NavigationSubsystem nav, ShooterBaseSubsystem shooter,
-            IndexerSubsystem indexer) {
+            IndexerBaseSubsystem indexer) {
         this.drive = drive;
         this.nav = nav;
         this.shooter = shooter;
