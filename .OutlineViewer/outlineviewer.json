@@ -6,16 +6,13 @@
   "Table": {
     "open": true
   },
-  "Usage": {
+  "drive": {
     "open": true
   },
-  "pivision": {
+  "shooter": {
     "open": true
   },
   "troubleshooting_v": {
-    "open": true
-  },
-  "turn": {
     "open": true
   }
 }

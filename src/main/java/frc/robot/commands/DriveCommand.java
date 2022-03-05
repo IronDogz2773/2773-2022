@@ -7,6 +7,9 @@ package frc.robot.commands;
 import frc.robot.subsystems.DistanceSystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -16,6 +19,8 @@ public class DriveCommand extends CommandBase {
   private final DriveSubsystem drive;
   private final DistanceSystem distance;
   private final Joystick gamepad;
+  private boolean isSlow = false;
+  private boolean isForward = true;
 
   /**
    * Creates a new DriveCommand.
@@ -30,10 +35,29 @@ public class DriveCommand extends CommandBase {
     this.gamepad = gamepad;
   }
 
+  public void toggleSlowMode() {
+    isSlow = !isSlow;
+    updateStatus();
+  }
+
+  public void toggleDirection() {
+    isForward = !isForward;
+    updateStatus();
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    updateStatus();
+  }
 
+  private void updateStatus() {
+    NetworkTableInstance instance = NetworkTableInstance.getDefault();
+    NetworkTable table = instance.getTable("drive");
+    NetworkTableEntry isSlowEntry = table.getEntry("speed");
+    isSlowEntry.setString(isSlow ? "slow" : "FAST");
+    NetworkTableEntry isForwardEntry = table.getEntry("direction");
+    isForwardEntry.setString(isForward ? "forward" : "reverse");
   }
 
   // Called every time the scheduler runs while the command is scheduled
@@ -42,8 +66,14 @@ public class DriveCommand extends CommandBase {
   public void execute() {
 
     // negation here might have broken code idk we couldnt test
-    double leftSpeed = -gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactorFast;
-    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactorFast;
+    double leftSpeed = -gamepad.getRawAxis(Constants.lStickY) * (isSlow ? Constants.speedFactorSlow : Constants.speedFactorFast);
+    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * (isSlow ? Constants.speedFactorSlow : Constants.speedFactorFast);
+
+    if(isForward){ 
+      double t = leftSpeed;
+      leftSpeed = -rightSpeed;
+      rightSpeed = -t;
+    }
 
     if ((leftSpeed > 0 || rightSpeed > 0) && distance.tooCloseToWall()) {
       drive.stop();

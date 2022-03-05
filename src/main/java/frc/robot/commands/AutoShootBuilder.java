@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
 
@@ -17,14 +18,16 @@ public class AutoShootBuilder {
   private final ShooterBaseSubsystem shooter;
   private final DriveSubsystem drive;
   private final NavigationSubsystem nav;
+  private final IndexerSubsystem indexer;
   private final boolean vision;
   private final boolean manual;
   
   /** Creates a new AutoShootBuilder. */
-  public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav, boolean manual, boolean vision) {
+  public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav, IndexerSubsystem indexer, boolean manual, boolean vision) {
     this.shooter = shooter;
     this.drive = drive;
     this.nav = nav;
+    this.indexer = indexer;
     this.manual = manual;
     this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -66,10 +69,10 @@ public class AutoShootBuilder {
 
     //calls vision command, shoot command, pulls indexer up to touch ball to flywheel, wait for a second, then releases indexer
     Command autoShootCommand = visionCommand.andThen(shootCommand).andThen(() -> {
-      shooter.extendIndex();
+      indexer.motorOn();
     }).andThen(new WaitCommand(1)).andThen(() -> {
       shooter.stop();
-      shooter.retractIndex();
+      indexer.motorOff();
     });
 
     return autoShootCommand;

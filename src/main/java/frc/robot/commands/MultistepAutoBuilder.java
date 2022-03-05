@@ -13,30 +13,33 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
-
 
 /** Add your docs here. */
 public class MultistepAutoBuilder {
     private final DriveSubsystem drive;
     private final NavigationSubsystem nav;
     private final ShooterBaseSubsystem shooter;
+    private final IndexerSubsystem indexer;
 
-    public MultistepAutoBuilder(DriveSubsystem drive, NavigationSubsystem nav, ShooterBaseSubsystem shooter){
+    public MultistepAutoBuilder(DriveSubsystem drive, NavigationSubsystem nav, ShooterBaseSubsystem shooter,
+            IndexerSubsystem indexer) {
         this.drive = drive;
         this.nav = nav;
         this.shooter = shooter;
+        this.indexer = indexer;
     }
 
-    public Command build(){
+    public Command build() {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         NetworkTable table = inst.getTable("auto");
         NetworkTableEntry gameplanEntry = table.getEntry("gameplan");
 
         int gameplan = gameplanEntry.getNumber(0).intValue();
 
-        switch (gameplan){
+        switch (gameplan) {
             case 1:
                 return plan1();
             case 2:
@@ -49,7 +52,9 @@ public class MultistepAutoBuilder {
 
     private Command plan1() {
         Command plan1Command;
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, Constants.manual, Constants.vision).build();
+        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual,
+                Constants.vision)
+                        .build();
         Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build();
         Command turnCommand = new TurnDegreesCommand(nav, drive, 2);
         plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand);
@@ -57,7 +62,9 @@ public class MultistepAutoBuilder {
     }
 
     private Command plan2() {
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, Constants.manual, Constants.vision).build();
+        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual,
+                Constants.vision)
+                        .build();
         return autoShootCommand;
     }
 }

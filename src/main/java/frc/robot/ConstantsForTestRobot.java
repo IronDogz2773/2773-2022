@@ -10,9 +10,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 /** Constants for TestRobot */
 public class ConstantsForTestRobot {
-    public static final boolean test = true;
-
     // Presence of subsystems
+    public static final boolean indexerPresent = false;
     public static final boolean hopperPresent = false;
     public static final boolean intakePresent = false;
 
