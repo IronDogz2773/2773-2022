@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -54,22 +55,16 @@ public class RobotContainer {
       : new IndexerTestSubsystem();
 
   // Commands
-  private final Command doNothing = new CommandBase() {
-    @Override
-    public boolean isFinished() {
-      return true;
-    }
-  };
   private final Command activateIntakeCommand = Constants.intakePresent
       ? new ActivateIntakeCommand(intakeSubsystem, gamepadPilot)
-      : doNothing;
+      : doNothing();
   private final Command deployIntakeCommand = Constants.intakePresent
       ? new DeployIntakeCommand(intakeSubsystem)
-      : doNothing;
+      : doNothing();
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, navigationSubsystem, gamepadPilot);
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
       Constants.turnCmdTimeOut);
-  private final Command hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : doNothing;
+  private final Command hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : doNothing();
 
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem, gamepadPilot);
   // private final ShotRpmCommand shotRpmCommand = new
@@ -161,6 +156,19 @@ public class RobotContainer {
     directionButton.whenPressed(toggleDirectionCommand);
 
     // LT held, firing sequence
+    final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LT);
+    final Command fireCommand = new CommandBase() {
+      public void initialize() {
+        indexerSubsystem.motorOn();
+      }
+
+      @Override
+      public void end(boolean interupted) {
+        indexerSubsystem.motorOff();
+      }
+    };
+    firingTrigger.whenHeld(fireCommand, true);
+
     // either VISION AIM, run kicker backwards briefly, flywheel up to speed
     // or kicker backwards then flywheel up to speed if vision is disabled
 
@@ -168,6 +176,15 @@ public class RobotContainer {
     final JoystickButton deployIntakeButton = new JoystickButton(gamepadPilot, Constants.Select);
     deployIntakeButton.whenPressed(deployIntakeCommand);
 
+  }
+
+  private static Command doNothing() {
+    return new CommandBase() {
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
   }
 
   /**
