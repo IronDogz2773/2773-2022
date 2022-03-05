@@ -74,15 +74,15 @@ public class TurnDegreesCommand extends CommandBase {
     // creates instance of table with pivision
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("pivision");
-    NetworkTableEntry presentEntry = table.getEntry("red_1_present");
-    boolean present = presentEntry.getBoolean(false);
-    // if there is no angle on screen, no angle/0 angle
-    if (!present) {
-      lastAngleFromNT = 0;
-      return 0;
-    }
+    // NetworkTableEntry presentEntry = table.getEntry("red_1_present");
+    // boolean present = presentEntry.getBoolean(false);
+    // // if there is no angle on screen, no angle/0 angle
+    // if (!present) {
+    //   lastAngleFromNT = 0;
+    //   return 0;
+    // }
 
-    NetworkTableEntry angleEntry = table.getEntry("red_1_x");
+    NetworkTableEntry angleEntry = table.getEntry("retro_average_x");
     double angle = angleEntry.getDouble(0);
 
     if (lastAngleFromNT == angle) {

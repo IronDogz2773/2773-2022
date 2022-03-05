@@ -157,7 +157,7 @@ public class RobotContainer {
 
     // LT held, firing sequence
     final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
-    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, true, false).build();
+    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, true, true).build();
     firingTrigger.whenPressed(fireCommand, true);
 
     // either VISION AIM, run kicker backwards briefly, flywheel up to speed
