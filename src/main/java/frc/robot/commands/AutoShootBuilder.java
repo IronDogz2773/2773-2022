@@ -21,9 +21,10 @@ public class AutoShootBuilder {
   private final IndexerBaseSubsystem indexer;
   private final boolean vision;
   private final boolean manual;
-  
+
   /** Creates a new AutoShootBuilder. */
-  public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav, IndexerBaseSubsystem indexer, boolean manual, boolean vision) {
+  public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav,
+      IndexerBaseSubsystem indexer, boolean manual, boolean vision) {
     this.shooter = shooter;
     this.drive = drive;
     this.nav = nav;
@@ -33,44 +34,45 @@ public class AutoShootBuilder {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public Command build(){
-    //creates a shootcommand using speed if we don't have an encoder, or rpm if we do
+  public Command build() {
+    // creates a shootcommand using speed if we don't have an encoder, or rpm if we
+    // do
     Command shootCommand;
-    if(manual){
+    if (manual) {
       shootCommand = new CommandBase() {
         @Override
         public void initialize() {
           shooter.setSpeed(.5);
         }
-      
+
         @Override
         public boolean isFinished() {
           return true;
-        }        
+        }
       }.andThen(new WaitCommand(1));
-    }
-    else{
+    } else {
       shootCommand = new ShotRpmCommand(shooter, Constants.maxShooterSpeed, 0);
     }
 
-    //sets up shot using vision if vision if presence, creates a command that will instantly end if not
+    // sets up shot using vision if vision if presence, creates a command that will
+    // instantly end if not
     Command visionCommand;
-    if(vision){
+    if (vision) {
       visionCommand = new TurnDegreesCommand(nav, drive, Constants.turnCmdTimeOut);
-    }
-    else {
+    } else {
       visionCommand = new CommandBase() {
         @Override
-        public boolean isFinished(){
+        public boolean isFinished() {
           return true;
         }
       };
     }
 
-    
-    //calls vision command, shoot command, pulls indexer up to touch ball to flywheel, wait for a second, then releases indexer
+    // calls vision command, shoot command, pulls indexer up to touch ball to
+    // flywheel, wait for a second, then releases indexer
     Command autoShootCommand = visionCommand.andThen(shootCommand).andThen(() -> {
       indexer.motorOn();
+      System.out.println("~~~~~~~ test");
     }).andThen(new WaitCommand(1)).andThen(() -> {
       shooter.stop();
       indexer.motorOff();

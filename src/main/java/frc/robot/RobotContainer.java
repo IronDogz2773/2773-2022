@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ReverseIndexCommand;
@@ -156,24 +157,17 @@ public class RobotContainer {
 
     // LT held, firing sequence
     final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
-    final Command fireCommand = new CommandBase() {
-      public void initialize() {
-        indexerSubsystem.motorOn();
-      }
-
-      @Override
-      public void end(boolean interupted) {
-        indexerSubsystem.motorOff();
-      }
-    };
-    firingTrigger.whenHeld(fireCommand, true);
+    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, true, false).build();
+    firingTrigger.whenPressed(fireCommand, true);
 
     // either VISION AIM, run kicker backwards briefly, flywheel up to speed
     // or kicker backwards then flywheel up to speed if vision is disabled
 
-    // Select pressed, toggle intake pneumatic
-    final JoystickButton deployIntakeButton = new JoystickButton(gamepadPilot, Constants.Select);
-    deployIntakeButton.whenPressed(deployIntakeCommand);
+    if (Constants.intakePresent) {
+      // Select pressed, toggle intake pneumatic
+      final JoystickButton deployIntakeButton = new JoystickButton(gamepadPilot, Constants.Select);
+      deployIntakeButton.whenPressed(deployIntakeCommand);
+    }
   }
 
   private static Command doNothing() {
