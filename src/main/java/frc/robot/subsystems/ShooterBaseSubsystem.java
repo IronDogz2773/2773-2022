@@ -23,9 +23,5 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
   public abstract boolean atSetpoint();
 
-  public abstract void extendIndex();
-
-  public abstract void retractIndex();
-
   public abstract void stop();
 }

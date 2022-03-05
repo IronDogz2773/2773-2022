@@ -11,6 +11,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
@@ -23,7 +26,6 @@ import frc.robot.PIDUtil;
 public class ShooterMainSubsystem extends ShooterBaseSubsystem{
   private final CANSparkMax backMotor = new CANSparkMax(Constants.frontShooterCANID, MotorType.kBrushless);
   private final CANSparkMax frontMotor = new CANSparkMax(Constants.backShooterCANID, MotorType.kBrushless);
-  private final CANSparkMax indexerMotor = new CANSparkMax(Constants.indexerCANID, MotorType.kBrushless);
   private final RelativeEncoder backEncoder = backMotor.getEncoder();
   private final RelativeEncoder frontEncoder = frontMotor.getEncoder();
 
@@ -53,13 +55,15 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
 
     frontMotor.setInverted(true);
     backMotor.setInverted(true);
+
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("shooter");
+    NetworkTableEntry frontEntry = table.getEntry("frontRpm");
+    NetworkTableEntry backEntry = table.getEntry("backRpm");
   }
 
   @Override
   public void periodic() {
-    if (extended && timer.hasElapsed(1)){
-      retractIndex();
-    }
     if (viaPid) {
       var deltaFront = pidFront.calculate(frontEncoder.getVelocity());
       speedFront = MathUtil.clamp(speedFront + deltaFront, 0, 1);
@@ -82,6 +86,13 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
     pidBack.setSetpoint(rpmBack);
   }
 
+  public void setNetworkRpm(double rpmFront, double rpmBack) {
+    
+
+    pidFront.setSetpoint(rpmFront);
+    pidBack.setSetpoint(rpmBack);
+  }
+
   @Override
   public void setSpeed(double speedFront, double speedBack) {
     viaPid = false;
@@ -95,21 +106,6 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
       return true;
     }
     return pidFront.atSetpoint() && pidBack.atSetpoint();
-  }
-
-  @Override
-  public void extendIndex() {
-    timer.reset();
-    timer.start();
-    extended = true;
-    indexerMotor.set(.1);
-  }
-
-  @Override
-  public void retractIndex() {
-    timer.stop();
-    indexerMotor.set(0);
-    extended = false;
   }
 
   @Override

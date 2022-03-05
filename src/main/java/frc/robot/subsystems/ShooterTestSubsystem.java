@@ -13,7 +13,6 @@ import frc.robot.Constants;
 
 public class ShooterTestSubsystem extends ShooterBaseSubsystem{
   private final Spark motor = new Spark(Constants.shooterMotorPWMID);
-  private final Spark kicker = new Spark(Constants.kickerMotorPWMID);
   private final Encoder encoder = new Encoder(Constants.rightShooterEncoderPort, Constants.leftShooterEncoderPort);
   private final PIDController pid = new PIDController(Constants.shooterControllerP, Constants.shooterControllerI,
       Constants.shooterControllerD);
@@ -54,16 +53,6 @@ public class ShooterTestSubsystem extends ShooterBaseSubsystem{
   @Override
   public boolean atSetpoint() {
     return pid.atSetpoint();
-  }
-
-  @Override
-  public void extendIndex() {
-    kicker.set(-0.5);
-  }
-
-  @Override
-  public void retractIndex() {
-    kicker.set(.1);
   }
 
   @Override

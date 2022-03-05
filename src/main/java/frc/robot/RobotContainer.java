@@ -19,6 +19,7 @@ import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.TurnTrajectoryCommand;
 import frc.robot.commands.HopperCommand;
+import frc.robot.commands.IndexCommand;
 import frc.robot.commands.MultistepAutoBuilder;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -70,7 +71,7 @@ public class RobotContainer {
   // private final ShotRpmCommand shotRpmCommand = new
   // ShotRpmCommand(shooterSubsystem, 1000, 1000);
 
-  // private final IndexCommand indexCommand = new IndexCommand(shooter);
+  private final IndexCommand indexCommand = new IndexCommand(shooterSubsystem);
 
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepadPilot = new Joystick(Constants.gamepadPortPilot);
@@ -140,7 +141,9 @@ public class RobotContainer {
   else{
     //Pilot buttons
     //A held, run hopper and index
-    final JoystickButton  
+    final JoystickButton indexHopperButton = new JoystickButton(gamepadPilot, Constants.A);
+    Command indexHopperCommand = new ParallelCommandGroup(indexCommand, hopperCommand);
+    indexHopperButton.whenHeld(indexHopperCommand);
 
     //B pressed, run index for a short amount of time
 
