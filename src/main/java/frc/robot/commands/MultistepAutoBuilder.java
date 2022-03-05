@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.security.cert.TrustAnchor;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -48,21 +50,17 @@ public class MultistepAutoBuilder {
         }
     }
 
-    private Command plan1() {
-        Command plan1Command;
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual,
-                Constants.vision)
-                        .build();
-        Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build();
-        Command turnCommand = new TurnDegreesCommand(nav, drive, 2);
-        plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand);
+    private Command plan1() { // 
+        Command plan1Command; // creates blank command
+        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual, Constants.vision).build(); // creates autoshoot command
+        Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build(); // creates path to run
+        Command turnCommand = new TurnDegreesCommand(nav, drive, 2); // creates command
+        plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand); // creates entire command, in order of creation
         return plan1Command;
     }
 
     private Command plan2() {
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual,
-                Constants.vision)
-                        .build();
+        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual, Constants.vision).build();
         return autoShootCommand;
     }
 }
