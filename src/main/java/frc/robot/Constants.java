@@ -30,6 +30,8 @@ public final class Constants extends ConstantsForTestRobot {
     public static final int RB = 6;
     public static final int Select = 7; //this is aurora guessing
     public static final int Start = 8;
+    public static final int leftStickPushed = 9;
+    public static final int rightStickPushed = 10;
 
 
     public static final double kRamseteB = 2;

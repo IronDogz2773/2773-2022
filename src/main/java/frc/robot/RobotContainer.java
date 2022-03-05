@@ -141,7 +141,7 @@ public class RobotContainer {
     slowButton.whenPressed(toggleSlowModeCommand);
 
     // LB pressed, toggle drive direction
-    final JoystickButton directionButton = new JoystickButton(gamepadPilot, Constants.LB);
+    final JoystickButton directionButton = new JoystickButton(gamepadPilot, Constants.leftStickPushed);
     final Command toggleDirectionCommand = new CommandBase() {
       @Override
       public void initialize() {
@@ -156,7 +156,7 @@ public class RobotContainer {
     directionButton.whenPressed(toggleDirectionCommand);
 
     // LT held, firing sequence
-    final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LT);
+    final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
     final Command fireCommand = new CommandBase() {
       public void initialize() {
         indexerSubsystem.motorOn();
