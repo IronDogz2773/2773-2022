@@ -10,14 +10,29 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class IndexSubsystem extends SubsystemBase {
+public class IndexerSubsystem extends SubsystemBase {
   private final CANSparkMax indexMotor = new CANSparkMax(Constants.frontShooterCANID, MotorType.kBrushless);
 
+  private double speed = 0;
+
   /** Creates a new IndexSubsystem. */
-  public IndexSubsystem() {}
+  public IndexerSubsystem() {}
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    indexMotor.set(speed);
+  }
+
+  public void motorOn() {
+    speed = .5;
+  }
+
+  public void motorOff() {
+     speed = 0;
+  }
+
+  public void reverseMotor() {
+     speed = -.5;
   }
 }
+

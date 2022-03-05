@@ -14,14 +14,17 @@ import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.PathCommandBuilder;
+import frc.robot.commands.ReverseIndexCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.commands.ShotRpmCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.TurnTrajectoryCommand;
 import frc.robot.commands.HopperCommand;
 import frc.robot.commands.IndexCommand;
+import frc.robot.commands.IndexTimedCommand;
 import frc.robot.commands.MultistepAutoBuilder;
 import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
@@ -32,6 +35,7 @@ import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.ShotRpmCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -54,8 +58,10 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
+  private final IndexerSubsystem indexerSubsystem = new IndexerSubsystem();
 
   // Commands
+  private final Command doNothing = new RunCommand(() -> {});
   private final ActivateIntakeCommand activateIntakeCommand = Constants.intakePresent
       ? new ActivateIntakeCommand(intakeSubsystem, gamepadPilot)
       : null;
@@ -65,7 +71,7 @@ public class RobotContainer {
   private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, navigationSubsystem, gamepadPilot);
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
       Constants.turnCmdTimeOut);
-  private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
+  private final Command hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : doNothing;
 
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem, gamepadPilot);
   // private final ShotRpmCommand shotRpmCommand = new
@@ -142,12 +148,20 @@ public class RobotContainer {
     //Pilot buttons
     //A held, run hopper and index
     final JoystickButton indexHopperButton = new JoystickButton(gamepadPilot, Constants.A);
-    Command indexHopperCommand = new ParallelCommandGroup(indexCommand, hopperCommand);
+    Command indexHopperCommand = new ParallelCommandGroup(
+      indexCommand, 
+      hopperCommand);
     indexHopperButton.whenHeld(indexHopperCommand);
 
     //B pressed, run index for a short amount of time
+    final JoystickButton indexTimedButton = new JoystickButton(gamepadPilot, Constants.B);
+    Command indexTimedCommand = new IndexTimedCommand(indexerSubsystem);
+    indexTimedButton.whenPressed(indexTimedCommand);
 
     //X held, run index backward
+    final JoystickButton reverseIndexButton = new JoystickButton(gamepadPilot, Constants.X);
+    Command reverseIndexCommand = new ReverseIndexCommand(indexerSubsystem);
+    reverseIndexButton.whenHeld(reverseIndexCommand);
 
     //RB pressed, toggle slowmode
 
