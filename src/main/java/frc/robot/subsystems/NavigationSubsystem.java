@@ -16,18 +16,21 @@ import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
 public class NavigationSubsystem extends SubsystemBase implements DistanceSystem {
-  /** Creates a new NavigationSubsystem. */
+
+  // gyroscope
   private final ADXRS450_Gyro gyroscope = new ADXRS450_Gyro();
-
+  // distance sensor
   private final DigitalInput distanceSensor = new DigitalInput(Constants.distanceSensorPin);
-
+  // encoders
   private final Encoder leftEncoder = new Encoder(Constants.leftEncoderPortA, Constants.leftEncoderPortB);
   private final Encoder rightEncoder = new Encoder(Constants.rightEncoderPortA, Constants.rightEncoderPortB);
+  // blank odometry object
   private DifferentialDriveOdometry odometry;
 
   public NavigationSubsystem() {
     leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
     rightEncoder.setDistancePerPulse(-Constants.distancePerPulse);
+    // sets odometry rotation to gyro, otherwise set to 0
     if (gyroscope.isConnected()) {
       odometry = new DifferentialDriveOdometry(gyroscope.getRotation2d());
       gyroscope.reset();
@@ -39,6 +42,7 @@ public class NavigationSubsystem extends SubsystemBase implements DistanceSystem
 
   @Override
   public void periodic() {
+    // at start of each cycle, update rotation and encoders
     odometry.update(gyroscope.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
 
     var table = NetworkTableInstance.getDefault().getTable("troubleshooting");
