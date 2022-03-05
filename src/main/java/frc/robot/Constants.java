@@ -18,8 +18,8 @@ public final class Constants extends ConstantsForMainRobot {
     // Axis
     public static final int lStickY = 1; // Left drivetrain speed
     public static final int rStickY = 5; // Right drivetrain speed
-    public static final int lTrigger = 2; // Activate intake
-    public static final int rTrigger = 3;
+    public static final int LT = 2; // Activate intake
+    public static final int RT = 3;
 
     // Buttons
     public static final int A = 1;
@@ -28,7 +28,9 @@ public final class Constants extends ConstantsForMainRobot {
     public static final int Y = 4;
     public static final int LB = 5;
     public static final int RB = 6;
+    public static final int Select = 7; //this is aurora guessing
     public static final int Start = 8;
+
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;

@@ -29,7 +29,7 @@ public class ShotCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.setRpm(gamepad.getRawAxis(Constants.lTrigger)*5000, gamepad.getRawAxis(Constants.rTrigger)*5000);
+    subsystem.setRpm(gamepad.getRawAxis(Constants.LT)*5000, gamepad.getRawAxis(Constants.RT)*5000);
   }
 
   // Called once the command ends or is interrupted.
