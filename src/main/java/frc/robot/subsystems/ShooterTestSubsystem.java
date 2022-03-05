@@ -6,6 +6,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,11 +24,15 @@ public class ShooterTestSubsystem extends ShooterBaseSubsystem{
   private double speed = 0.0;
   private boolean viaPid = false;
 
+  NetworkTableEntry frontEntry;
+  NetworkTableEntry backEntry;
+
   /** Creates a new ShooterSubsystem. */
   public ShooterTestSubsystem() {
     encoder.setDistancePerPulse(-60.0 / Constants.shooterEncoderResolution); // 8192
     pid.setSetpoint(rpm);
     pid.setTolerance(30);
+
   }
 
   @Override
@@ -39,6 +46,7 @@ public class ShooterTestSubsystem extends ShooterBaseSubsystem{
 
   @Override
   public void setRpm(double rpmFront, double rpmBack) {
+    System.out.println("rpm front: " + rpmFront + " rpm back: " + rpmBack);
     this.rpm = rpmFront;
     this.viaPid = true;
     pid.setSetpoint(rpm);
@@ -57,7 +65,9 @@ public class ShooterTestSubsystem extends ShooterBaseSubsystem{
 
   @Override
   public void stop() {
+    viaPid = false;
     this.speed = 0;
+    this.rpm = 0;
     motor.set(0);
   }
 }

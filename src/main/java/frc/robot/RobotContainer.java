@@ -86,7 +86,7 @@ public class RobotContainer {
 
     //default commands
     driveSubsystem.setDefaultCommand(driveCommand);
-    shooterSubsystem.setDefaultCommand(shotCommand);
+    //shooterSubsystem.setDefaultCommand(shotCommand);
   }
 
   /**
@@ -102,10 +102,12 @@ public class RobotContainer {
 
     //test buttons 
     if(Constants.test){
+      final JoystickButton shotButton = new JoystickButton(gamepadPilot, Constants.Y);
+      shotButton.whenHeld(shotCommand, true);
+
       final JoystickButton turnButton = new JoystickButton(gamepadPilot, Constants.X);
       turnButton.whenHeld(turnDegreesCommand, true);
-    
-
+  
       final JoystickButton resetPose = new JoystickButton(gamepadPilot, Constants.Start);
       resetPose.whenPressed(() -> {
         // command to reset all gyro and coordanates
@@ -139,6 +141,7 @@ public class RobotContainer {
   }
   //main robot buttons
   else{
+    /*
     //Pilot buttons
     //A held, run hopper and index
     final JoystickButton indexHopperButton = new JoystickButton(gamepadPilot, Constants.A);
@@ -165,7 +168,7 @@ public class RobotContainer {
     //Select pressed, toggle intake pneumatic 
     final JoystickButton deployIntakeButton = new JoystickButton(gamepadPilot, Constants.Select);
     deployIntakeButton.whenPressed(deployIntakeCommand);
-
+*/
   }
 
   }

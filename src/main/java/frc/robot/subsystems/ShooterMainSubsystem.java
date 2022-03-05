@@ -43,6 +43,9 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
   private boolean extended = false;
   private boolean viaPid = false;
 
+  NetworkTableEntry frontEntry;
+  NetworkTableEntry backEntry;
+
   private final Timer timer = new Timer();
 
   /** Creates a new ShooterSubsystem. */
@@ -56,10 +59,6 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
     frontMotor.setInverted(true);
     backMotor.setInverted(true);
 
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("shooter");
-    NetworkTableEntry frontEntry = table.getEntry("frontRpm");
-    NetworkTableEntry backEntry = table.getEntry("backRpm");
   }
 
   @Override
@@ -69,7 +68,6 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
       speedFront = MathUtil.clamp(speedFront + deltaFront, 0, 1);
       var deltaBack = pidBack.calculate(backEncoder.getVelocity());
       speedBack = MathUtil.clamp(speedBack + deltaBack, 0, 1);
-
     }
     frontMotor.set(speedFront);
     backMotor.set(speedBack);
@@ -81,13 +79,6 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
     viaPid = true;
     this.rpmBack = rpmBack;
     this.rpmFront = rpmFront;
-
-    pidFront.setSetpoint(rpmFront);
-    pidBack.setSetpoint(rpmBack);
-  }
-
-  public void setNetworkRpm(double rpmFront, double rpmBack) {
-    
 
     pidFront.setSetpoint(rpmFront);
     pidBack.setSetpoint(rpmBack);
