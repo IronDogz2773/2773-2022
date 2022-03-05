@@ -40,9 +40,9 @@ public class HopperSubsystem extends SubsystemBase {
 
   public void motorToggle() {
     if (speed != 0) {
-      this.motorOn();
-    } else {
       this.motorOff();
+    } else {
+      this.motorOn();
     }
   }
 

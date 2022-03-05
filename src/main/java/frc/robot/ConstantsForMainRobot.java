@@ -10,12 +10,15 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 /** Constants for MainRobot */
 public class ConstantsForMainRobot {
+    public static final boolean test = false;
 
     // Presence of subsystems
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
 
-    public static final double speedFactor = 1.0 / 2.0;
+    //speeds for drivetrain
+    public static final double speedFactorSlow = 1.0 / 3.0;
+    public static final double speedFactorFast = 1.0 / 2.0;
 
     // autonomous shooting checks
     public static final boolean manual = false;
