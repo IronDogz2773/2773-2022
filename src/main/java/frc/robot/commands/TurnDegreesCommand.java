@@ -102,10 +102,9 @@ public class TurnDegreesCommand extends CommandBase {
       DriverStation.reportWarning("angle = " + pidController.getSetpoint() + "; " + nav.getGyroAngle(), false);
       // calls from pid to give values to rotate
       rotation = pidu.calculate(nav.getGyroAngle());
-      rotation = MathUtil.clamp(rotation, -Constants.maxRotationVolts, Constants.maxRotationVolts);
-      drive.rawDrive(rotation, -rotation);
+      drive.tankDriveVolts(rotation, -rotation);
     } else {
-      drive.rawDrive(0, 0);
+      drive.stop();
     }
 
   }

@@ -11,12 +11,15 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
-public class NavigationSubsystem extends SubsystemBase {
+public class NavigationSubsystem extends SubsystemBase implements DistanceSystem {
   /** Creates a new NavigationSubsystem. */
   private final ADXRS450_Gyro gyroscope = new ADXRS450_Gyro();
+
+  private final DigitalInput distanceSensor = new DigitalInput(Constants.distanceSensorPin);
 
   private final Encoder leftEncoder = new Encoder(Constants.leftEncoderPortA, Constants.leftEncoderPortB);
   private final Encoder rightEncoder = new Encoder(Constants.rightEncoderPortA, Constants.rightEncoderPortB);
@@ -63,6 +66,10 @@ public class NavigationSubsystem extends SubsystemBase {
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
+  }
+
+  public boolean tooCloseToWall() {
+    return !distanceSensor.get();
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

@@ -61,4 +61,9 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotors.setVoltage(clamp(leftVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
     rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
   }
+
+  public void stop() {
+    leftMotors.stopMotor();
+    rightMotors.stopMotor();
+  }
 }

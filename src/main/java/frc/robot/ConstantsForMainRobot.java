@@ -24,6 +24,8 @@ public class ConstantsForMainRobot {
     // 2 motor shooter
     public static final boolean dosShooter = true;
 
+    public static final int distanceSensorPin = 5;
+
     // Pneumatics
     public static final int intakePneumaticsController = 0;
     public static final int deploySolenoidPCM = 0;

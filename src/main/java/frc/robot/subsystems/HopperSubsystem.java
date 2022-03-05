@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType; 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class HopperSubsystem extends SubsystemBase {
   private final CANSparkMax leftHopperCAN = new CANSparkMax(Constants.leftHopperCANID, MotorType.kBrushless);
@@ -36,6 +36,14 @@ public class HopperSubsystem extends SubsystemBase {
 
   public void motorOff() {
     speed = 0;
+  }
+
+  public void motorToggle() {
+    if (speed != 0) {
+      this.motorOn();
+    } else {
+      this.motorOff();
+    }
   }
 
   public double getSpeed() {

@@ -4,25 +4,29 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.DistanceSystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.NavigationSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 
-
 public class DriveCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DriveSubsystem drive;
+  private final DistanceSystem distance;
   private final Joystick gamepad;
+
   /**
    * Creates a new DriveCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DriveSubsystem subsystem, Joystick gamepad) {
-    drive = subsystem;
+  public DriveCommand(DriveSubsystem drive, DistanceSystem distance, Joystick gamepad) {
+    this.drive = drive;
+    this.distance = distance;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(drive);
     this.gamepad = gamepad;
   }
 
@@ -37,16 +41,21 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    //negation here might have broken code idk we couldnt test
+    // negation here might have broken code idk we couldnt test
     double leftSpeed = -gamepad.getRawAxis(Constants.lStickY) * Constants.speedFactor;
     double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * Constants.speedFactor;
 
+    if ((leftSpeed > 0 || rightSpeed > 0) && distance.tooCloseToWall()) {
+      drive.stop();
+      return;
+    }
     drive.rawDrive(leftSpeed, rightSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

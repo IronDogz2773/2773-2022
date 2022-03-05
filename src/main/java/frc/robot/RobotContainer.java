@@ -46,7 +46,8 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final ShooterBaseSubsystem shooterSubsystem = Constants.dosShooter ? new ShooterMainSubsystem(): new ShooterTestSubsystem();
+  private final ShooterBaseSubsystem shooterSubsystem = Constants.dosShooter ? new ShooterMainSubsystem()
+      : new ShooterTestSubsystem();
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
@@ -58,14 +59,16 @@ public class RobotContainer {
   private final DeployIntakeCommand deployIntakeCommand = Constants.intakePresent
       ? new DeployIntakeCommand(intakeSubsystem)
       : null;
-  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, gamepad);
-  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, Constants.turnCmdTimeOut);
+  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, navigationSubsystem, gamepad);
+  private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
+      Constants.turnCmdTimeOut);
   private final HopperCommand hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : null;
 
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem, gamepad);
-  //private final ShotRpmCommand shotRpmCommand = new ShotRpmCommand(shooterSubsystem, 1000, 1000);
+  // private final ShotRpmCommand shotRpmCommand = new
+  // ShotRpmCommand(shooterSubsystem, 1000, 1000);
 
-  //private final IndexCommand indexCommand = new IndexCommand(shooter);
+  // private final IndexCommand indexCommand = new IndexCommand(shooter);
 
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepad = new Joystick(Constants.gamepadPort);
@@ -101,9 +104,11 @@ public class RobotContainer {
       navigationSubsystem.resetOdometry(new Pose2d());
     });
 
-    //when RB is pressed, set rpm to a specific value, extend the indexer to touch the ball, wait, then turn off
+    // when RB is pressed, set rpm to a specific value, extend the indexer to touch
+    // the ball, wait, then turn off
     final JoystickButton autoShootButton = new JoystickButton(gamepad, Constants.RB);
-    Command autoShootCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, Constants.manual, Constants.vision).build();
+    Command autoShootCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
+        Constants.manual, Constants.vision).build();
     autoShootButton.whenPressed(autoShootCommand, true);
 
     if (Constants.intakePresent) {
@@ -121,7 +126,7 @@ public class RobotContainer {
     final JoystickButton turnTrajectoryButton = new JoystickButton(gamepad, Constants.A);
     Command turnTrajectoryCommand = new TurnTrajectoryCommand(driveSubsystem, navigationSubsystem);
     turnTrajectoryButton.whenPressed(turnTrajectoryCommand);
-    
+
   }
 
   /**

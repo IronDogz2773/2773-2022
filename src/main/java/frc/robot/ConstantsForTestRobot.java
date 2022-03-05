@@ -24,6 +24,8 @@ public class ConstantsForTestRobot {
     //2 motor shooter
     public static final boolean dosShooter = false;
 
+    public static final int distanceSensorPin = 5;
+
     // Pneumatics
     public static final int intakePneumaticsController = 0;
     public static final int deploySolenoidPCM = 0;
@@ -77,16 +79,16 @@ public class ConstantsForTestRobot {
     public static final double kMaxSpeedMetersPerSecond = .6;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.3;
 
-    public static final double turnControllerP = 0.02;
-    public static final double turnControllerI = 0.06;
-    public static final double turnControllerD = 0;
+    public static final double turnControllerP = 0.23;
+    public static final double turnControllerI = 0.3;
+    public static final double turnControllerD = 0.004;
 
-    public static final double shooterControllerP = 0.00006;
-    public static final double shooterControllerI = 0;
-    public static final double shooterControllerD = 0.00002;
+    public static final double shooterControllerP = 0.4;//need to fix 
+    public static final double shooterControllerI = .3;
+    public static final double shooterControllerD = 0.004;
 
     public static final double shooterEncoderResolution = 2048;
 
     public static final double maxMotorVolts = 12.0;
-    public static final double maxRotationVolts = 2;
+    public static final double maxRotationVolts = 4;
 }
