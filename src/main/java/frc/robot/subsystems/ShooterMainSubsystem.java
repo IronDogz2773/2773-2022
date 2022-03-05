@@ -6,24 +6,16 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.SendableBuilder.BackendKind;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.PIDUtil;
 
-public class ShooterMainSubsystem extends ShooterBaseSubsystem{
+public class ShooterMainSubsystem extends ShooterBaseSubsystem {
   private final CANSparkMax backMotor = new CANSparkMax(Constants.frontShooterCANID, MotorType.kBrushless);
   private final CANSparkMax frontMotor = new CANSparkMax(Constants.backShooterCANID, MotorType.kBrushless);
   private final RelativeEncoder backEncoder = backMotor.getEncoder();
@@ -40,13 +32,10 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem{
   private double rpmFront = 0.0;
   private double rpmBack = 0.0;
 
-  private boolean extended = false;
   private boolean viaPid = false;
 
   NetworkTableEntry frontEntry;
   NetworkTableEntry backEntry;
-
-  private final Timer timer = new Timer();
 
   /** Creates a new ShooterSubsystem. */
   public ShooterMainSubsystem() {

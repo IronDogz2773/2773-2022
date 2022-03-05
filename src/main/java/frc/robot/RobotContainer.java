@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -56,7 +55,7 @@ public class RobotContainer {
 
   // Commands
   private final Command activateIntakeCommand = Constants.intakePresent
-      ? new ActivateIntakeCommand(intakeSubsystem, gamepadPilot)
+      ? new ActivateIntakeCommand(intakeSubsystem)
       : doNothing();
   private final Command deployIntakeCommand = Constants.intakePresent
       ? new DeployIntakeCommand(intakeSubsystem)
@@ -85,7 +84,7 @@ public class RobotContainer {
 
     // default commands
     driveSubsystem.setDefaultCommand(driveCommand);
-    //shooterSubsystem.setDefaultCommand(shotCommand);
+    // shooterSubsystem.setDefaultCommand(shotCommand);
   }
 
   /**

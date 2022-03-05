@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.security.cert.TrustAnchor;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
