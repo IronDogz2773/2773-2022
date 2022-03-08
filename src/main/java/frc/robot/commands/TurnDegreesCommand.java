@@ -49,7 +49,6 @@ public class TurnDegreesCommand extends CommandBase {
     pidu = new PIDUtil(pidController, "turn");
 
     lastAngleFromNT = 0;
-    // resetPid(getNetworkTableAngle());
   }
 
   // Called when the command is initially scheduled.
@@ -103,7 +102,13 @@ public class TurnDegreesCommand extends CommandBase {
       rotation = pidu.calculate(nav.getGyroAngle());
       drive.tankDriveVolts(rotation, -rotation);
     } else {
-      drive.stop();
+      double angle = getNetworkTableAngle();
+      if(angle != 0){
+        resetPid(angle);
+      }
+      else{
+        drive.stop();
+      }
     }
 
   }
