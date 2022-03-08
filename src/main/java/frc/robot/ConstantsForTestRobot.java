@@ -20,13 +20,15 @@ public class ConstantsForTestRobot {
     public static final double speedFactorFast = 2.0 / 3.0;
 
     //autonomous shooting checks
-    public static final boolean manual = true;
+    public static final boolean manual = false;
     public static final boolean vision = true;
 
     //2 motor shooter
     public static final boolean dosShooter = false;
 
     public static final int distanceSensorPin = 5;
+
+    public static final double indexTime = 1;
 
     // Pneumatics
     public static final int intakePneumaticsController = 0;
@@ -89,7 +91,7 @@ public class ConstantsForTestRobot {
     public static final double shooterControllerI = .3;
     public static final double shooterControllerD = 0.004;
 
-    public static final double shooterEncoderResolution = 2048;
+    public static final double shooterEncoderResolution = 8192;
 
     public static final double maxMotorVolts = 12.0;
     public static final double maxRotationVolts = 4;

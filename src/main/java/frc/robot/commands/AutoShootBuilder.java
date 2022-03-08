@@ -51,7 +51,7 @@ public class AutoShootBuilder {
         }
       }.andThen(new WaitCommand(1));
     } else {
-      shootCommand = new ShotRpmCommand(shooter, Constants.maxShooterSpeed, 0);
+      shootCommand = new ShotCommand(shooter);
     }
 
     // sets up shot using vision if vision if presence, creates a command that will
@@ -72,8 +72,7 @@ public class AutoShootBuilder {
     // flywheel, wait for a second, then releases indexer
     Command autoShootCommand = visionCommand.andThen(shootCommand).andThen(() -> {
       indexer.motorOn();
-      System.out.println("~~~~~~~ test");
-    }).andThen(new WaitCommand(1)).andThen(() -> {
+    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
       shooter.stop();
       indexer.motorOff();
     });

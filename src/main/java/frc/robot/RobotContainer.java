@@ -13,6 +13,7 @@ import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ReverseIndexCommand;
 import frc.robot.commands.ShotCommand;
+import frc.robot.commands.TelescopingCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
 import frc.robot.commands.IndexCommand;
@@ -28,6 +29,7 @@ import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
 import frc.robot.subsystems.ShooterMainSubsystem;
 import frc.robot.subsystems.ShooterTestSubsystem;
+import frc.robot.subsystems.TelescopingSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -53,6 +55,7 @@ public class RobotContainer {
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
   private final IndexerBaseSubsystem indexerSubsystem = Constants.indexerPresent ? new IndexerMainSubsystem()
       : new IndexerTestSubsystem();
+  private final TelescopingSubsystem telescopingSubsystem = new TelescopingSubsystem();
 
   // Commands
   private final Command activateIntakeCommand = Constants.intakePresent
@@ -65,8 +68,9 @@ public class RobotContainer {
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
       Constants.turnCmdTimeOut);
   private final Command hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : doNothing();
+  private final TelescopingCommand telescopingCommand = new TelescopingCommand(telescopingSubsystem, gamepadPilot);
 
-  private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem, gamepadPilot);
+  private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem);
   // private final ShotRpmCommand shotRpmCommand = new
   // ShotRpmCommand(shooterSubsystem, 1000, 1000);
 
@@ -85,6 +89,7 @@ public class RobotContainer {
 
     // default commands
     driveSubsystem.setDefaultCommand(driveCommand);
+    telescopingSubsystem.setDefaultCommand(telescopingCommand);
     // shooterSubsystem.setDefaultCommand(shotCommand);
   }
 
@@ -116,6 +121,7 @@ public class RobotContainer {
       Command reverseIndexCommand = new ReverseIndexCommand(indexerSubsystem);
       reverseIndexButton.whenHeld(reverseIndexCommand);
     }
+
 
     if (Constants.hopperPresent) {
       // RT held, run intake and hopper
@@ -155,10 +161,10 @@ public class RobotContainer {
     };
     directionButton.whenPressed(toggleDirectionCommand);
 
-    // LT held, firing sequence
+    // LB held, firing sequence
     final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
-    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, true, true).build();
-    firingTrigger.whenPressed(fireCommand, true);
+    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.manual, Constants.vision).build();
+    firingTrigger.whenPressed(fireCommand, true); // TODO change to held
 
     // either VISION AIM, run kicker backwards briefly, flywheel up to speed
     // or kicker backwards then flywheel up to speed if vision is disabled

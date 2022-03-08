@@ -28,6 +28,8 @@ public class ConstantsForMainRobot {
 
     public static final int distanceSensorPin = 5;
 
+    public static final double indexTime = 3; //TODO change this value for main robot
+
     // Pneumatics
     public static final int intakePneumaticsController = 0;
     public static final int deploySolenoidPCM = 0;
