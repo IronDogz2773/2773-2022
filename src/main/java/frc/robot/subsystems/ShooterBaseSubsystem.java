@@ -32,63 +32,47 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     setSpeed(speed, speed);
   }
 
+  // In this array: first number is frontRpm, second is backRpm.
+  private static final double[][] LutOfRpms = new double[][] {
+      new double[] { 3800, 1200 },
+      new double[] { 3800, 1350 },
+      new double[] { 3800, 1600 },
+      new double[] { 3800, 1700 },
+      new double[] { 3800, 2100 },
+      new double[] { 3800, 2400 },
+      new double[] { 3800, 2600 },
+      new double[] { 3800, 2675 },
+      new double[] { 3750, 2725 },
+      new double[] { 3700, 2800 }
+  };
+  private static int LUTOffset = 6;
+
   public void setNetworkRpm() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("shooter");
     double distance;
     double frontRpm;
     double backRpm;
-    if(!manual){
-      distance = table.getEntry("piDistance").getDouble(0); //TODO change this to match preston's angle name
-    }
-    else{
+    if (!manual) {
+      distance = table.getEntry("piDistance").getDouble(0); // TODO change this to match preston's angle name
+    } else {
       distance = table.getEntry("manualDistance").getDouble(0);
     }
 
-    switch ((int) Math.round(distance)){
-      case 6:
-        frontRpm = 3800;
-        backRpm = 1200;
-        break;
-      case 7:
-        frontRpm = 3800;
-        backRpm = 1350;
-        break;
-      case 8:
-        frontRpm = 3800;
-        backRpm = 1600;
-        break;
-      case 9:
-        frontRpm = 3800;
-        backRpm = 1700;
-        break;
-      case 10:
-        frontRpm = 3800;
-        backRpm = 2100;
-        break;
-      case 11:
-        frontRpm = 3800;
-        backRpm = 2400;
-        break;
-      case 12:
-        frontRpm = 3800;
-        backRpm = 2600;
-        break;
-      case 13:
-        frontRpm = 3800;
-        backRpm = 2675;
-      case 14:
-        frontRpm = 3750;
-        backRpm = 1725;
-        break;
-      case 15:
-        frontRpm = 3700;
-        backRpm = 2800;
-        break;
-      default:
-        frontRpm = 0;
-        backRpm = 0;
-        break;
+    if (distance < LUTOffset) {
+      frontRpm = 1000; // TODO check if it reaches low basket
+      backRpm = 1000;
+    } else {
+      if (distance > LUTOffset + LutOfRpms.length - 1) {
+        distance = LUTOffset + LutOfRpms.length - 1;
+      }
+      int index = (int) Math.floor(distance - LUTOffset);
+      if (index >= LutOfRpms.length - 1) {
+        index = LutOfRpms.length - 2;
+      }
+      double fraction = distance - index - LUTOffset;
+      frontRpm = LutOfRpms[index][0] * (1 - fraction) + LutOfRpms[index + 1][0] * fraction;
+      backRpm = LutOfRpms[index][1] * (1 - fraction) + LutOfRpms[index + 1][1] * fraction;
     }
 
     setRpm(frontRpm, backRpm);
