@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 /** Constants for MainRobot */
 public class ConstantsForMainRobot {
     // Presence of subsystems
+    public static final boolean climberPresent = false;
     public static final boolean indexerPresent = true;
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
@@ -47,11 +48,11 @@ public class ConstantsForMainRobot {
     public static final boolean rightWheelsInverted = true;
 
     public static final int frontShooterCANID = 11; // PLACEHOLDER
-    public static final int backShooterCANID = 12; // PLACEHOLDER
+    public static final int backShooterCANID = 15; // PLACEHOLDER
     public static final int indexerCANID = 42; // PLACEHOLDER
 
-    public static final int intakeCANID = 15;
-    public static final int leftHopperCANID = 16;
+    public static final int intakeCANID = 14;
+    public static final int leftHopperCANID = 13;
     public static final int rightHopperCANID = 13;
     public static final int shooterMotorPWMID = 0;
     public static final int kickerMotorPWMID = 1;

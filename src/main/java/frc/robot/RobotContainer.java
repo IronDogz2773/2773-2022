@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.node.DoubleNode;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -55,7 +57,7 @@ public class RobotContainer {
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
   private final IndexerBaseSubsystem indexerSubsystem = Constants.indexerPresent ? new IndexerMainSubsystem()
       : new IndexerTestSubsystem();
-  private final TelescopingSubsystem telescopingSubsystem = new TelescopingSubsystem();
+  private final TelescopingSubsystem telescopingSubsystem = Constants.climberPresent ? new TelescopingSubsystem() : null;
 
   // Commands
   private final Command activateIntakeCommand = Constants.intakePresent
@@ -68,7 +70,7 @@ public class RobotContainer {
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
       Constants.turnCmdTimeOut);
   private final Command hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : doNothing();
-  private final TelescopingCommand telescopingCommand = new TelescopingCommand(telescopingSubsystem, gamepadPilot);
+  private final Command telescopingCommand = Constants.climberPresent ? new TelescopingCommand(telescopingSubsystem, gamepadPilot) : doNothing();
 
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem);
   // private final ShotRpmCommand shotRpmCommand = new
@@ -89,7 +91,9 @@ public class RobotContainer {
 
     // default commands
     driveSubsystem.setDefaultCommand(driveCommand);
-    telescopingSubsystem.setDefaultCommand(telescopingCommand);
+    if(Constants.climberPresent){
+      telescopingSubsystem.setDefaultCommand(telescopingCommand);
+    }
     // shooterSubsystem.setDefaultCommand(shotCommand);
   }
 

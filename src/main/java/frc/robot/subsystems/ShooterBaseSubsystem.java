@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class ShooterBaseSubsystem extends SubsystemBase {
@@ -22,6 +24,8 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     NetworkTableEntry manualDistanceEntry = table.getEntry("manualDistance");
     piDistanceEntry.setDouble(0);
     manualDistanceEntry.setDouble(0);
+
+    SmartDashboard.putBoolean("IsPiManual", manual);
   }
 
   public abstract void setRpm(double rpmFront, double rpmBack);
