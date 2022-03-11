@@ -178,7 +178,25 @@ public class RobotContainer {
     NetworkTableEntry turnVisionEntry = copilotTable.getEntry("turnVision");
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
-    NetworkTableEntry climbDirectionEntry = copilotTable.getEntry("climbDirection");
+    NetworkTableEntry highGoalEntry = copilotTable.getEntry("high_goal");
+
+    JoystickButton highGoalToggleButton = new JoystickButton(gamepadCopilot, Constants.LB);
+    final Command highGoalToggleCommand = new CommandBase() {
+      @Override
+      public void initialize(){
+        if (highGoalEntry.getBoolean(true)) {
+          highGoalEntry.setBoolean(false);
+        } else {
+          highGoalEntry.setBoolean(true);
+        }
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+    highGoalToggleButton.whenPressed(highGoalToggleCommand);
 
     JoystickButton toggleTurnVisionButton = new JoystickButton(gamepadCopilot, Constants.A);
     final Command toggleTurnVisionCommand = new CommandBase() {

@@ -63,10 +63,15 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
     NetworkTable coPilotTable = inst.getTable("coPilot");
     vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
-    if (true) {
+    if (false) {
       distance = pivisionTable.getEntry("retro_distance").getDouble(0);
     } else {
-      distance = coPilotTable.getEntry("manualDistance").getDouble(0);
+      if(coPilotTable.getEntry("high_goal").getBoolean(false)){
+        distance = coPilotTable.getEntry("manualDistance").getDouble(0);
+      }
+      else{
+        distance = 3;
+      }
     }
     System.out.println(distance);
 
