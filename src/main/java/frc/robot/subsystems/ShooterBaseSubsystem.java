@@ -56,16 +56,17 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
   public void setNetworkRpm() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable shooterTable = inst.getTable("shooter");
+    NetworkTable pivisionTable = inst.getTable("pivision");
     double distance;
     double frontRpm;
     double backRpm;
 
     NetworkTable coPilotTable = inst.getTable("coPilot");
     vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
-    if (false) {
-      distance = shooterTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
+    if (true) {
+      distance = pivisionTable.getEntry("retro_distance").getDouble(0);
     } else {
-      distance = 10;
+      distance = coPilotTable.getEntry("manualDistance").getDouble(0);
     }
     System.out.println(distance);
 
