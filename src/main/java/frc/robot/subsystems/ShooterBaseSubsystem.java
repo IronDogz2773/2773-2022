@@ -12,10 +12,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.ConstantsForMainRobot;
 
 public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
-  private boolean manual = true;
+  private boolean vision;
 
   public ShooterBaseSubsystem() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -25,7 +27,7 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     piDistanceEntry.setDouble(0);
     manualDistanceEntry.setDouble(0);
 
-    SmartDashboard.putBoolean("IsPiManual", manual);
+    SmartDashboard.putBoolean("IsPiManual", vision);
   }
 
   public abstract void setRpm(double rpmFront, double rpmBack);
@@ -53,15 +55,19 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
   public void setNetworkRpm() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("shooter");
+    NetworkTable shooterTable = inst.getTable("shooter");
     double distance;
     double frontRpm;
     double backRpm;
-    if (!manual) {
-      distance = table.getEntry("piDistance").getDouble(0); // TODO change this to match preston's angle name
+
+    NetworkTable coPilotTable = inst.getTable("coPilot");
+    vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
+    if (false) {
+      distance = shooterTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
     } else {
-      distance = table.getEntry("manualDistance").getDouble(0);
+      distance = shooterTable.getEntry("manualDistance").getDouble(0);
     }
+    System.out.println(distance);
 
     if (distance < LUTOffset) {
       frontRpm = 1000; // TODO check if it reaches low basket
@@ -80,6 +86,10 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     }
 
     setRpm(frontRpm, backRpm);
+  }
+
+  public double getDistance(double angle){
+    return((Constants.topGoalHeight - Constants.cameraMountHeight) / (Math.tan(Math.toRadians(angle) + Constants.cameraMountAngle)));
   }
 
   public abstract boolean atSetpoint();

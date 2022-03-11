@@ -15,49 +15,74 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TelescopingSubsystem extends SubsystemBase {
-  private final CANSparkMax motor = new CANSparkMax(13, MotorType.kBrushless);
-  private final RelativeEncoder encoder = motor.getEncoder();
+  private final CANSparkMax leftMotor = new CANSparkMax(Constants.leftTelescopeCANID, MotorType.kBrushless);
+  private final CANSparkMax rightMotor = new CANSparkMax(Constants.rightTelescopeCANID, MotorType.kBrushless);
+  private final RelativeEncoder leftEncoder = leftMotor.getEncoder();
+  private final RelativeEncoder rightEncoder = rightMotor.getEncoder();
 
-  private double distance;
-  private boolean atMax;
+  private double leftMaxDistance = 168;
+  private double rightMaxDistance = 160;
 
-  NetworkTableEntry positionEntry;
-  
+  public double speed = .7;
+
+  NetworkTableEntry positionLeftEntry;
+  NetworkTableEntry positionRightEntry;
+
   /** Creates a new TestMotorSubsystem. */
   public TelescopingSubsystem() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("climber");
-    positionEntry = table.getEntry("position");
-    distance = 15;
+    positionLeftEntry = table.getEntry("positionLeft");
+    positionRightEntry = table.getEntry("positionRight");
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    positionEntry.setDouble(encoder.getPosition());
+    positionLeftEntry.setDouble(leftEncoder.getPosition());
+    positionRightEntry.setDouble(rightEncoder.getPosition());
   }
 
   public void resetDistance(){
-    encoder.setPosition(0);
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
   }
 
-  public void motorOn(){
-    motor.set(0.1);
+  public void leftMotorOn(){
+    leftMotor.set(speed);
   }
 
-  public void motorBack(){
-    motor.set(-0.1);
+  public void leftMotorOff(){
+    leftMotor.stopMotor();
   }
 
-  public void motorOff(){
-    motor.stopMotor();
+  public void rightMotorOn(){
+    rightMotor.set(speed);
   }
 
-  public boolean atDistance(){
-    return encoder.getPosition() >= distance;
+  public void rightMotorOff(){
+    rightMotor.stopMotor();
   }
 
-  public boolean atStart(){
-    return encoder.getPosition() <= 0;
+  public void toggleDirection(){
+    speed = -speed;
+  }
+
+  public boolean leftAtSetpoint(){
+    if(speed > 0){
+      return leftEncoder.getPosition() >= leftMaxDistance;
+    }
+    else{
+      return leftEncoder.getPosition() <= 0;
+    }
+  }
+
+  public boolean rightAtSetpoint(){
+    if(speed > 0){
+      return rightEncoder.getPosition() >= rightMaxDistance;
+    }
+    else{
+      return rightEncoder.getPosition() <= 0;
+    }
   }
 }

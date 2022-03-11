@@ -36,6 +36,9 @@ public class ConstantsForTestRobot {
     public static final int deploySolenoidPCM = 0;
     public static final int retractSolenoidPCM = 1;
 
+    private static final int leftTelescopeCANID = 40; //TODO placeholder
+    private static final int rightTelescopeCANID = 41; //TODO  placeholder
+
     // Motors
     // CANID - CAN SPARK MAX Motors
     // PWMID - PWN Motors

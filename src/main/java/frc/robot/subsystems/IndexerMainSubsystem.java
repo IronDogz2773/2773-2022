@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 
 public class IndexerMainSubsystem extends IndexerBaseSubsystem {
-  private final CANSparkMax indexMotor = new CANSparkMax(Constants.frontShooterCANID, MotorType.kBrushless);
+  private final CANSparkMax indexMotor = new CANSparkMax(Constants.indexerCANID, MotorType.kBrushless);
 
   private double speed = 0;
 
@@ -24,17 +24,21 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
 
   @Override
   public void motorOn() {
-    speed = .5;
-  }
+    speed = -1;
+    }
 
   @Override
   public void motorOff() {
      speed = 0;
   }
 
+  public void setSpeed(double speed){
+    this.speed = speed;
+  }
+
   @Override
   public void reverseMotor() {
-     speed = -.5;
+     speed = -speed;
   }
 }
 

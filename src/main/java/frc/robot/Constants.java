@@ -8,7 +8,7 @@ package frc.robot;
  * Holds constants for bots. ConstantsForTestRobot can replaced with
  * ConstantsForMainRobot
  */
-public final class Constants extends ConstantsForTestRobot {
+public final class Constants extends ConstantsForMainRobot {
 
     // USB
     public static final int gamepadPortPilot = 0;
@@ -42,4 +42,6 @@ public final class Constants extends ConstantsForTestRobot {
     public static final double maxShooterSpeed = 750;
 
     public static final double turnCmdTimeOut = 2;
+
+    public static final double topGoalHeight = 8.66666; //value in feet
 }

@@ -61,6 +61,11 @@ public class IntakeSubsystem extends SubsystemBase {
     retractSolenoidPCM.set(true);
   }
 
+  public void stopIntake(){
+    deploySolendoidPCM.set(false);
+    retractSolenoidPCM.set(false);
+  }
+
   public boolean isDeployed() {
     if (deploySolendoidPCM.get() == true && retractSolenoidPCM.get() == false) {
       return true;

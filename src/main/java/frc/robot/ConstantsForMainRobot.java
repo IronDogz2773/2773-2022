@@ -11,7 +11,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 /** Constants for MainRobot */
 public class ConstantsForMainRobot {
     // Presence of subsystems
-    public static final boolean climberPresent = false;
+    public static final boolean climberPresent = true;
     public static final boolean indexerPresent = true;
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
@@ -29,7 +29,8 @@ public class ConstantsForMainRobot {
 
     public static final int distanceSensorPin = 5;
 
-    public static final double indexTime = 3; //TODO change this value for main robot
+    public static final double indexTime = 1; //TODO change this value for main robot
+    public static final double reverseIndexTime = .3;
 
     // Pneumatics
     public static final int intakePneumaticsController = 0;
@@ -47,16 +48,19 @@ public class ConstantsForMainRobot {
     public static final boolean leftWheelsInverted = false;
     public static final boolean rightWheelsInverted = true;
 
-    public static final int frontShooterCANID = 11; // PLACEHOLDER
+    public static final int frontShooterCANID = 16; // PLACEHOLDER
     public static final int backShooterCANID = 15; // PLACEHOLDER
-    public static final int indexerCANID = 42; // PLACEHOLDER
+    public static final int indexerCANID = 12; // PLACEHOLDER
 
     public static final int intakeCANID = 14;
     public static final int leftHopperCANID = 13;
-    public static final int rightHopperCANID = 13;
+    public static final int rightHopperCANID = 11;
     public static final int shooterMotorPWMID = 0;
     public static final int kickerMotorPWMID = 1;
     public static final int winchMotorPWMID = 6;
+
+    public static final int leftTelescopeCANID = 20; 
+    public static final int rightTelescopeCANID = 17; 
 
     public static final MotorType motorType = MotorType.kBrushless;
 
@@ -96,4 +100,10 @@ public class ConstantsForMainRobot {
 
     public static final double maxMotorVolts = 12.0;
     public static final double maxRotationVolts = 4;// placeholder
+
+    public static final double cameraMountAngle = Math.toRadians(40); //angle in radians
+    public static final double cameraMountHeight = 1.9166; //height in feet (1 foot 11 inches)
+
+    public static final double autoSpeed = .3; 
+    public static final double autoTime = 1;
 }

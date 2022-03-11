@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,26 +22,30 @@ public class AutoShootBuilder {
   private final DriveSubsystem drive;
   private final NavigationSubsystem nav;
   private final IndexerBaseSubsystem indexer;
-  private final boolean vision;
-  private final boolean manual;
+  private final boolean oneWheelShoot;
+  private boolean vision;
 
   /** Creates a new AutoShootBuilder. */
   public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav,
-      IndexerBaseSubsystem indexer, boolean manual, boolean vision) {
+      IndexerBaseSubsystem indexer, boolean oneWheelShoot) {
     this.shooter = shooter;
     this.drive = drive;
     this.nav = nav;
     this.indexer = indexer;
-    this.manual = manual;
-    this.vision = vision;
+    this.oneWheelShoot = oneWheelShoot;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   public Command build() {
     // creates a shootcommand using speed if we don't have an encoder, or rpm if we
     // do
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("coPilot");
+    NetworkTableEntry visionEntry = table.getEntry("turnVision");
+    vision = visionEntry.getBoolean(false);
+    
     Command shootCommand;
-    if (manual) {
+    if (oneWheelShoot) {
       shootCommand = new CommandBase() {
         @Override
         public void initialize() {
@@ -68,9 +75,14 @@ public class AutoShootBuilder {
       };
     }
 
-    // calls vision command, shoot command, pulls indexer up to touch ball to
+    // calls vision command, reverses ball briefly to prevent getting caught in flywheel,
+    //shoot command, pulls indexer up to touch ball to
     // flywheel, wait for a second, then releases indexer
-    Command autoShootCommand = visionCommand.andThen(shootCommand).andThen(() -> {
+    Command autoShootCommand = visionCommand.andThen(() -> {
+      indexer.reverseMotor();
+    }).andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(() -> {
+      indexer.motorOff();
+    }).andThen(shootCommand).andThen(() -> {
       indexer.motorOn();
     }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
       shooter.stop();

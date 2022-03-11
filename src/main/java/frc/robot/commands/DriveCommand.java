@@ -58,6 +58,7 @@ public class DriveCommand extends CommandBase {
     isSlowEntry.setString(isSlow ? "slow" : "FAST");
     NetworkTableEntry isForwardEntry = table.getEntry("direction");
     isForwardEntry.setString(isForward ? "forward" : "reverse");
+
   }
 
   // Called every time the scheduler runs while the command is scheduled
@@ -75,7 +76,11 @@ public class DriveCommand extends CommandBase {
       rightSpeed = -t;
     }
 
-    if ((leftSpeed > 0 || rightSpeed > 0) && distance.tooCloseToWall()) {
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("coPilot");
+    boolean proximity = table.getEntry("proximity").getBoolean(false);
+
+    if ((leftSpeed > 0 || rightSpeed > 0) && distance.tooCloseToWall() && proximity) {
       drive.stop();
       return;
     }

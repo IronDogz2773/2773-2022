@@ -4,33 +4,40 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.IndexerBaseSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
 
 public class IndexCommand extends CommandBase {
-  private final ShooterBaseSubsystem shooter;
+  private final IndexerBaseSubsystem index;
+  private final Joystick gamepad;
 
   /** Creates a new IndexCommand. */
-  public IndexCommand(ShooterBaseSubsystem shooter) {
+  public IndexCommand(IndexerBaseSubsystem index, Joystick gamepad) {
+    this.index = index;
+    this.gamepad = gamepad;
+    addRequirements(index);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
-    addRequirements(shooter);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    index.motorOn();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    index.motorOff();
   }
 
   // Returns true when the command should end.

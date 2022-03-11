@@ -6,6 +6,9 @@ package frc.robot;
 
 import com.fasterxml.jackson.databind.node.DoubleNode;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,11 +16,13 @@ import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveForTimeCommand;
 import frc.robot.commands.ReverseIndexCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.commands.TelescopingCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
+import frc.robot.commands.HopperForIndexCommand;
 import frc.robot.commands.IndexCommand;
 import frc.robot.commands.IndexTimedCommand;
 import frc.robot.commands.MultistepAutoBuilder;
@@ -35,6 +40,8 @@ import frc.robot.subsystems.TelescopingSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -57,11 +64,12 @@ public class RobotContainer {
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
   private final IndexerBaseSubsystem indexerSubsystem = Constants.indexerPresent ? new IndexerMainSubsystem()
       : new IndexerTestSubsystem();
-  private final TelescopingSubsystem telescopingSubsystem = Constants.climberPresent ? new TelescopingSubsystem() : null;
+  private final TelescopingSubsystem telescopingSubsystem = Constants.climberPresent ? new TelescopingSubsystem()
+      : null;
 
   // Commands
   private final Command activateIntakeCommand = Constants.intakePresent
-      ? new ActivateIntakeCommand(intakeSubsystem)
+      ? new ActivateIntakeCommand(intakeSubsystem, gamepadPilot)
       : doNothing();
   private final Command deployIntakeCommand = Constants.intakePresent
       ? new DeployIntakeCommand(intakeSubsystem)
@@ -70,13 +78,18 @@ public class RobotContainer {
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
       Constants.turnCmdTimeOut);
   private final Command hopperCommand = Constants.hopperPresent ? new HopperCommand(hopperSubsystem) : doNothing();
-  private final Command telescopingCommand = Constants.climberPresent ? new TelescopingCommand(telescopingSubsystem, gamepadPilot) : doNothing();
-
+  private final Command hopperForIndexCommand = Constants.hopperPresent
+      ? new HopperForIndexCommand(hopperSubsystem, gamepadPilot)
+      : doNothing();
+  private final Command telescopingCommand = Constants.climberPresent
+      ? new TelescopingCommand(telescopingSubsystem, gamepadCopilot)
+      : doNothing();
+  
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem);
   // private final ShotRpmCommand shotRpmCommand = new
   // ShotRpmCommand(shooterSubsystem, 1000, 1000);
 
-  private final IndexCommand indexCommand = new IndexCommand(shooterSubsystem);
+  private final IndexCommand indexCommand = new IndexCommand(indexerSubsystem, gamepadPilot);
 
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepadPilot = new Joystick(Constants.gamepadPortPilot);
@@ -91,10 +104,11 @@ public class RobotContainer {
 
     // default commands
     driveSubsystem.setDefaultCommand(driveCommand);
-    if(Constants.climberPresent){
+    if (Constants.climberPresent) {
       telescopingSubsystem.setDefaultCommand(telescopingCommand);
     }
-    // shooterSubsystem.setDefaultCommand(shotCommand);
+    intakeSubsystem.setDefaultCommand(activateIntakeCommand);
+    hopperSubsystem.setDefaultCommand(hopperForIndexCommand);
   }
 
   /**
@@ -107,36 +121,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Pilot buttons
-    // A held, run hopper and index
-    final JoystickButton indexHopperButton = new JoystickButton(gamepadPilot, Constants.A);
-    Command indexHopperCommand = new ParallelCommandGroup(
-        indexCommand,
-        hopperCommand);
-    indexHopperButton.whenHeld(indexHopperCommand);
-
-    if (Constants.indexerPresent) {
-      // B pressed, run index for a short amount of time
-      final JoystickButton indexTimedButton = new JoystickButton(gamepadPilot, Constants.B);
-      Command indexTimedCommand = new IndexTimedCommand(indexerSubsystem);
-      indexTimedButton.whenPressed(indexTimedCommand);
-
-      // X held, run index backward
-      final JoystickButton reverseIndexButton = new JoystickButton(gamepadPilot, Constants.X);
-      Command reverseIndexCommand = new ReverseIndexCommand(indexerSubsystem);
-      reverseIndexButton.whenHeld(reverseIndexCommand);
-    }
-
 
     if (Constants.hopperPresent) {
-      // RT held, run intake and hopper
-      final JoystickButton intakeHopperButton = new JoystickButton(gamepadPilot, Constants.RT);
+      // RB held, run intake and hopper
+      final JoystickButton idexHopperButton = new JoystickButton(gamepadPilot, Constants.RB);
       Command intakeHopperCommand = new ParallelCommandGroup(
-          activateIntakeCommand, hopperCommand);
-      intakeHopperButton.whenHeld(intakeHopperCommand);
+          indexCommand, hopperCommand);
+      idexHopperButton.whenHeld(intakeHopperCommand);
     }
 
-    // RB pressed, toggle slowmode
-    final JoystickButton slowButton = new JoystickButton(gamepadPilot, Constants.RB);
+    // A pressed, toggle slowmode
+    final JoystickButton slowButton = new JoystickButton(gamepadPilot, Constants.A);
     final CommandBase toggleSlowModeCommand = new CommandBase() {
       @Override
       public void initialize() {
@@ -150,8 +145,8 @@ public class RobotContainer {
     };
     slowButton.whenPressed(toggleSlowModeCommand);
 
-    // LB pressed, toggle drive direction
-    final JoystickButton directionButton = new JoystickButton(gamepadPilot, Constants.leftStickPushed);
+    // X pressed, toggle drive direction
+    final JoystickButton directionButton = new JoystickButton(gamepadPilot, Constants.X);
     final Command toggleDirectionCommand = new CommandBase() {
       @Override
       public void initialize() {
@@ -165,19 +160,107 @@ public class RobotContainer {
     };
     directionButton.whenPressed(toggleDirectionCommand);
 
-    // LB held, firing sequence
+    // LB pressed, firing sequence
     final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
-    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.manual, Constants.vision).build();
+    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
+        indexerSubsystem, Constants.manual).build();
     firingTrigger.whenPressed(fireCommand, true); // TODO change to held
-
-    // either VISION AIM, run kicker backwards briefly, flywheel up to speed
-    // or kicker backwards then flywheel up to speed if vision is disabled
 
     if (Constants.intakePresent) {
       // Select pressed, toggle intake pneumatic
       final JoystickButton deployIntakeButton = new JoystickButton(gamepadPilot, Constants.Select);
       deployIntakeButton.whenPressed(deployIntakeCommand);
     }
+
+    // CoPilot buttons
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable copilotTable = inst.getTable("coPilot");
+    NetworkTableEntry turnVisionEntry = copilotTable.getEntry("turnVision");
+    NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
+    NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
+    NetworkTableEntry climbDirectionEntry = copilotTable.getEntry("climbDirection");
+
+    JoystickButton toggleTurnVisionButton = new JoystickButton(gamepadCopilot, Constants.A);
+    final Command toggleTurnVisionCommand = new CommandBase() {
+      @Override
+      public void initialize() {
+        if (turnVisionEntry.getBoolean(true)) {
+          turnVisionEntry.setBoolean(false);
+        } else {
+          turnVisionEntry.setBoolean(true);
+        }
+      }
+
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
+    toggleTurnVisionButton.whenPressed(toggleTurnVisionCommand);
+
+    JoystickButton toggleDistanceVisionButton = new JoystickButton(gamepadCopilot, Constants.B);
+    final Command toggleDistanceVisionCommand = new CommandBase() {
+      @Override
+      public void initialize() {
+        if (distanceVisionEntry.getBoolean(true)) {
+          distanceVisionEntry.setBoolean(false);
+        } else {
+          distanceVisionEntry.setBoolean(true);
+        }
+      }
+
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
+    toggleDistanceVisionButton.whenPressed(toggleDistanceVisionCommand);
+
+    JoystickButton toggleProximityButton = new JoystickButton(gamepadCopilot, Constants.Y);
+    final Command toggleProximityCommand = new CommandBase() {
+      @Override
+      public void initialize() {
+        if (proximityEntry.getBoolean(true)) {
+          proximityEntry.setBoolean(false);
+        } else {
+          proximityEntry.setBoolean(true);
+        }
+      }
+
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
+    toggleProximityButton.whenPressed(toggleProximityCommand);
+
+    JoystickButton toggleClimbDirectionButton = new JoystickButton(gamepadCopilot, Constants.RB);
+    final Command toggleClimbDirectionCommand = new CommandBase() {
+      @Override
+      public void initialize() {
+        telescopingSubsystem.toggleDirection();
+      }
+
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
+    toggleClimbDirectionButton.whenPressed(toggleClimbDirectionCommand);
+
+    JoystickButton resetTelescopePositionButton = new JoystickButton(gamepadCopilot, Constants.X);
+    final Command resetTelescopePositionCommand = new CommandBase() {
+      @Override
+      public void initialize() {
+        telescopingSubsystem.resetDistance();
+      }
+
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
+    resetTelescopePositionButton.whenPressed(resetTelescopePositionCommand);
   }
 
   private static Command doNothing() {
@@ -196,6 +279,33 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An DriveCommand will run in autonomous
-    return new MultistepAutoBuilder(driveSubsystem, navigationSubsystem, shooterSubsystem, indexerSubsystem).build();
+    //return new MultistepAutoBuilder(driveSubsystem, navigationSubsystem, shooterSubsystem, indexerSubsystem).build();
+
+    //two ball auto
+    /*
+    Command autoShoot = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build();
+    Command autoShoot2 = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build();
+    Command AutoCommand = autoShoot.andThen(() -> {
+      driveSubsystem.rawDrive(Constants.autoSpeed, Constants.autoSpeed);
+      intakeSubsystem.motorOn();
+    }).andThen(new WaitCommand(Constants.autoTime)).andThen(() -> {
+      driveSubsystem.stop();
+      intakeSubsystem.motorOff();
+    }).andThen(autoShoot2);
+    return AutoCommand;
+    */
+
+    //one ball auto
+    return new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build();
+
+    //one ball auto and taxi 
+    /*
+    Command autoShoot = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build()
+    return autoShoot.andThen(() -> {
+      driveSubsystem.rawDrive(Constants.autoSpeed, Constants.autoSpeed);
+    }).andThen(new WaitCommand(Constants.autoTime)).andThen(() -> {
+      driveSubsystem.stop();
+    });
+    */
   }
 }

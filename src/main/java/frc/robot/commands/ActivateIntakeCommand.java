@@ -6,14 +6,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Constants;
+import frc.robot.ConstantsForMainRobot;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class ActivateIntakeCommand extends CommandBase {
   private final IntakeSubsystem intake;
+  private final Joystick gamepad;
 
   /** Creates a new ActivateIntakeCommand. */
-  public ActivateIntakeCommand(IntakeSubsystem subsystem) {
+  public ActivateIntakeCommand(IntakeSubsystem subsystem, Joystick gamepad) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.gamepad = gamepad;
     addRequirements(subsystem);
     intake = subsystem;
   }
@@ -27,13 +31,18 @@ public class ActivateIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.motorOn();
+    if(gamepad.getRawAxis(Constants.RT) > .2){
+      intake.motorOn();
+    }
+    else{
+      intake.motorOff();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.motorOff();
+    
   }
 
   // Returns true when the command should end.
