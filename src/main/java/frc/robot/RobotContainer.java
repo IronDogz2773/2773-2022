@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -179,6 +180,35 @@ public class RobotContainer {
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
     NetworkTableEntry highGoalEntry = copilotTable.getEntry("high_goal");
+    NetworkTableEntry manualDistanceEntry = copilotTable.getEntry("manualDistance");
+
+    POVButton manualUpButton = new POVButton(gamepadCopilot, 0);
+    Command manualUpButtonCommand = new CommandBase(){
+      @Override
+      public void initialize(){
+        manualDistanceEntry.setDouble(manualDistanceEntry.getDouble(0) + 1);
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+    manualUpButton.whenPressed(manualUpButtonCommand);
+
+    POVButton manualDownButton = new POVButton(gamepadCopilot, 180);
+    Command manualDownButtonCommand = new CommandBase(){
+      @Override
+      public void initialize(){
+        manualDistanceEntry.setDouble(manualDistanceEntry.getDouble(0) - 1);
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+    manualDownButton.whenPressed(manualDownButtonCommand);
 
     JoystickButton highGoalToggleButton = new JoystickButton(gamepadCopilot, Constants.LB);
     final Command highGoalToggleCommand = new CommandBase() {
