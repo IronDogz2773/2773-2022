@@ -65,13 +65,13 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     if (false) {
       distance = shooterTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
     } else {
-      distance = shooterTable.getEntry("manualDistance").getDouble(0);
+      distance = 3;
     }
     System.out.println(distance);
 
     if (distance < LUTOffset) {
-      frontRpm = 1000; // TODO check if it reaches low basket
-      backRpm = 1000;
+      frontRpm = 700; // TODO check if it reaches low basket
+      backRpm = 700;
     } else {
       if (distance > LUTOffset + LutOfRpms.length - 1) {
         distance = LUTOffset + LutOfRpms.length - 1;
