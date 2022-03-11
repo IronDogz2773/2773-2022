@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -90,6 +91,8 @@ public class RobotContainer {
   // ShotRpmCommand(shooterSubsystem, 1000, 1000);
 
   private final IndexCommand indexCommand = new IndexCommand(indexerSubsystem, gamepadPilot);
+
+
 
   // private static Joystick joystick = new Joystick(Constants.joystickPort);
   private static Joystick gamepadPilot = new Joystick(Constants.gamepadPortPilot);
@@ -178,7 +181,35 @@ public class RobotContainer {
     NetworkTableEntry turnVisionEntry = copilotTable.getEntry("turnVision");
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
-    NetworkTableEntry climbDirectionEntry = copilotTable.getEntry("climbDirection");
+    NetworkTableEntry manualDistanceEntry = copilotTable.getEntry("manualDistance");
+
+    POVButton manualUpButton = new POVButton(gamepadCopilot, 0);
+    Command manualUpButtonCommand = new CommandBase(){
+      @Override
+      public void initialize(){
+        manualDistanceEntry.setDouble(manualDistanceEntry.getDouble(0) + 1);
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+    manualUpButton.whenPressed(manualUpButtonCommand);
+
+    POVButton manualDownButton = new POVButton(gamepadCopilot, 180);
+    Command manualDownButtonCommand = new CommandBase(){
+      @Override
+      public void initialize(){
+        manualDistanceEntry.setDouble(manualDistanceEntry.getDouble(0) - 1);
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+    manualDownButton.whenPressed(manualDownButtonCommand);
 
     JoystickButton toggleTurnVisionButton = new JoystickButton(gamepadCopilot, Constants.A);
     final Command toggleTurnVisionCommand = new CommandBase() {

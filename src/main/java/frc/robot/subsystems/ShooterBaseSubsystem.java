@@ -20,14 +20,7 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
   private boolean vision;
 
   public ShooterBaseSubsystem() {
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("shooter");
-    NetworkTableEntry piDistanceEntry = table.getEntry("piDistance");
-    NetworkTableEntry manualDistanceEntry = table.getEntry("manualDistance");
-    piDistanceEntry.setDouble(0);
-    manualDistanceEntry.setDouble(0);
 
-    SmartDashboard.putBoolean("IsPiManual", vision);
   }
 
   public abstract void setRpm(double rpmFront, double rpmBack);
@@ -55,17 +48,17 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
   public void setNetworkRpm() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable shooterTable = inst.getTable("shooter");
     double distance;
     double frontRpm;
     double backRpm;
 
     NetworkTable coPilotTable = inst.getTable("coPilot");
+    NetworkTable piVisionTable = inst.getTable("pivision");
     vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
     if (false) {
-      distance = shooterTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
+      distance = piVisionTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
     } else {
-      distance = 10;
+      distance = coPilotTable.getEntry("manualDistance").getDouble(0);
     }
     System.out.println(distance);
 
