@@ -65,7 +65,7 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     if (false) {
       distance = shooterTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
     } else {
-      distance = 3;
+      distance = 10;
     }
     System.out.println(distance);
 
