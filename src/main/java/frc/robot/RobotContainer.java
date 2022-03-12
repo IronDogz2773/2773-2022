@@ -6,8 +6,6 @@ package frc.robot;
 
 import com.fasterxml.jackson.databind.node.DoubleNode;
 
-import org.ejml.simple.AutomaticSimpleMatrixConvert;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -365,9 +363,8 @@ public class RobotContainer {
       indexerSubsystem.motorOff();
     });
 
-    Command driveCommand = new CommandBase() {
+    Command driveCommand = new CommandBase(){
       private Timer timer = new Timer();
-      
 
       @Override
       public void initialize(){
@@ -376,30 +373,22 @@ public class RobotContainer {
         timer.start();
       }
 
-      @Override
-      public void execute(){
-        driveSubsystem.tankDriveVolts(5, 5);
-      }
-
-      @Override
-      public void end(boolean interrupted){
+      @Override 
+      public void end(boolean interrrupted){
         driveSubsystem.auto = false;
         driveSubsystem.stop();
+        timer.stop();
       }
 
       @Override
       public boolean isFinished(){
-        return timer.hasElapsed(5);
+        return timer.hasElapsed(1.5);
       }
     };
     
-    Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(() -> {
-      driveSubsystem.tankDriveVolts(1, 6);
-    }).andThen(new WaitCommand(5)).andThen(() -> {
-      driveSubsystem.stop();
-    });
+    Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(driveCommand);
 
-    return null;
+    return autoCommand;
     
   }
 }
