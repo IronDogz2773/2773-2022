@@ -6,11 +6,14 @@ package frc.robot;
 
 import com.fasterxml.jackson.databind.node.DoubleNode;
 
+import org.ejml.simple.AutomaticSimpleMatrixConvert;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.AutoShootBuilder;
@@ -326,9 +329,11 @@ public class RobotContainer {
     });
      return autoShootCommand;
      */
+     
 
 
     //one ball auto and taxi 
+    
     Command autoIntakeCommand = new CommandBase() {
       @Override
       public void initialize(){
@@ -341,7 +346,7 @@ public class RobotContainer {
       }
     };
 
-    Command autoShootCommand = new CommandBase() {
+    Command autoShootCommand0 = new CommandBase() {
       @Override
       public void initialize(){
         shooterSubsystem.setRpm(2150, 2150);
@@ -353,12 +358,48 @@ public class RobotContainer {
       }
     };
 
+    Command autoShootCommand = autoShootCommand0.andThen(() -> {
+      indexerSubsystem.motorOn();
+    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
+      shooterSubsystem.stop();
+      indexerSubsystem.motorOff();
+    });
+
+    Command driveCommand = new CommandBase() {
+      private Timer timer = new Timer();
+      
+
+      @Override
+      public void initialize(){
+        driveSubsystem.auto = true;
+        timer.reset();
+        timer.start();
+      }
+
+      @Override
+      public void execute(){
+        driveSubsystem.tankDriveVolts(5, 5);
+      }
+
+      @Override
+      public void end(boolean interrupted){
+        driveSubsystem.auto = false;
+        driveSubsystem.stop();
+      }
+
+      @Override
+      public boolean isFinished(){
+        return timer.hasElapsed(5);
+      }
+    };
+    
     Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(() -> {
-      driveSubsystem.rawDrive(.3, .3);
-    }).andThen(new WaitCommand(1.5)).andThen(() -> {
+      driveSubsystem.tankDriveVolts(1, 6);
+    }).andThen(new WaitCommand(5)).andThen(() -> {
       driveSubsystem.stop();
     });
 
-    return autoCommand;
+    return null;
+    
   }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +27,8 @@ public class DriveSubsystem extends SubsystemBase {
   // Differential drive
   private final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
+  public boolean auto = false;
+
   public DriveSubsystem() {
     leftMotors.setInverted(Constants.leftWheelsInverted);
     rightMotors.setInverted(Constants.rightWheelsInverted);
@@ -33,6 +36,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if(!auto) return;
+    leftMotors.set(.3);
+    rightMotors.set(.3);
     // This method will be called once per scheduler run
   }
 
@@ -42,6 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
+    if(auto) return;
     drive.tankDrive(leftSpeed, rightSpeed);
   }
 
@@ -50,15 +57,18 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   private static double clamp(double x, double min, double max) {
+
     return x < min ? min : x > max ? max : x;
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
+    if(auto) return;
     leftMotors.setVoltage(clamp(leftVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
     rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
   }
 
   public void stop() {
+    if(auto) return;
     leftMotors.stopMotor();
     rightMotors.stopMotor();
   }
