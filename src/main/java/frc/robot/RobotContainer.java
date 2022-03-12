@@ -23,6 +23,7 @@ import frc.robot.commands.TelescopingCommand;
 import frc.robot.commands.TurnDegreesCommand;
 import frc.robot.commands.HopperCommand;
 import frc.robot.commands.HopperForIndexCommand;
+import frc.robot.commands.IndexBackwardsCommand;
 import frc.robot.commands.IndexCommand;
 import frc.robot.commands.IndexTimedCommand;
 import frc.robot.commands.MultistepAutoBuilder;
@@ -172,6 +173,10 @@ public class RobotContainer {
       deployIntakeButton.whenPressed(deployIntakeCommand);
     }
 
+    final JoystickButton backwardsIndex = new JoystickButton(gamepadPilot, Constants.Y);
+    IndexBackwardsCommand indexBackwardsCommand = new IndexBackwardsCommand(indexerSubsystem);
+    backwardsIndex.whenHeld(indexBackwardsCommand);
+
     // CoPilot buttons
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable copilotTable = inst.getTable("coPilot");
@@ -180,23 +185,25 @@ public class RobotContainer {
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
     NetworkTableEntry climbDirectionEntry = copilotTable.getEntry("climbDirection");
 
-    JoystickButton toggleTurnVisionButton = new JoystickButton(gamepadCopilot, Constants.A);
-    final Command toggleTurnVisionCommand = new CommandBase() {
-      @Override
-      public void initialize() {
-        if (turnVisionEntry.getBoolean(true)) {
-          turnVisionEntry.setBoolean(false);
-        } else {
-          turnVisionEntry.setBoolean(true);
+    if(Constants.turnVision){
+      JoystickButton toggleTurnVisionButton = new JoystickButton(gamepadCopilot, Constants.A);
+      final Command toggleTurnVisionCommand = new CommandBase() {
+        @Override
+        public void initialize() {
+          if (turnVisionEntry.getBoolean(true)) {
+            turnVisionEntry.setBoolean(false);
+          } else {
+            turnVisionEntry.setBoolean(true);
+          }
         }
-      }
-
-      @Override
-      public boolean isFinished() {
-        return true;
-      }
-    };
-    toggleTurnVisionButton.whenPressed(toggleTurnVisionCommand);
+  
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+      };
+      toggleTurnVisionButton.whenPressed(toggleTurnVisionCommand);
+    }
 
     JoystickButton toggleDistanceVisionButton = new JoystickButton(gamepadCopilot, Constants.B);
     final Command toggleDistanceVisionCommand = new CommandBase() {
@@ -216,23 +223,25 @@ public class RobotContainer {
     };
     toggleDistanceVisionButton.whenPressed(toggleDistanceVisionCommand);
 
-    JoystickButton toggleProximityButton = new JoystickButton(gamepadCopilot, Constants.Y);
-    final Command toggleProximityCommand = new CommandBase() {
-      @Override
-      public void initialize() {
-        if (proximityEntry.getBoolean(true)) {
-          proximityEntry.setBoolean(false);
-        } else {
-          proximityEntry.setBoolean(true);
+    if(Constants.proximity){
+      JoystickButton toggleProximityButton = new JoystickButton(gamepadCopilot, Constants.Y);
+      final Command toggleProximityCommand = new CommandBase() {
+        @Override
+        public void initialize() {
+          if (proximityEntry.getBoolean(true)) {
+            proximityEntry.setBoolean(false);
+          } else {
+            proximityEntry.setBoolean(true);
+          }
         }
-      }
-
-      @Override
-      public boolean isFinished() {
-        return true;
-      }
-    };
-    toggleProximityButton.whenPressed(toggleProximityCommand);
+  
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+      };
+      toggleProximityButton.whenPressed(toggleProximityCommand);
+    }
 
     JoystickButton toggleClimbDirectionButton = new JoystickButton(gamepadCopilot, Constants.RB);
     final Command toggleClimbDirectionCommand = new CommandBase() {
@@ -296,8 +305,25 @@ public class RobotContainer {
     */
 
     //one ball auto
-    return new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build();
+    Command shootCommand = new CommandBase() {
+      @Override
+      public void initialize(){
+        shooterSubsystem.setRpm(2100, 2100);
+      }
 
+      @Override
+      public boolean isFinished(){
+        return shooterSubsystem.atSetpoint();
+      }
+    };
+
+    Command autoShootCommand = shootCommand.andThen(() -> {
+      indexerSubsystem.motorOn();
+    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
+      shooterSubsystem.stop();
+      indexerSubsystem.motorOff();
+    });
+     return autoShootCommand;
     //one ball auto and taxi 
     /*
     Command autoShoot = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build()

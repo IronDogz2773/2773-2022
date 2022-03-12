@@ -39,11 +39,11 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
 
   /** Creates a new ShooterSubsystem. */
   public ShooterMainSubsystem() {
-    pidBack.setSetpoint(rpmFront);
+    pidFront.setSetpoint(rpmFront);
     pidFront.setTolerance(30);
 
     pidBack.setSetpoint(rpmBack);
-    pidFront.setTolerance(30);
+    pidBack.setTolerance(30);
 
     frontMotor.setInverted(true);
     backMotor.setInverted(true);
@@ -67,6 +67,7 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
     viaPid = true;
     this.rpmBack = rpmBack;
     this.rpmFront = rpmFront;
+    DriverStation.reportWarning("----" +rpmBack + " " + rpmFront, false);
 
     pidFront.setSetpoint(rpmFront);
     pidBack.setSetpoint(rpmBack);

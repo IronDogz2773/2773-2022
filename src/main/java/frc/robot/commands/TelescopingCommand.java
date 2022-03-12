@@ -25,22 +25,27 @@ public class TelescopingCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+   
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(gamepad.getRawAxis(Constants.LT) > .2 && !telescope.leftAtSetpoint()){
+    var noProtection = gamepad.getPOV() == 90;
+    if(gamepad.getRawAxis(Constants.LT) > .2 && 
+       (noProtection || !telescope.leftAtSetpoint())){
       telescope.leftMotorOn();
+      if (noProtection) telescope.resetDistance();
     }
     else{
       telescope.leftMotorOff();
     }
 
     
-    if(gamepad.getRawAxis(Constants.RT) > .2 && !telescope.rightAtSetpoint()){
+    if(gamepad.getRawAxis(Constants.RT) > .2 &&
+     (noProtection || !telescope.leftAtSetpoint())){
       telescope.rightMotorOn();
+      if (noProtection) telescope.resetDistance();
     }
     else{
       telescope.rightMotorOff();

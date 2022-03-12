@@ -38,7 +38,7 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
 
   @Override
   public void reverseMotor() {
-     speed = -speed;
+     speed = .5;
   }
 }
 

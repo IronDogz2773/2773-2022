@@ -16,6 +16,9 @@ public class ConstantsForMainRobot {
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
 
+    public static final boolean turnVision = false;
+    public static final boolean proximity = false;
+
     //speeds for drivetrain
     public static final double speedFactorSlow = 1.0 / 3.0;
     public static final double speedFactorFast = 2.0 / 3.0;
@@ -30,7 +33,7 @@ public class ConstantsForMainRobot {
     public static final int distanceSensorPin = 5;
 
     public static final double indexTime = 1; //TODO change this value for main robot
-    public static final double reverseIndexTime = .3;
+    public static final double reverseIndexTime = .1;
 
     // Pneumatics
     public static final int intakePneumaticsController = 0;

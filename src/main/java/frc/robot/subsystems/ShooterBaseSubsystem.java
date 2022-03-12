@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,22 +57,32 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
   public void setNetworkRpm() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable shooterTable = inst.getTable("shooter");
+    NetworkTable piVisionTable = inst.getTable("pivision");
     double distance;
     double frontRpm;
     double backRpm;
 
     NetworkTable coPilotTable = inst.getTable("coPilot");
     vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
+    distance = 8;
+
+    /*
     if (false) {
-      distance = shooterTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
-    } else {
-      distance = shooterTable.getEntry("manualDistance").getDouble(0);
+      distance = piVisionTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
     }
-    System.out.println(distance);
+    else {
+      if(coPilotTable.getEntry("auto").getBoolean(false)){
+        distance = 3;
+      }
+      else{
+        distance = 3;
+      }
+    }
+    */
 
     if (distance < LUTOffset) {
-      frontRpm = 1000; // TODO check if it reaches low basket
-      backRpm = 1000;
+      frontRpm = 2000; // TODO check if it reaches low basket
+      backRpm = 2000;
     } else {
       if (distance > LUTOffset + LutOfRpms.length - 1) {
         distance = LUTOffset + LutOfRpms.length - 1;
