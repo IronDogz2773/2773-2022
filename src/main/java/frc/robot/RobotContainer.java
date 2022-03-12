@@ -305,6 +305,7 @@ public class RobotContainer {
     */
 
     //one ball auto
+    /*
     Command shootCommand = new CommandBase() {
       @Override
       public void initialize(){
@@ -324,14 +325,40 @@ public class RobotContainer {
       indexerSubsystem.motorOff();
     });
      return autoShootCommand;
+     */
+
+
     //one ball auto and taxi 
-    /*
-    Command autoShoot = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem, indexerSubsystem, Constants.dosShooter).build()
-    return autoShoot.andThen(() -> {
-      driveSubsystem.rawDrive(Constants.autoSpeed, Constants.autoSpeed);
-    }).andThen(new WaitCommand(Constants.autoTime)).andThen(() -> {
+    Command autoIntakeCommand = new CommandBase() {
+      @Override
+      public void initialize(){
+        intakeSubsystem.retractIntake();
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+
+    Command autoShootCommand = new CommandBase() {
+      @Override
+      public void initialize(){
+        shooterSubsystem.setRpm(2150, 2150);
+      }
+
+      @Override
+      public boolean isFinished(){
+        return shooterSubsystem.atSetpoint();
+      }
+    };
+
+    Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(() -> {
+      driveSubsystem.rawDrive(.3, .3);
+    }).andThen(new WaitCommand(1.5)).andThen(() -> {
       driveSubsystem.stop();
     });
-    */
+
+    return autoCommand;
   }
 }
