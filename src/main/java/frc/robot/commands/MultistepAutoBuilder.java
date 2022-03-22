@@ -51,16 +51,19 @@ public class MultistepAutoBuilder {
     }
 
     private Command plan1() { // 
+        return null;
+        /*
         Command plan1Command; // creates blank command
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual).build(); // creates autoshoot command
+        //Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, hopper, Constants.manual).build(); // creates autoshoot command
         Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build(); // creates path to run
-        Command turnCommand = new TurnDegreesCommand(nav, drive, 2); // creates command
-        plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand); // creates entire command, in order of creation
+        //Command turnCommand = new TurnDegreesCommand(nav, drive, 2); // creates command
+        //plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand); // creates entire command, in order of creation
         return plan1Command;
+        */
     }
 
     private Command plan2() {
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual).build();
-        return autoShootCommand;
+        //Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual).build();
+        return null; //TODO fix
     }
 }

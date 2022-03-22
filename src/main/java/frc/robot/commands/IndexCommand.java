@@ -13,12 +13,12 @@ import frc.robot.subsystems.ShooterBaseSubsystem;
 public class IndexCommand extends CommandBase {
   private final IndexerBaseSubsystem index;
   private final Joystick gamepad;
+  public boolean shoot = false;
 
   /** Creates a new IndexCommand. */
   public IndexCommand(IndexerBaseSubsystem index, Joystick gamepad) {
     this.index = index;
     this.gamepad = gamepad;
-    addRequirements(index);
     // Use addRequirements() here to declare subsystem dependencies.
 
   }
@@ -30,7 +30,7 @@ public class IndexCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute(){
     index.motorOn();
   }
 

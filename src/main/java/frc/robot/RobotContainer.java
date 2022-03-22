@@ -165,7 +165,7 @@ public class RobotContainer {
     // LB pressed, firing sequence
     final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
     final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
-        indexerSubsystem, Constants.manual).build();
+        indexerSubsystem, hopperSubsystem, Constants.manual).build();
     firingTrigger.whenPressed(fireCommand, true); // TODO change to held
 
     if (Constants.intakePresent) {

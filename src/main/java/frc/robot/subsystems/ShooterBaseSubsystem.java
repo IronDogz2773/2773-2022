@@ -64,7 +64,7 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
     NetworkTable coPilotTable = inst.getTable("coPilot");
     vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
-    distance = 8;
+    distance = 3;
 
     /*
     if (false) {
@@ -81,8 +81,8 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     */
 
     if (distance < LUTOffset) {
-      frontRpm = 2000; // TODO check if it reaches low basket
-      backRpm = 2000;
+      frontRpm = 2150; // TODO check if it reaches low basket
+      backRpm = 2150;
     } else {
       if (distance > LUTOffset + LutOfRpms.length - 1) {
         distance = LUTOffset + LutOfRpms.length - 1;
