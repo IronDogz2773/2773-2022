@@ -12,11 +12,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class HopperSubsystem extends SubsystemBase {
-  //
+  //specific motors 
   private final CANSparkMax leftHopperCAN = new CANSparkMax(Constants.leftHopperCANID, MotorType.kBrushless);
   private final CANSparkMax rightHopperCAN = new CANSparkMax(Constants.rightHopperCANID, MotorType.kBrushless);
+
+  //motor group
   private final MotorControllerGroup motors = new MotorControllerGroup(leftHopperCAN, rightHopperCAN);
 
+  //starts speed at 0
   private double speed = 0;
 
   /** Creates a new ConveyorSubsystem. */

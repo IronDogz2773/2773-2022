@@ -327,7 +327,7 @@ public class RobotContainer {
       }
     };
 
-    // runs the indexer
+    // runs the indexer and then stop indexer and shooter
     Command autoShootCommand = autoShootCommand0.andThen(() -> {
       indexerSubsystem.motorOn();
     }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
