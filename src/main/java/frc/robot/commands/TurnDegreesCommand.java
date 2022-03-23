@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//TODO check to see if this works right now
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -77,8 +79,8 @@ public class TurnDegreesCommand extends CommandBase {
     // boolean present = presentEntry.getBoolean(false);
     // // if there is no angle on screen, no angle/0 angle
     // if (!present) {
-    //   lastAngleFromNT = 0;
-    //   return 0;
+    // lastAngleFromNT = 0;
+    // return 0;
     // }
 
     NetworkTableEntry angleEntry = table.getEntry("retro_average_x");
@@ -103,10 +105,9 @@ public class TurnDegreesCommand extends CommandBase {
       drive.tankDriveVolts(rotation, -rotation);
     } else {
       double angle = getNetworkTableAngle();
-      if(angle != 0){
+      if (angle != 0) {
         resetPid(angle);
-      }
-      else{
+      } else {
         drive.stop();
       }
     }

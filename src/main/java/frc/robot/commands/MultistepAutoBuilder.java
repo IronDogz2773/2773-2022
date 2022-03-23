@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.security.cert.TrustAnchor;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -13,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerBaseSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
@@ -23,13 +22,15 @@ public class MultistepAutoBuilder {
     private final NavigationSubsystem nav;
     private final ShooterBaseSubsystem shooter;
     private final IndexerBaseSubsystem indexer;
+    private final HopperSubsystem hopper;
 
     public MultistepAutoBuilder(DriveSubsystem drive, NavigationSubsystem nav, ShooterBaseSubsystem shooter,
-            IndexerBaseSubsystem indexer) {
+            IndexerBaseSubsystem indexer, HopperSubsystem hopper) {
         this.drive = drive;
         this.nav = nav;
         this.shooter = shooter;
         this.indexer = indexer;
+        this.hopper = hopper;
     }
 
     public Command build() {
@@ -39,31 +40,25 @@ public class MultistepAutoBuilder {
 
         int gameplan = gameplanEntry.getNumber(0).intValue();
 
+        // changes autonomous path based on gameplan
         switch (gameplan) {
             case 1:
                 return plan1();
-            case 2:
-                return plan2();
             default:
-                PathCommandBuilder builder = new PathCommandBuilder(drive, nav);
-                return builder.build();
+                return null;
         }
     }
 
-    private Command plan1() { // 
-        return null;
-        /*
+    private Command plan1() {
         Command plan1Command; // creates blank command
-        //Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, hopper, Constants.manual).build(); // creates autoshoot command
-        Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build(); // creates path to run
-        //Command turnCommand = new TurnDegreesCommand(nav, drive, 2); // creates command
-        //plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand); // creates entire command, in order of creation
-        return plan1Command;
-        */
-    }
-
-    private Command plan2() {
-        //Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, Constants.manual).build();
-        return null; //TODO fix
+        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, hopper, Constants.encoder)
+                .build(); // creates autoshoot command
+        Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build(); // creates path to
+                                                                                                      // run
+        Command turnCommand = new TurnDegreesCommand(nav, drive, 2); // creates command
+        plan1Command = new SequentialCommandGroup(autoShootCommand, turnCommand, pathCommand); // creates entire
+                                                                                               // command, in order of
+                                                                                               // creation
+        return null;
     }
 }

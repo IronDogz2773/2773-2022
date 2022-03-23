@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
 
+  // specific drive motors
   private final CANSparkMax leftForMotor = new CANSparkMax(Constants.leftForWheelsCANID, Constants.motorType);
   private final CANSparkMax rightForMotor = new CANSparkMax(Constants.rightForWheelsCANID, Constants.motorType);
   private final CANSparkMax leftBackMotor = new CANSparkMax(Constants.leftBackWheelsCANID, Constants.motorType);
@@ -27,6 +27,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Differential drive
   private final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
+  // if in autonomous mode
   public boolean auto = false;
 
   public DriveSubsystem() {
@@ -34,9 +35,11 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotors.setInverted(Constants.rightWheelsInverted);
   }
 
+  // in auto, set motor speed to .3
   @Override
   public void periodic() {
-    if(!auto) return;
+    if (!auto)
+      return;
     leftMotors.set(.3);
     rightMotors.set(.3);
     // This method will be called once per scheduler run
@@ -47,28 +50,30 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  // if not in auto, set tankdrive speed
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
-    if(auto) return;
+    if (auto)
+      return;
     drive.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void driveToggle(){
-    
-  }
-
+  // clamps between min and max
   private static double clamp(double x, double min, double max) {
-
     return x < min ? min : x > max ? max : x;
   }
 
+  // if not in auto, set voltage, clamped to min and max
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    if(auto) return;
+    if (auto)
+      return;
     leftMotors.setVoltage(clamp(leftVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
     rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
   }
 
+  // if not in auto, stop motors
   public void stop() {
-    if(auto) return;
+    if (auto)
+      return;
     leftMotors.stopMotor();
     rightMotors.stopMotor();
   }

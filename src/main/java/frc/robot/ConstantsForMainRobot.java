@@ -16,6 +16,7 @@ public class ConstantsForMainRobot {
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
 
+    // using turnvision or proximity sensor
     public static final boolean turnVision = false;
     public static final boolean proximity = false;
 
@@ -24,8 +25,7 @@ public class ConstantsForMainRobot {
     public static final double speedFactorFast = 2.0 /3.0;
 
     // autonomous shooting checks
-    public static final boolean manual = false;
-    public static final boolean vision = false;
+    public static final boolean encoder = true; 
 
     // 2 motor shooter
     public static final boolean dosShooter = true;

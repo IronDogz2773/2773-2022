@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants;
-import frc.robot.ConstantsForMainRobot;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class ActivateIntakeCommand extends CommandBase {
@@ -31,10 +30,10 @@ public class ActivateIntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(gamepad.getRawAxis(Constants.RT) > .2){
+    // if right trigger held past buffer zone of .2, intake on. else, intake off
+    if (gamepad.getRawAxis(Constants.RT) > .2) {
       intake.motorOn();
-    }
-    else{
+    } else {
       intake.motorOff();
     }
   }
@@ -42,7 +41,7 @@ public class ActivateIntakeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+
   }
 
   // Returns true when the command should end.

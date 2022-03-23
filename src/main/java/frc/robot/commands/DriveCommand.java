@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DistanceSystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.NavigationSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -30,16 +29,18 @@ public class DriveCommand extends CommandBase {
   public DriveCommand(DriveSubsystem drive, DistanceSystem distance, Joystick gamepad) {
     this.drive = drive;
     this.distance = distance;
+    this.gamepad = gamepad;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
-    this.gamepad = gamepad;
   }
 
+  // toggles slowmode
   public void toggleSlowMode() {
     isSlow = !isSlow;
     updateStatus();
   }
 
+  // toggles direction
   public void toggleDirection() {
     isForward = !isForward;
     updateStatus();
@@ -51,6 +52,8 @@ public class DriveCommand extends CommandBase {
     updateStatus();
   }
 
+  // updates status in network table for whether it is slow or fast, and forward
+  // or reverse
   private void updateStatus() {
     NetworkTableInstance instance = NetworkTableInstance.getDefault();
     NetworkTable table = instance.getTable("drive");
@@ -67,10 +70,14 @@ public class DriveCommand extends CommandBase {
   public void execute() {
 
     // negation here might have broken code idk we couldnt test
-    double leftSpeed = -gamepad.getRawAxis(Constants.lStickY) * (isSlow ? Constants.speedFactorSlow : Constants.speedFactorFast);
-    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY) * (isSlow ? Constants.speedFactorSlow : Constants.speedFactorFast);
+    // slow or fast speed times joystick
+    double leftSpeed = -gamepad.getRawAxis(Constants.lStickY)
+        * (isSlow ? Constants.speedFactorSlow : Constants.speedFactorFast);
+    double rightSpeed = -gamepad.getRawAxis(Constants.rStickY)
+        * (isSlow ? Constants.speedFactorSlow : Constants.speedFactorFast);
 
-    if(isForward){ 
+    // acounts for direction
+    if (isForward) {
       double t = leftSpeed;
       leftSpeed = -rightSpeed;
       rightSpeed = -t;
@@ -80,6 +87,7 @@ public class DriveCommand extends CommandBase {
     NetworkTable table = inst.getTable("coPilot");
     boolean proximity = table.getEntry("proximity").getBoolean(false);
 
+    // if using proximity sensor, moving, and too close to something, stop
     if ((leftSpeed > 0 || rightSpeed > 0) && distance.tooCloseToWall() && proximity) {
       drive.stop();
       return;

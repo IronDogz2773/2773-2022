@@ -21,6 +21,7 @@ public class DeployIntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // toggle. if intake is deployed, retract. else, deploy
     if (intake.isDeployed() == false) {
       intake.deployIntake();
     } else {
@@ -36,12 +37,13 @@ public class DeployIntakeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // ends immediatly
     return true;
   }
 }

@@ -4,36 +4,42 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.HopperSubsystem;
 
-/** Funnels the ball from the intake to the indexer */
 public class HopperCommand extends CommandBase {
   private final HopperSubsystem hopper;
+  private final Joystick gamepad;
 
-  /** Creates a new HopperCommand. */
-  public HopperCommand(HopperSubsystem subsystem) {
+  /** Creates a new HopperForIndexCommand. */
+  public HopperCommand(HopperSubsystem hopper, Joystick gamepad) {
+    this.hopper = hopper;
+    this.gamepad = gamepad;
+    addRequirements(hopper);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
-    hopper = subsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hopper.motorOn();
+    // if right trigger held past buffer zone of .2, hopper on. else, hopper off
+    if (gamepad.getRawAxis(Constants.RT) > .2) {
+      hopper.motorOn();
+    } else {
+      hopper.motorOff();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hopper.motorOff();
   }
 
   // Returns true when the command should end.

@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -24,31 +23,32 @@ public class AutoShootBuilder {
   private final NavigationSubsystem nav;
   private final IndexerBaseSubsystem indexer;
   private final HopperSubsystem hopper;
-  private final boolean oneWheelShoot;
+  private final boolean encoder;
   private boolean vision;
 
   /** Creates a new AutoShootBuilder. */
   public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav,
-      IndexerBaseSubsystem indexer, HopperSubsystem hopper, boolean oneWheelShoot) {
+      IndexerBaseSubsystem indexer, HopperSubsystem hopper, boolean encoder) {
     this.shooter = shooter;
     this.drive = drive;
     this.nav = nav;
     this.indexer = indexer;
     this.hopper = hopper;
-    this.oneWheelShoot = oneWheelShoot;
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.encoder = encoder;
   }
 
   public Command build() {
-    // creates a shootcommand using speed if we don't have an encoder, or rpm if we
-    // do
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+    // get copilot table
     NetworkTable table = inst.getTable("coPilot");
     NetworkTableEntry visionEntry = table.getEntry("turnVision");
     vision = visionEntry.getBoolean(false);
-    
+
+    // creates shotcommand using speed if encoder is not present, using shoot
+    // command (with rpm) if it is
     Command shootCommand;
-    if (oneWheelShoot) {
+    if (!encoder) {
       shootCommand = new CommandBase() {
         @Override
         public void initialize() {
@@ -78,9 +78,10 @@ public class AutoShootBuilder {
       };
     }
 
-    // calls vision command, reverses ball briefly to prevent getting caught in flywheel,
-    //shoot command, pulls indexer up to touch ball to
-    // flywheel, wait for a second, then releases indexer
+    // calls vision command, reverses ball briefly to prevent getting caught in
+    // flywheel,
+    // shoot command, pulls indexer up to touch ball to
+    // flywheel, wait for a second, then turn off indexer and shooter
     Command autoShootCommand = visionCommand.andThen(() -> {
       hopper.motorOn();
       indexer.reverseMotor();

@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
+    //sets upPivison table
     NetworkTable piTable = inst.getTable("pivision");
     NetworkTableEntry angleEntry = piTable.getEntry("red_1_x");
     NetworkTableEntry onScreenEntry = piTable.getEntry("red_1_present");
@@ -42,15 +43,11 @@ public class Robot extends TimedRobot {
     angleEntry.setDouble(0.0);
     onScreenEntry.setBoolean(false);
 
+    // sets up copilot table
     NetworkTable copilotTable = inst.getTable("coPilot");
     NetworkTableEntry turnVisionEntry = copilotTable.getEntry("turnVision");
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
-    NetworkTableEntry front = copilotTable.getEntry("front");
-    NetworkTableEntry back = copilotTable.getEntry("back");
-
-    back.setDouble(0);
-    front.setDouble(0);
 
     turnVisionEntry.setBoolean(false);
     distanceVisionEntry.setBoolean(false);

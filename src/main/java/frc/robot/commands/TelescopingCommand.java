@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.ConstantsForMainRobot;
 import frc.robot.subsystems.TelescopingSubsystem;
 
 public class TelescopingCommand extends CommandBase {
@@ -32,20 +31,21 @@ public class TelescopingCommand extends CommandBase {
   @Override
   public void execute() {
     var noProtection = gamepad.getPOV() == 90;
+    //if left trigger pressed past buffer zone of .2, and either has no protection or isn't at the setpoint: move the left motor
     if(gamepad.getRawAxis(Constants.LT) > .2 && 
        (noProtection || !telescope.leftAtSetpoint())){
       telescope.leftMotorOn();
-      if (noProtection) telescope.resetDistance();
+      if (noProtection) telescope.resetDistance(); //constantly resets encoders for left motor if no protection
     }
     else{
       telescope.leftMotorOff();
     }
 
-    
+    //if right trigger pressed past buffer zone of .2, and either has no protection or isn't at the setpoint: move the right motor
     if(gamepad.getRawAxis(Constants.RT) > .2 &&
      (noProtection || !telescope.leftAtSetpoint())){
       telescope.rightMotorOn();
-      if (noProtection) telescope.resetDistance();
+      if (noProtection) telescope.resetDistance(); //constantly resets encoders for right motor if no protection
     }
     else{
       telescope.rightMotorOff();
