@@ -66,8 +66,7 @@ public class NavigationSubsystem extends SubsystemBase implements DistanceSystem
   }
 
   public double getGyroAngle() {
-    // the gyro is upsidedown
-    return -gyroscope.getAngle();
+    return gyroscope.getAngle();
   }
 
   public Pose2d getPose() {
