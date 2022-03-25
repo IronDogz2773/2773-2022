@@ -27,22 +27,14 @@ public class DriveSubsystem extends SubsystemBase {
   // Differential drive
   private final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
-  // if in autonomous mode
-  public boolean auto = false;
-
   public DriveSubsystem() {
     leftMotors.setInverted(Constants.leftWheelsInverted);
     rightMotors.setInverted(Constants.rightWheelsInverted);
   }
 
-  // in auto, set motor speed to .3
   @Override
   public void periodic() {
-    if (!auto)
-      return;
-    leftMotors.set(.3);
-    rightMotors.set(.3);
-    // This method will be called once per scheduler run
+
   }
 
   @Override
@@ -50,10 +42,8 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  // if not in auto, set tankdrive speed
+  // set tankdrive speed
   public void rawDrive(final double leftSpeed, final double rightSpeed) {
-    if (auto)
-      return;
     drive.tankDrive(leftSpeed, rightSpeed);
   }
 
@@ -62,18 +52,14 @@ public class DriveSubsystem extends SubsystemBase {
     return x < min ? min : x > max ? max : x;
   }
 
-  // if not in auto, set voltage, clamped to min and max
+  // set voltage, clamped to min and max
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    if (auto)
-      return;
     leftMotors.setVoltage(clamp(leftVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
     rightMotors.setVoltage(clamp(rightVolts, -Constants.maxMotorVolts, Constants.maxMotorVolts));
   }
 
-  // if not in auto, stop motors
+  // stop motors
   public void stop() {
-    if (auto)
-      return;
     leftMotors.stopMotor();
     rightMotors.stopMotor();
   }

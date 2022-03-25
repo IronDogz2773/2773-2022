@@ -16,6 +16,7 @@ import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.AutoShootBuilder;
 import frc.robot.commands.DeployIntakeCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveStraightForTimeCommand;
 import frc.robot.commands.ShotCommand;
 import frc.robot.commands.TelescopingCommand;
 import frc.robot.commands.TurnDegreesCommand;
@@ -341,28 +342,7 @@ public class RobotContainer {
     });
 
     // drives for an amount of time
-    Command driveCommand = new CommandBase() {
-      private Timer timer = new Timer();
-
-      @Override
-      public void initialize() {
-        driveSubsystem.auto = true;
-        timer.reset();
-        timer.start();
-      }
-
-      @Override
-      public void end(boolean interrrupted) {
-        driveSubsystem.auto = false;
-        driveSubsystem.stop();
-        timer.stop();
-      }
-
-      @Override
-      public boolean isFinished() {
-        return timer.hasElapsed(1.5);
-      }
-    };
+    Command driveCommand = new DriveStraightForTimeCommand(driveSubsystem, .3, 1.5);
 
     // retracts intake, sets RPM, runs indexer, turns off shooter and index, drives
     // an amount of time
