@@ -43,5 +43,5 @@ public final class Constants extends ConstantsForMainRobot {
 
     public static final double turnCmdTimeOut = 2;
 
-    public static final double topGoalHeight = 8.66666; //value in feet
+    public static final double topGoalHeight = 8.66666; //n feet
 }

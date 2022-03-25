@@ -12,5 +12,7 @@ public abstract class IndexerBaseSubsystem extends SubsystemBase {
   public abstract void motorOff();
 
   public abstract void reverseMotor();
+
+  public abstract boolean ballTooCloseToShooter();
 }
 

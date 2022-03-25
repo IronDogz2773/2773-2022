@@ -7,10 +7,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 
 public class IndexerMainSubsystem extends IndexerBaseSubsystem {
   private final CANSparkMax indexMotor = new CANSparkMax(Constants.indexerCANID, MotorType.kBrushless);
+  private final DigitalInput irSensor = new DigitalInput(Constants.irSensorPin);
+
 
   private double speed = 0;
 
@@ -20,11 +23,12 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
   @Override
   public void periodic() {
     indexMotor.set(speed);
+    System.out.println(irSensor.get());
   }
 
   @Override
   public void motorOn() {
-    speed = -1;
+    speed = -.75;
     }
 
   @Override
@@ -34,6 +38,11 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
 
   public void setSpeed(double speed){
     this.speed = speed;
+  }
+
+  @Override
+  public boolean ballTooCloseToShooter(){
+    return irSensor.get();
   }
 
   @Override

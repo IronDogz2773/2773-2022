@@ -6,10 +6,13 @@
   "Table": {
     "open": true
   },
-  "coPilot": {
+  "pivision": {
     "open": true
   },
   "troubleshooting_v": {
+    "open": true
+  },
+  "turn": {
     "open": true
   }
 }

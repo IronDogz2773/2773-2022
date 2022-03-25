@@ -11,10 +11,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 /** Constants for MainRobot */
 public class ConstantsForMainRobot {
     // Presence of subsystems
-    public static final boolean climberPresent = true;
+    public static final boolean climberPresent = false;
     public static final boolean indexerPresent = true;
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
+    public static final boolean irPresent = true;
 
     // using turnvision or proximity sensor
     public static final boolean turnVision = false;
@@ -31,6 +32,7 @@ public class ConstantsForMainRobot {
     public static final boolean dosShooter = true;
 
     public static final int distanceSensorPin = 5;
+    public static final int irSensorPin = 8;
 
     public static final double indexTime = 1; //TODO change this value for main robot
     public static final double reverseIndexTime = .1;
@@ -91,9 +93,9 @@ public class ConstantsForMainRobot {
     public static final double kMaxSpeedMetersPerSecond = .6;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.3;
 
-    public static final double turnControllerP = 0.04;
+    public static final double turnControllerP = 0.05;
     public static final double turnControllerI = 0;
-    public static final double turnControllerD = 0;
+    public static final double turnControllerD = 0.0001;
 
     public static final double shooterControllerP = 0.00001;
     public static final double shooterControllerI = 0;

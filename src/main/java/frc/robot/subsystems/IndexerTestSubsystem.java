@@ -4,11 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants;
 
 public class IndexerTestSubsystem extends IndexerBaseSubsystem {
   private final Spark kicker = new Spark(Constants.kickerMotorPWMID);
+  private final DigitalInput irSensor = null;
 
   private double speed = 0;
 
@@ -28,6 +30,11 @@ public class IndexerTestSubsystem extends IndexerBaseSubsystem {
   @Override
   public void motorOff() {
      speed = 0;
+  }
+
+  @Override
+  public boolean ballTooCloseToShooter(){
+    return false;
   }
 
   @Override

@@ -173,6 +173,11 @@ public class RobotContainer {
     };
     directionButton.whenPressed(toggleDirectionCommand);
 
+    // B held, turn
+    final JoystickButton turnButton = new JoystickButton(gamepadPilot, Constants.B);
+    final TurnDegreesCommand turnCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, 5);
+    turnButton.whenHeld(turnCommand);
+
     // LB pressed, firing sequence
     final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
     final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
