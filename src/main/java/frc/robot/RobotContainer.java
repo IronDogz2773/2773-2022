@@ -55,8 +55,21 @@ public class RobotContainer {
   // Subsystems
   // some subsystems will be null if on the test or main robot
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final ShooterBaseSubsystem shooterSubsystem = Constants.dosShooter ? new ShooterMainSubsystem()
-      : new ShooterTestSubsystem();
+  private final ShooterBaseSubsystem shooterSubsystem = Constants.shooterPresent ? (Constants.dosShooter ? new ShooterMainSubsystem()
+      : new ShooterTestSubsystem()) : new ShooterBaseSubsystem() {
+
+        @Override
+        public void setRpm(double rpmFront, double rpmBack){}
+
+        @Override
+        public void setSpeed(double speedFront, double speedBack){}
+
+        @Override
+        public boolean atSetpoint(){return true;}
+
+        @Override
+        public void stop(){}
+      };
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
   private final HopperSubsystem hopperSubsystem = Constants.hopperPresent ? new HopperSubsystem() : null;
@@ -102,7 +115,9 @@ public class RobotContainer {
       telescopingSubsystem.setDefaultCommand(telescopingCommand);
     }
     intakeSubsystem.setDefaultCommand(activateIntakeCommand);
-    hopperSubsystem.setDefaultCommand(hopperCommand);
+    if(Constants.hopperPresent){
+      hopperSubsystem.setDefaultCommand(hopperCommand);
+    }
   }
 
   /**
@@ -180,10 +195,12 @@ public class RobotContainer {
     turnButton.whenHeld(turnCommand);
 
     // LB pressed, firing sequence
-    final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
-    final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
-        indexerSubsystem, hopperSubsystem, Constants.encoder).build();
-    firingTrigger.whenPressed(fireCommand, true); // TODO change to held
+    if(Constants.shooterPresent){
+      final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
+      final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
+          indexerSubsystem, hopperSubsystem, Constants.encoder).build();
+      firingTrigger.whenPressed(fireCommand, true); // TODO change to held
+    }
 
     // Select pressed, toggle intake pneumatic
     if (Constants.intakePresent) {
@@ -346,8 +363,8 @@ public class RobotContainer {
 
     // retracts intake, sets RPM, runs indexer, turns off shooter and index, drives
     // an amount of time
-    Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(driveCommand);
+    //Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(driveCommand);
 
-    return autoCommand;
+    return driveCommand;
   }
 }

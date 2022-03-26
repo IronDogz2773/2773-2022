@@ -12,9 +12,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public class ConstantsForMainRobot {
     // Presence of subsystems
     public static final boolean climberPresent = false;
-    public static final boolean indexerPresent = true;
-    public static final boolean hopperPresent = true;
+    public static final boolean indexerPresent = false;
+    public static final boolean hopperPresent = false;
     public static final boolean intakePresent = true;
+    public static final boolean shooterPresent = false;
     public static final boolean irPresent = true;
 
     // using turnvision or proximity sensor
