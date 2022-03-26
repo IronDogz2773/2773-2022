@@ -226,6 +226,8 @@ public class RobotContainer {
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
 
+
+
     // if bot using turnvision, and A pressed, toggle turnvision
     if (Constants.turnVision) {
       JoystickButton toggleTurnVisionButton = new JoystickButton(gamepadCopilot, Constants.A);
@@ -247,6 +249,8 @@ public class RobotContainer {
       toggleTurnVisionButton.whenPressed(toggleTurnVisionCommand);
     }
 
+
+
     // if B pressed, toggle distance vision
     JoystickButton toggleDistanceVisionButton = new JoystickButton(gamepadCopilot, Constants.B);
     final Command toggleDistanceVisionCommand = new CommandBase() {
@@ -265,6 +269,8 @@ public class RobotContainer {
       }
     };
     toggleDistanceVisionButton.whenPressed(toggleDistanceVisionCommand);
+
+
 
     // if Y pressed, toggle using proximity sensor
     if (Constants.proximity) {
@@ -286,6 +292,77 @@ public class RobotContainer {
       };
       toggleProximityButton.whenPressed(toggleProximityCommand);
     }
+      
+
+
+    // LB held, run all systems backwards, ejects ball out of intake
+    // TODO TEST THIS PLEASE IDK IF IT WORKS
+    final JoystickButton frontEjectButton = new JoystickButton(gamepadCopilot, Constants.LB);
+    Command frontEjectCommand = new CommandBase() {
+      {
+        addRequirements(intakeSubsystem, indexerSubsystem, hopperSubsystem);
+      }
+
+      // Called when the command is initially scheduled.
+      @Override
+      public void initialize() {
+        intakeSubsystem.reverseMotor();
+        indexerSubsystem.reverseMotor();
+        hopperSubsystem.reverseMotor();
+      }
+
+      // Called once the command ends or is interrupted.
+      @Override
+      public void end(boolean interrupted) {
+        intakeSubsystem.motorOff();
+        indexerSubsystem.motorOff();
+        hopperSubsystem.motorOff();
+      }
+
+      // Returns true when the command should end.
+      @Override
+      public boolean isFinished() {
+        return false;
+      }
+    };
+    frontEjectButton.whenHeld(frontEjectCommand);
+
+
+
+    // RB held, run all systems forwards, ejects out of intake at slow RPM
+    // TODO TEST THIS PLEASE IDK IF IT WORKS
+    final JoystickButton shootEjectButton = new JoystickButton(gamepadCopilot, Constants.RB);
+    Command shootEjectCommand = new CommandBase() {
+      {
+        addRequirements(intakeSubsystem, indexerSubsystem, hopperSubsystem, shooterSubsystem);
+      }
+
+      // Called when the command is initially scheduled.
+      @Override
+      public void initialize() {
+        intakeSubsystem.motorOn();
+        indexerSubsystem.motorOn();
+        hopperSubsystem.motorOn();
+        shooterSubsystem.setRpm(100, 100); // PLACEHOLDER
+      }
+
+      // Called once the command ends or is interrupted.
+      @Override
+      public void end(boolean interrupted) {
+        intakeSubsystem.motorOff();
+        indexerSubsystem.motorOff();
+        hopperSubsystem.motorOff();
+        shooterSubsystem.stop();
+      }
+
+      // Returns true when the command should end.
+      @Override
+      public boolean isFinished() {
+        return false;
+      }
+    };
+    shootEjectButton.whenHeld(shootEjectCommand);
+
   }
 
   // do nothing command for null commands on test and main bot

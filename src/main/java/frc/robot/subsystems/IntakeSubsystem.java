@@ -35,6 +35,10 @@ public class IntakeSubsystem extends SubsystemBase {
     speed = .5;
   }
 
+  public void reverseMotor() {
+    speed = -.5;
+  }
+
   public void motorOff() {
     speed = 0;
   }
