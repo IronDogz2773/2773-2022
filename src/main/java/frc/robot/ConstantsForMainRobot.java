@@ -25,6 +25,7 @@ public class ConstantsForMainRobot {
     //speeds for drivetrain
     public static final double speedFactorSlow = 1.0 / 3.0;
     public static final double speedFactorFast = .85;
+    
 
     // autonomous shooting checks
     public static final boolean encoder = true; 
