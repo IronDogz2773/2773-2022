@@ -30,6 +30,7 @@ import frc.robot.subsystems.IndexerMainSubsystem;
 import frc.robot.subsystems.IndexerTestSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsytem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.ShooterBaseSubsystem;
 import frc.robot.subsystems.ShooterMainSubsystem;
@@ -77,6 +78,7 @@ public class RobotContainer {
       : new IndexerTestSubsystem();
   private final TelescopingSubsystem telescopingSubsystem = Constants.climberPresent ? new TelescopingSubsystem()
       : null;
+  private final LEDSubsytem ledSubsytem = new LEDSubsytem();
 
   // Commands
   // some commands will do nothing if on test or main robot
@@ -362,6 +364,7 @@ public class RobotContainer {
         indexerSubsystem.motorOn();
         hopperSubsystem.motorOn();
         shooterSubsystem.setRpm(100, 100); // PLACEHOLDER
+        ledSubsytem.runTheRainbow(true);
       }
 
       // Called once the command ends or is interrupted.
@@ -371,6 +374,7 @@ public class RobotContainer {
         indexerSubsystem.motorOff();
         hopperSubsystem.motorOff();
         shooterSubsystem.stop();
+        ledSubsytem.runTheRainbow(false);
       }
 
       // Returns true when the command should end.
