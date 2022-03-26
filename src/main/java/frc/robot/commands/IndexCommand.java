@@ -12,7 +12,7 @@ public class IndexCommand extends CommandBase {
   private final IndexerBaseSubsystem index;
 
   /** Creates a new IndexCommand. */
-  public IndexCommand(IndexerBaseSubsystem index, Joystick gamepad) {
+  public IndexCommand(IndexerBaseSubsystem index) {
     this.index = index;
     addRequirements(index);
     // Use addRequirements() here to declare subsystem dependencies.

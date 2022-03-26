@@ -96,7 +96,7 @@ public class RobotContainer {
       ? new TelescopingCommand(telescopingSubsystem, gamepadCopilot)
       : doNothing();
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem);
-  private final IndexCommand indexCommand = new IndexCommand(indexerSubsystem, gamepadPilot);
+  private final IndexCommand indexCommand = new IndexCommand(indexerSubsystem);
 
   // Joysticks
   private static Joystick gamepadPilot = new Joystick(Constants.gamepadPortPilot);
@@ -198,7 +198,7 @@ public class RobotContainer {
     if(Constants.shooterPresent){
       final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
       final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
-          indexerSubsystem, hopperSubsystem, Constants.encoder).build();
+          indexerSubsystem, hopperSubsystem, Constants.encoder, true).build();
       firingTrigger.whenPressed(fireCommand, true); // TODO change to held
     }
 
@@ -325,46 +325,6 @@ public class RobotContainer {
     // one ball auto and taxi no pathweaver
 
     // retracts the intake and returns immediatly
-    Command autoIntakeCommand = new CommandBase() {
-      @Override
-      public void initialize() {
-        intakeSubsystem.retractIntake();
-      }
-
-      @Override
-      public boolean isFinished() {
-        return true;
-      }
-    };
-
-    // sets rpm to 2150 and returns when it reaches this value
-    Command autoShootCommand0 = new CommandBase() {
-      @Override
-      public void initialize() {
-        shooterSubsystem.setRpm(2150, 2150);
-      }
-
-      @Override
-      public boolean isFinished() {
-        return shooterSubsystem.atSetpoint();
-      }
-    };
-
-    // runs the indexer and then stop indexer and shooter
-    Command autoShootCommand = autoShootCommand0.andThen(() -> {
-      indexerSubsystem.motorOn();
-    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
-      shooterSubsystem.stop();
-      indexerSubsystem.motorOff();
-    });
-
-    // drives for an amount of time
-    Command driveCommand = new DriveStraightForTimeCommand(driveSubsystem, .3, 1.5);
-
-    // retracts intake, sets RPM, runs indexer, turns off shooter and index, drives
-    // an amount of time
-    //Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(driveCommand);
-
-    return driveCommand;
+    return null; //TODO multistep auto
   }
 }
