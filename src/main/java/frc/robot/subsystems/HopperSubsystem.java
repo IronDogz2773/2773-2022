@@ -38,9 +38,14 @@ public class HopperSubsystem extends SubsystemBase {
     speed = .5;
   }
 
+  public void reverseMotor() {
+    speed = -.5;
+  }
+
   public void motorOff() {
     speed = 0;
   }
+  
 
   public void motorToggle() {
     if (speed != 0) {
