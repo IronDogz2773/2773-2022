@@ -7,8 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -50,6 +52,9 @@ public class AutoShootBuilder {
     Command shootCommand;
     if (!encoder) {
       shootCommand = new CommandBase() {
+        {
+          addRequirements(shooter);
+        }
         @Override
         public void initialize() {
           shooter.setSpeed(.5);
@@ -82,14 +87,14 @@ public class AutoShootBuilder {
     // flywheel,
     // shoot command, pulls indexer up to touch ball to
     // flywheel, wait for a second, then turn off indexer and shooter
-    Command autoShootCommand = visionCommand.andThen(() -> {
+    Command autoShootCommand = visionCommand.andThen(new RunCommand(() -> {
       hopper.motorOn();
       indexer.reverseMotor();
-    }).andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(() -> {
+    }, indexer, hopper)).andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(new RunCommand(() -> {
       indexer.motorOff();
-    }).andThen(shootCommand).andThen(() -> {
+    }, indexer)).andThen(shootCommand).andThen(new RunCommand(() -> {
       indexer.motorOn();
-    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
+    }, indexer)).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
       shooter.stop();
       hopper.motorOff();
       indexer.motorOff();

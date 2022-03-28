@@ -361,7 +361,7 @@ public class RobotContainer {
         intakeSubsystem.motorOn();
         indexerSubsystem.motorOn();
         hopperSubsystem.motorOn();
-        shooterSubsystem.setRpm(100, 100); // PLACEHOLDER
+        shooterSubsystem.setRpm(100, 100); // TODO PLACEHOLDER
       }
 
       // Called once the command ends or is interrupted.
@@ -403,6 +403,10 @@ public class RobotContainer {
 
     // retracts the intake and returns immediatly
     Command autoIntakeCommand = new CommandBase() {
+      {
+        addRequirements(intakeSubsystem);
+      }
+
       @Override
       public void initialize() {
         intakeSubsystem.retractIntake();
@@ -416,6 +420,10 @@ public class RobotContainer {
 
     // sets rpm to 2150 and returns when it reaches this value
     Command autoShootCommand0 = new CommandBase() {
+      {
+        addRequirements(shooterSubsystem);
+      }
+
       @Override
       public void initialize() {
         shooterSubsystem.setRpm(2150, 2150);
