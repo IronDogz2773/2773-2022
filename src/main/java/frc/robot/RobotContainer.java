@@ -115,9 +115,11 @@ public class RobotContainer {
       telescopingSubsystem.setDefaultCommand(telescopingCommand);
     }
     intakeSubsystem.setDefaultCommand(activateIntakeCommand);
+    /*
     if(Constants.hopperPresent){
       hopperSubsystem.setDefaultCommand(hopperCommand);
     }
+    */
   }
 
   /**
@@ -361,7 +363,7 @@ public class RobotContainer {
         intakeSubsystem.motorOn();
         indexerSubsystem.motorOn();
         hopperSubsystem.motorOn();
-        shooterSubsystem.setRpm(100, 100); // TODO PLACEHOLDER
+        shooterSubsystem.setRpm(500, 500); // TODO PLACEHOLDER
       }
 
       // Called once the command ends or is interrupted.

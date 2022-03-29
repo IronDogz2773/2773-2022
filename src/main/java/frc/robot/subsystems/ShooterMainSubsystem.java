@@ -45,8 +45,8 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
     pidBack.setSetpoint(rpmBack);
     pidBack.setTolerance(30);
 
-    frontMotor.setInverted(true);
-    backMotor.setInverted(true);
+    frontMotor.setInverted(false);
+    backMotor.setInverted(false);
 
   }
 

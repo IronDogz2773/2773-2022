@@ -37,6 +37,8 @@ public class AutoShootBuilder {
     this.indexer = indexer;
     this.hopper = hopper;
     this.encoder = encoder;
+
+    System.out.println("PLEASE");
   }
 
   public Command build() {
@@ -50,7 +52,9 @@ public class AutoShootBuilder {
     // creates shotcommand using speed if encoder is not present, using shoot
     // command (with rpm) if it is
     Command shootCommand;
+    System.out.println("please");
     if (!encoder) {
+      System.out.println("manual shoot command scheduled");
       shootCommand = new CommandBase() {
         {
           addRequirements(shooter);
@@ -66,6 +70,7 @@ public class AutoShootBuilder {
         }
       }.andThen(new WaitCommand(1));
     } else {
+      System.out.println("shoot command scheduled");
       shootCommand = new ShotCommand(shooter);
     }
 
@@ -87,14 +92,14 @@ public class AutoShootBuilder {
     // flywheel,
     // shoot command, pulls indexer up to touch ball to
     // flywheel, wait for a second, then turn off indexer and shooter
-    Command autoShootCommand = visionCommand.andThen(new RunCommand(() -> {
+    Command autoShootCommand = visionCommand.andThen(() -> {
       hopper.motorOn();
       indexer.reverseMotor();
-    }, indexer, hopper)).andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(new RunCommand(() -> {
+    }).andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(() -> {
       indexer.motorOff();
-    }, indexer)).andThen(shootCommand).andThen(new RunCommand(() -> {
+    }).andThen(shootCommand).andThen(() -> {
       indexer.motorOn();
-    }, indexer)).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
+    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
       shooter.stop();
       hopper.motorOff();
       indexer.motorOff();

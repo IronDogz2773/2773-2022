@@ -44,7 +44,6 @@ public class NavigationSubsystem extends SubsystemBase implements DistanceSystem
   public void periodic() {
     // at start of each cycle, update rotation and encoders
     odometry.update(gyroscope.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
-    System.out.println("angle: " + gyroscope.getAngle());
 
     var table = NetworkTableInstance.getDefault().getTable("troubleshooting");
     var angle = table.getEntry("pose_a");

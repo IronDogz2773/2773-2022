@@ -12,10 +12,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public class ConstantsForMainRobot {
     // Presence of subsystems
     public static final boolean climberPresent = false;
-    public static final boolean indexerPresent = false;
-    public static final boolean hopperPresent = false;
+    public static final boolean indexerPresent = true;
+    public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
-    public static final boolean shooterPresent = false;
+    public static final boolean shooterPresent = true;
     public static final boolean irPresent = true;
 
     // using turnvision or proximity sensor
@@ -34,15 +34,15 @@ public class ConstantsForMainRobot {
     public static final boolean dosShooter = true;
 
     public static final int distanceSensorPin = 5;
-    public static final int irSensorPin = 8;
+    public static final int irSensorPin = 7;
 
     public static final double indexTime = 1; //TODO change this value for main robot
     public static final double reverseIndexTime = .1;
 
     // Pneumatics
     public static final int intakePneumaticsController = 0;
-    public static final int deploySolenoidPCM = 0;
-    public static final int retractSolenoidPCM = 1;
+    public static final int deploySolenoidPCM = 7;
+    public static final int retractSolenoidPCM = 6;
 
     // Motors
     // CANID - CAN SPARK MAX Motors

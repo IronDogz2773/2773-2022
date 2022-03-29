@@ -23,7 +23,6 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
   @Override
   public void periodic() {
     indexMotor.set(speed);
-    System.out.println(irSensor.get());
   }
 
   @Override
