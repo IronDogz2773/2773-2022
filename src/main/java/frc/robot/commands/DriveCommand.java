@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DistanceSystem;
+import frc.robot.subsystems.DriveCancellable;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -18,6 +19,7 @@ public class DriveCommand extends CommandBase {
   private final DriveSubsystem drive;
   private final DistanceSystem distance;
   private final Joystick gamepad;
+  private final DriveCancellable driveCancellable;
   private boolean isSlow = false;
   private boolean isForward = true;
 
@@ -26,10 +28,11 @@ public class DriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DriveSubsystem drive, DistanceSystem distance, Joystick gamepad) {
+  public DriveCommand(DriveSubsystem drive, DistanceSystem distance, Joystick gamepad, DriveCancellable driveCancellable) {
     this.drive = drive;
     this.distance = distance;
     this.gamepad = gamepad;
+    this.driveCancellable = driveCancellable;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
   }
@@ -91,6 +94,9 @@ public class DriveCommand extends CommandBase {
     if ((leftSpeed > 0 || rightSpeed > 0) && distance.tooCloseToWall() && proximity) {
       drive.stop();
       return;
+    }
+    if(Math.abs(leftSpeed) > 0|| Math.abs(rightSpeed) > 0){
+      driveCancellable.cancelDueToDrive();
     }
     drive.rawDrive(leftSpeed, rightSpeed);
   }

@@ -28,6 +28,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerBaseSubsystem;
 import frc.robot.subsystems.IndexerMainSubsystem;
 import frc.robot.subsystems.IndexerTestSubsystem;
+import frc.robot.subsystems.DriveCancellable;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
@@ -55,20 +56,27 @@ public class RobotContainer {
   // Subsystems
   // some subsystems will be null if on the test or main robot
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final ShooterBaseSubsystem shooterSubsystem = Constants.shooterPresent ? (Constants.dosShooter ? new ShooterMainSubsystem()
-      : new ShooterTestSubsystem()) : new ShooterBaseSubsystem() {
+  private final ShooterBaseSubsystem shooterSubsystem = Constants.shooterPresent
+      ? (Constants.dosShooter ? new ShooterMainSubsystem()
+          : new ShooterTestSubsystem())
+      : new ShooterBaseSubsystem() {
 
         @Override
-        public void setRpm(double rpmFront, double rpmBack){}
+        public void setRpm(double rpmFront, double rpmBack) {
+        }
 
         @Override
-        public void setSpeed(double speedFront, double speedBack){}
+        public void setSpeed(double speedFront, double speedBack) {
+        }
 
         @Override
-        public boolean atSetpoint(){return true;}
+        public boolean atSetpoint() {
+          return true;
+        }
 
         @Override
-        public void stop(){}
+        public void stop() {
+        }
       };
   private final IntakeSubsystem intakeSubsystem = Constants.intakePresent ? new IntakeSubsystem() : null;
   private final NavigationSubsystem navigationSubsystem = new NavigationSubsystem();
@@ -80,13 +88,21 @@ public class RobotContainer {
 
   // Commands
   // some commands will do nothing if on test or main robot
+  private Command fireCommand;
   private final Command activateIntakeCommand = Constants.intakePresent
       ? new ActivateIntakeCommand(intakeSubsystem, gamepadPilot)
       : doNothing();
   private final Command deployIntakeCommand = Constants.intakePresent
       ? new DeployIntakeCommand(intakeSubsystem)
       : doNothing();
-  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, navigationSubsystem, gamepadPilot);
+  private final DriveCommand driveCommand = new DriveCommand(driveSubsystem, navigationSubsystem, gamepadPilot,
+      new DriveCancellable() {
+        public void cancelDueToDrive() {
+          if (fireCommand.isScheduled()) {
+            fireCommand.cancel();
+          }
+        }
+      });
   private final TurnDegreesCommand turnDegreesCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem,
       Constants.turnCmdTimeOut);
   private final Command hopperCommand = Constants.hopperPresent
@@ -115,7 +131,7 @@ public class RobotContainer {
       telescopingSubsystem.setDefaultCommand(telescopingCommand);
     }
     intakeSubsystem.setDefaultCommand(activateIntakeCommand);
-    if(Constants.hopperPresent){
+    if (Constants.hopperPresent) {
       hopperSubsystem.setDefaultCommand(hopperCommand);
     }
   }
@@ -195,9 +211,9 @@ public class RobotContainer {
     turnButton.whenHeld(turnCommand);
 
     // LB pressed, firing sequence
-    if(Constants.shooterPresent){
+    if (Constants.shooterPresent) {
       final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
-      final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
+      fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
           indexerSubsystem, hopperSubsystem, Constants.encoder, true).build();
       firingTrigger.whenPressed(fireCommand, true); // TODO change to held
     }
@@ -325,6 +341,6 @@ public class RobotContainer {
     // one ball auto and taxi no pathweaver
 
     // retracts the intake and returns immediatly
-    return null; //TODO multistep auto
+    return null; // TODO multistep auto
   }
 }

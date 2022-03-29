@@ -103,7 +103,7 @@ public class MultistepAutoBuilder {
     private Command plan2(){
         Command autoShoot1 = new AutoShootBuilder(shooter, drive, nav, indexer, hopper, Constants.encoder, false).build();
         Command deployIntake = new DeployIntakeCommand(intake);
-        Command autoPath = new PathCommandBuilder(drive, nav, "path").build(); //TODO path is a placeholder
+        Command autoPath = new PathCommandBuilder(drive, nav, "paths/auto.wpilib.json").build(); //TODO path is a placeholder
         Command intakeAndDrive = deployIntake.andThen(() -> {
             intake.motorOn();
         }).andThen(autoPath).andThen(() -> {
