@@ -114,7 +114,6 @@ public class RobotContainer {
     if (Constants.climberPresent) {
       telescopingSubsystem.setDefaultCommand(telescopingCommand);
     }
-    intakeSubsystem.setDefaultCommand(activateIntakeCommand);
     /*
     if(Constants.hopperPresent){
       hopperSubsystem.setDefaultCommand(hopperCommand);
@@ -135,7 +134,7 @@ public class RobotContainer {
 
     if (Constants.hopperPresent) {
       // RB held, run index and hopper
-      final JoystickButton idexHopperButton = new JoystickButton(gamepadPilot, Constants.RB);
+      final JoystickButton intakeIdexHopperButton = new JoystickButton(gamepadPilot, Constants.RB);
       Command hopperCommand = new CommandBase() {
         {
           addRequirements(hopperSubsystem);
@@ -156,9 +155,9 @@ public class RobotContainer {
           return false;
         }
       };
-      Command intakeHopperCommand = new ParallelCommandGroup(
-          indexCommand, hopperCommand);
-      idexHopperButton.whenHeld(intakeHopperCommand);
+      Command intakeIndexHopperCommand = new ParallelCommandGroup(
+          indexCommand, hopperCommand, activateIntakeCommand);
+      intakeIdexHopperButton.whenHeld(intakeIndexHopperCommand);
     }
 
     // A pressed, toggle slowmode
@@ -361,9 +360,15 @@ public class RobotContainer {
       @Override
       public void initialize() {
         intakeSubsystem.motorOn();
-        indexerSubsystem.motorOn();
         hopperSubsystem.motorOn();
-        shooterSubsystem.setRpm(500, 500); // TODO PLACEHOLDER
+        shooterSubsystem.setRpm(1200, 1200); // TODO PLACEHOLDER
+      }
+
+      @Override
+      public void execute() {
+        if(shooterSubsystem.atSetpoint()){
+          indexerSubsystem.motorOn();
+        }
       }
 
       // Called once the command ends or is interrupted.

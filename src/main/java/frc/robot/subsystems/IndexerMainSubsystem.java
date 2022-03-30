@@ -18,7 +18,9 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
   private double speed = 0;
 
   /** Creates a new IndexSubsystem. */
-  public IndexerMainSubsystem() {}
+  public IndexerMainSubsystem() {
+    indexMotor.setInverted(true);
+  }
 
   @Override
   public void periodic() {
@@ -27,7 +29,7 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
 
   @Override
   public void motorOn() {
-    speed = -.75;
+    speed = .5;
     }
 
   @Override
@@ -46,7 +48,7 @@ public class IndexerMainSubsystem extends IndexerBaseSubsystem {
 
   @Override
   public void reverseMotor() {
-     speed = .5;
+     speed = -.5;
   }
 }
 

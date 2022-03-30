@@ -24,24 +24,19 @@ public class ActivateIntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    intake.motorOn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // if right trigger held past buffer zone of .2, intake on. else, intake off
-    if (gamepad.getRawAxis(Constants.RT) > .2) {
-      intake.motorOn();
-    } else {
-      intake.motorOff();
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    intake.motorOff();
   }
 
   // Returns true when the command should end.
