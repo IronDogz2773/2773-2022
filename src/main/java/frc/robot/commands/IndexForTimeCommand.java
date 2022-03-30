@@ -4,46 +4,45 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexerBaseSubsystem;
 
-public class IndexCommand extends CommandBase {
-  private final IndexerBaseSubsystem index;
+public class IndexForTimeCommand extends CommandBase {
+  private Timer timer = new Timer();
+  private final IndexerBaseSubsystem indexer;
+  private final double time;
 
-  /** Creates a new IndexCommand. */
-  public IndexCommand(IndexerBaseSubsystem index) {
-    this.index = index;
-    addRequirements(index);
+  /** Creates a new IndexForTimeCommand. */
+  public IndexForTimeCommand(IndexerBaseSubsystem indexer, double time) {
+    this.indexer = indexer;
+    this.time = time;
+    addRequirements(indexer);
     // Use addRequirements() here to declare subsystem dependencies.
-
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    indexer.motorOn();
+    timer.reset();
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if(!index.ballTooCloseToShooter()){
-      index.motorOn();
-    }
-    else{
-      index.motorOff();
-    }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    index.motorOff();
+    indexer.motorOff();
+    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(time);
   }
 }

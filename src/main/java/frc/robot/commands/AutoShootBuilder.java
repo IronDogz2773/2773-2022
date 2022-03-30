@@ -4,14 +4,22 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
+
+import javax.sound.midi.ShortMessage;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
@@ -26,19 +34,19 @@ public class AutoShootBuilder {
   private final IndexerBaseSubsystem indexer;
   private final HopperSubsystem hopper;
   private final boolean encoder;
+  private final boolean twoBalls;
   private boolean vision;
 
   /** Creates a new AutoShootBuilder. */
   public AutoShootBuilder(ShooterBaseSubsystem shooter, DriveSubsystem drive, NavigationSubsystem nav,
-      IndexerBaseSubsystem indexer, HopperSubsystem hopper, boolean encoder) {
+      IndexerBaseSubsystem indexer, HopperSubsystem hopper, boolean encoder, boolean twoBalls) {
     this.shooter = shooter;
     this.drive = drive;
     this.nav = nav;
     this.indexer = indexer;
     this.hopper = hopper;
     this.encoder = encoder;
-
-    System.out.println("PLEASE");
+    this.twoBalls = twoBalls;
   }
 
   public Command build() {
@@ -47,18 +55,13 @@ public class AutoShootBuilder {
     // get copilot table
     NetworkTable table = inst.getTable("coPilot");
     NetworkTableEntry visionEntry = table.getEntry("turnVision");
-    vision = visionEntry.getBoolean(false);
+    vision = true;
 
     // creates shotcommand using speed if encoder is not present, using shoot
     // command (with rpm) if it is
     Command shootCommand;
-    System.out.println("please");
     if (!encoder) {
-      System.out.println("manual shoot command scheduled");
       shootCommand = new CommandBase() {
-        {
-          addRequirements(shooter);
-        }
         @Override
         public void initialize() {
           shooter.setSpeed(.5);
@@ -70,7 +73,6 @@ public class AutoShootBuilder {
         }
       }.andThen(new WaitCommand(1));
     } else {
-      System.out.println("shoot command scheduled");
       shootCommand = new ShotCommand(shooter);
     }
 
@@ -88,22 +90,73 @@ public class AutoShootBuilder {
       };
     }
 
-    // calls vision command, reverses ball briefly to prevent getting caught in
-    // flywheel,
-    // shoot command, pulls indexer up to touch ball to
-    // flywheel, wait for a second, then turn off indexer and shooter
-    Command autoShootCommand = visionCommand.andThen(() -> {
-      hopper.motorOn();
-      indexer.reverseMotor();
-    }).andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(() -> {
-      indexer.motorOff();
-    }).andThen(shootCommand).andThen(() -> {
-      indexer.motorOn();
-    }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
-      shooter.stop();
-      hopper.motorOff();
-      indexer.motorOff();
-    });
+    Command autoShootCommand;
+    if (twoBalls) {
+      BooleanSupplier setpoint = new BooleanSupplier() {
+        @Override
+        public boolean getAsBoolean() {
+          // TODO Auto-generated method stub
+          return shooter.atSetpoint();
+        }
+      };
+
+      Command indexForTime = new IndexForTimeCommand(indexer, .2);
+      Command indexForTime2 = new IndexForTimeCommand(indexer, .2);
+      Command hopperOnCommand = new CommandBase() {
+        {
+          addRequirements(hopper);
+        }
+
+        @Override
+        public void initialize() {
+          hopper.motorOn();
+        }
+
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+      };
+      Command hopperOffCommand = new CommandBase() {
+        {
+          addRequirements(hopper);
+        }
+
+        @Override
+        public void initialize() {
+          hopper.motorOff();
+        }
+
+        @Override
+        public boolean isFinished() {
+          return true;
+        }
+      };
+      IndexCommand indexCommand = new IndexCommand(indexer);
+      IndexCommand indexCommand2 = new IndexCommand(indexer);
+      ShotCommand shootCommand2 = new ShotCommand(shooter);
+      Command indexAndShooter = new ParallelRaceGroup(indexCommand, shootCommand2);
+      Command indexAndShooter2 = new ParallelRaceGroup(new WaitUntilCommand(shooter::atSetpoint), indexCommand2);
+      autoShootCommand = visionCommand.andThen(hopperOnCommand).andThen(indexAndShooter).andThen(indexForTime)
+          .andThen(new WaitCommand(.2)).andThen(indexAndShooter2).andThen(indexForTime2).andThen(hopperOffCommand)
+          .andThen(() -> {
+            shooter.stop();
+          });
+    } else {
+      // calls vision command, reverses ball briefly to prevent getting caught in
+      // flywheel,
+      // shoot command, pulls indexer up to touch ball to
+      // flywheel, wait for a second, then turn off indexer and shooter
+      autoShootCommand = visionCommand.andThen().andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(() -> {
+        indexer.motorOff();
+      }).andThen(shootCommand).andThen(() -> {
+        indexer.motorOn();
+      }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
+        shooter.stop();
+        hopper.motorOff();
+        indexer.motorOff();
+      });
+    }
 
     return autoShootCommand;
   }

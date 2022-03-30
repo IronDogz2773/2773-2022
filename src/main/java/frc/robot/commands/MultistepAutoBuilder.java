@@ -51,7 +51,7 @@ public class MultistepAutoBuilder {
 
     private Command plan1() {
         Command plan1Command; // creates blank command
-        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, hopper, Constants.encoder)
+        Command autoShootCommand = new AutoShootBuilder(shooter, drive, nav, indexer, hopper, Constants.encoder, false)
                 .build(); // creates autoshoot command
         Command pathCommand = new PathCommandBuilder(drive, nav, "paths/Circle.wpilib.json").build(); // creates path to
                                                                                                       // run

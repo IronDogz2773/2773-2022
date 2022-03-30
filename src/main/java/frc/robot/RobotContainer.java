@@ -96,7 +96,7 @@ public class RobotContainer {
       ? new TelescopingCommand(telescopingSubsystem, gamepadCopilot)
       : doNothing();
   private final ShotCommand shotCommand = new ShotCommand(shooterSubsystem);
-  private final IndexCommand indexCommand = new IndexCommand(indexerSubsystem, gamepadPilot);
+  private final IndexCommand indexCommand = new IndexCommand(indexerSubsystem);
 
   // Joysticks
   private static Joystick gamepadPilot = new Joystick(Constants.gamepadPortPilot);
@@ -192,15 +192,15 @@ public class RobotContainer {
 
     // B held, turn
     final JoystickButton turnButton = new JoystickButton(gamepadPilot, Constants.B);
-    final TurnDegreesCommand turnCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, 5);
+    final TurnDegreesCommand turnCommand = new TurnDegreesCommand(navigationSubsystem, driveSubsystem, 15);
     turnButton.whenHeld(turnCommand);
 
     // LB pressed, firing sequence
     if(Constants.shooterPresent){
       final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
       final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
-          indexerSubsystem, hopperSubsystem, Constants.encoder).build();
-      firingTrigger.whenPressed(fireCommand, true); // TODO change to held
+          indexerSubsystem, hopperSubsystem, Constants.encoder, true).build();
+      firingTrigger.whenPressed(fireCommand, false); // TODO change to held
     }
 
     // Select pressed, toggle intake pneumatic

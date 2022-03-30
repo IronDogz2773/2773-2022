@@ -40,10 +40,10 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
   /** Creates a new ShooterSubsystem. */
   public ShooterMainSubsystem() {
     pidFront.setSetpoint(rpmFront);
-    pidFront.setTolerance(30);
+    pidFront.setTolerance(10);
 
     pidBack.setSetpoint(rpmBack);
-    pidBack.setTolerance(30);
+    pidBack.setTolerance(10);
 
     frontMotor.setInverted(false);
     backMotor.setInverted(false);
@@ -58,6 +58,9 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
       var deltaBack = pidBack.calculate(backEncoder.getVelocity());
       speedBack = MathUtil.clamp(speedBack + deltaBack, 0, 1);
     }
+    if(frontEncoder.getVelocity() != 0){
+      System.out.println("front: " + frontEncoder.getVelocity() + " back: " + backEncoder.getVelocity());
+    }
     frontMotor.set(speedFront);
     backMotor.set(speedBack);
   }
@@ -67,7 +70,6 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
     viaPid = true;
     this.rpmBack = rpmBack;
     this.rpmFront = rpmFront;
-    DriverStation.reportWarning("----" +rpmBack + " " + rpmFront, false);
 
     pidFront.setSetpoint(rpmFront);
     pidBack.setSetpoint(rpmBack);

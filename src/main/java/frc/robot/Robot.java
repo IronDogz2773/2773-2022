@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
 
-    turnVisionEntry.setBoolean(false);
+    turnVisionEntry.setBoolean(true);
     distanceVisionEntry.setBoolean(false);
     proximityEntry.setBoolean(false);
 

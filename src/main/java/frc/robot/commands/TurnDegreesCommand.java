@@ -83,7 +83,7 @@ public class TurnDegreesCommand extends CommandBase {
     // return 0;
     // }
 
-    NetworkTableEntry angleEntry = table.getEntry("retro_average_x");
+    NetworkTableEntry angleEntry = table.getEntry("retro_filtered_max_x");
     double angle = angleEntry.getDouble(0);
 
     if (lastAngleFromNT == angle) {

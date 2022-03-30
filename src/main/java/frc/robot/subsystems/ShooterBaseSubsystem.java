@@ -81,8 +81,8 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     */
 
     if (distance < LUTOffset) {
-      frontRpm = 2150; // TODO check if it reaches low basket
-      backRpm = 2150;
+      frontRpm = 1000; // change to 2150
+      backRpm = 1000;
     } else {
       if (distance > LUTOffset + LutOfRpms.length - 1) {
         distance = LUTOffset + LutOfRpms.length - 1;
