@@ -20,7 +20,7 @@ public class TelescopingSubsystem extends SubsystemBase {
   private final RelativeEncoder leftEncoder = leftMotor.getEncoder();
   private final RelativeEncoder rightEncoder = rightMotor.getEncoder();
 
-  private double leftMaxDistance = 168;
+  private double leftMaxDistance = 156;
   private double rightMaxDistance = 165;
 
   public double speed = .5;

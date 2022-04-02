@@ -199,7 +199,7 @@ public class RobotContainer {
     if(Constants.shooterPresent){
       final JoystickButton firingTrigger = new JoystickButton(gamepadPilot, Constants.LB);
       final Command fireCommand = new AutoShootBuilder(shooterSubsystem, driveSubsystem, navigationSubsystem,
-          indexerSubsystem, hopperSubsystem, Constants.encoder, true).build();
+          indexerSubsystem, hopperSubsystem, Constants.encoder, Constants.twoBallsShot).build();
       firingTrigger.whenPressed(fireCommand, false); // TODO change to held
     }
 
@@ -311,12 +311,25 @@ public class RobotContainer {
       };
       toggleProximityButton.whenPressed(toggleProximityCommand);
     }
+
+    JoystickButton toggleClimbDirectionButton = new JoystickButton(gamepadCopilot, Constants.LB);
+    final Command toggleClimbDirectionCommand = new CommandBase(){
+      @Override
+      public void initialize(){
+        telescopingSubsystem.toggleDirection();
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    };
+    toggleClimbDirectionButton.whenPressed(toggleClimbDirectionCommand);
       
 
-
-    // LB held, run all systems backwards, ejects ball out of intake
+    // X held, run all systems backwards, ejects ball out of intake
     // TODO TEST THIS PLEASE IDK IF IT WORKS
-    final JoystickButton frontEjectButton = new JoystickButton(gamepadCopilot, Constants.LB);
+    final JoystickButton frontEjectButton = new JoystickButton(gamepadCopilot, Constants.X);
     Command frontEjectCommand = new CommandBase() {
       {
         addRequirements(intakeSubsystem, indexerSubsystem, hopperSubsystem);

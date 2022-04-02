@@ -4,14 +4,9 @@
 
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
-
-import javax.sound.midi.ShortMessage;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -55,7 +50,7 @@ public class AutoShootBuilder {
     // get copilot table
     NetworkTable table = inst.getTable("coPilot");
     NetworkTableEntry visionEntry = table.getEntry("turnVision");
-    vision = true;
+    vision = false;
 
     // creates shotcommand using speed if encoder is not present, using shoot
     // command (with rpm) if it is
@@ -92,14 +87,6 @@ public class AutoShootBuilder {
 
     Command autoShootCommand;
     if (twoBalls) {
-      BooleanSupplier setpoint = new BooleanSupplier() {
-        @Override
-        public boolean getAsBoolean() {
-          // TODO Auto-generated method stub
-          return shooter.atSetpoint();
-        }
-      };
-
       Command indexForTime = new IndexForTimeCommand(indexer, .2);
       Command indexForTime2 = new IndexForTimeCommand(indexer, .2);
       Command hopperOnCommand = new CommandBase() {
@@ -147,9 +134,7 @@ public class AutoShootBuilder {
       // flywheel,
       // shoot command, pulls indexer up to touch ball to
       // flywheel, wait for a second, then turn off indexer and shooter
-      autoShootCommand = visionCommand.andThen().andThen(new WaitCommand(Constants.reverseIndexTime)).andThen(() -> {
-        indexer.motorOff();
-      }).andThen(shootCommand).andThen(() -> {
+      autoShootCommand = visionCommand.andThen(shootCommand).andThen(() -> {
         indexer.motorOn();
       }).andThen(new WaitCommand(Constants.indexTime)).andThen(() -> {
         shooter.stop();

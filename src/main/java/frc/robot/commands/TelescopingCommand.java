@@ -43,7 +43,7 @@ public class TelescopingCommand extends CommandBase {
 
     //if right trigger pressed past buffer zone of .2, and either has no protection or isn't at the setpoint: move the right motor
     if(gamepad.getRawAxis(Constants.RT) > .2 &&
-     (noProtection || !telescope.leftAtSetpoint())){
+     (noProtection || !telescope.rightAtSetpoint())){
       telescope.rightMotorOn();
       if (noProtection) telescope.resetDistance(); //constantly resets encoders for right motor if no protection
     }

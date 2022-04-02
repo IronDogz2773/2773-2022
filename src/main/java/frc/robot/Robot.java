@@ -49,7 +49,16 @@ public class Robot extends TimedRobot {
     NetworkTableEntry distanceVisionEntry = copilotTable.getEntry("distanceVision");
     NetworkTableEntry proximityEntry = copilotTable.getEntry("proximity");
 
-    turnVisionEntry.setBoolean(true);
+    NetworkTable shooter = inst.getTable("shooter");
+    NetworkTableEntry front = shooter.getEntry("front");
+    NetworkTableEntry back = shooter.getEntry("back");
+    NetworkTableEntry isShooting = shooter.getEntry("isShooting");
+
+    front.setDouble(0);
+    back.setDouble(0);
+    isShooting.setBoolean(false);
+
+    turnVisionEntry.setBoolean(false); //TODO make actual default
     distanceVisionEntry.setBoolean(false);
     proximityEntry.setBoolean(false);
 

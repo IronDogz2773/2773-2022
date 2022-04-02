@@ -26,7 +26,7 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     NetworkTableEntry piDistanceEntry = table.getEntry("piDistance");
     NetworkTableEntry manualDistanceEntry = table.getEntry("manualDistance");
     piDistanceEntry.setDouble(0);
-    manualDistanceEntry.setDouble(0);
+    manualDistanceEntry.setDouble(6); // default start distance
 
     SmartDashboard.putBoolean("IsPiManual", vision);
   }
@@ -41,47 +41,48 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
   // In this array: first number is frontRpm, second is backRpm.
   private static final double[][] LutOfRpms = new double[][] {
-      new double[] { 3800, 1200 },
-      new double[] { 3800, 1350 },
-      new double[] { 3800, 1600 },
-      new double[] { 3800, 1700 },
-      new double[] { 3800, 2100 },
-      new double[] { 3800, 2400 },
-      new double[] { 3800, 2600 },
-      new double[] { 3800, 2675 },
-      new double[] { 3750, 2725 },
-      new double[] { 3700, 2800 }
+      new double[] { 2300, 2100 }, // 6
+      new double[] { 2400, 2000 }, // 7
+      new double[] { 2600, 1900 }, // 8
+      new double[] { 2700, 1800 }, // 9
+      new double[] { 4500,  100 }, // 10
+      new double[] { 5000,  100 }, // 11
   };
   private static int LUTOffset = 6;
 
   public void setNetworkRpm() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable shooterTable = inst.getTable("shooter");
-    NetworkTable piVisionTable = inst.getTable("pivision");
-    double distance;
-    double frontRpm;
-    double backRpm;
+    double frontRpm = shooterTable.getEntry("front").getDouble(0);
+    double backRpm = shooterTable.getEntry("back").getDouble(0);
+    setRpm(frontRpm, backRpm);
+  }
 
+  public void setDetectedRpm() {
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable piVisionTable = inst.getTable("pivision");
+
+    double distance;
     NetworkTable coPilotTable = inst.getTable("coPilot");
     vision = coPilotTable.getEntry("distanceVision").getBoolean(true);
-    distance = 3;
 
-    /*
-    if (false) {
-      distance = piVisionTable.getEntry("retro_distance").getDouble(0); // TODO change this to match preston's angle name
-    }
-    else {
-      if(coPilotTable.getEntry("auto").getBoolean(false)){
-        distance = 3;
+    if (vision) {
+      // TODO change this to match preston's angle name
+      distance = piVisionTable.getEntry("retro_distance").getDouble(0);
+    } else {
+      NetworkTable table = inst.getTable("shooter");
+      NetworkTableEntry manualDistanceEntry = table.getEntry("manualDistance");
+      distance = manualDistanceEntry.getDouble(6);
+      if (distance == 0) {
+        // Distance set to 0, fallback to nt values.
+        setNetworkRpm();
+        return;
       }
-      else{
-        distance = 3;
-      }
     }
-    */
 
+    double frontRpm, backRpm;
     if (distance < LUTOffset) {
-      frontRpm = 1000; // change to 2150
+      frontRpm = 1000; // TODO change to 2150?
       backRpm = 1000;
     } else {
       if (distance > LUTOffset + LutOfRpms.length - 1) {
@@ -99,8 +100,9 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     setRpm(frontRpm, backRpm);
   }
 
-  public double getDistance(double angle){
-    return((Constants.topGoalHeight - Constants.cameraMountHeight) / (Math.tan(Math.toRadians(angle) + Constants.cameraMountAngle)));
+  public double getDistance(double angle) {
+    return ((Constants.topGoalHeight - Constants.cameraMountHeight)
+        / (Math.tan(Math.toRadians(angle) + Constants.cameraMountAngle)));
   }
 
   public abstract boolean atSetpoint();

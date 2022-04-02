@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.Constants;
 import frc.robot.PIDUtil;
 
@@ -32,6 +33,8 @@ public class TurnDegreesCommand extends CommandBase {
   private double timeOut;
   private double lastAngleFromNT;
 
+  private boolean finished;
+
   private final Timer timer = new Timer();
 
   public TurnDegreesCommand(NavigationSubsystem nav, DriveSubsystem drive, double timeOut) {
@@ -48,7 +51,7 @@ public class TurnDegreesCommand extends CommandBase {
     double kD = Constants.turnControllerD;
 
     pidController = new PIDController(kP, kI, kD);
-    pidu = new PIDUtil(pidController, "turn");
+    //pidu = new PIDUtil(pidController, "turn");
 
     lastAngleFromNT = 0;
   }
@@ -59,14 +62,16 @@ public class TurnDegreesCommand extends CommandBase {
     timer.reset();
     timer.start();
     resetPid(getNetworkTableAngle());
+    finished = false;
   }
 
   void resetPid(double angle) {
     nav.resetGyroAngle();
 
     target = nav.getGyroAngle() + angle;
-    pidController.setTolerance(.2);
-    pidu.setSetpoint(target);
+    pidController.setTolerance(2);
+    pidController.setSetpoint(target);
+    //pidu.setSetpoint(target);
     pidController.reset();
   }
 
@@ -75,13 +80,15 @@ public class TurnDegreesCommand extends CommandBase {
     // creates instance of table with pivision
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("pivision");
-    // NetworkTableEntry presentEntry = table.getEntry("red_1_present");
-    // boolean present = presentEntry.getBoolean(false);
-    // // if there is no angle on screen, no angle/0 angle
-    // if (!present) {
-    // lastAngleFromNT = 0;
-    // return 0;
-    // }
+    /*
+    NetworkTableEntry presentEntry = table.getEntry("retro_present");
+    boolean present = presentEntry.getBoolean(false);
+    // if there is no angle on screen, no angle/0 angle
+    if (!present) {
+    lastAngleFromNT = 0;
+    return 0;
+    }
+    */
 
     NetworkTableEntry angleEntry = table.getEntry("retro_filtered_max_x");
     double angle = angleEntry.getDouble(0);
@@ -97,18 +104,19 @@ public class TurnDegreesCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pidu.update();
+    //pidu.update();
     if (!pidController.atSetpoint()) {
-      DriverStation.reportWarning("angle = " + pidController.getSetpoint() + "; " + nav.getGyroAngle(), false);
       // calls from pid to give values to rotate
-      rotation = pidu.calculate(nav.getGyroAngle());
+      rotation = pidController.calculate(nav.getGyroAngle());
       drive.tankDriveVolts(rotation, -rotation);
     } else {
+      System.out.println(getNetworkTableAngle());
       double angle = getNetworkTableAngle();
       if (angle != 0) {
         resetPid(angle);
       } else {
         drive.stop();
+        finished = true;
       }
     }
 
@@ -124,6 +132,6 @@ public class TurnDegreesCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(timeOut);
+    return timer.hasElapsed(timeOut) || finished;
   }
 }
