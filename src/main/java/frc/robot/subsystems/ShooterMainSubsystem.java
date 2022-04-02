@@ -11,8 +11,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 
 public class ShooterMainSubsystem extends ShooterBaseSubsystem {
@@ -57,9 +55,6 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
       speedFront = MathUtil.clamp(speedFront + deltaFront, 0, 1);
       var deltaBack = pidBack.calculate(backEncoder.getVelocity());
       speedBack = MathUtil.clamp(speedBack + deltaBack, 0, 1);
-    }
-    if(frontEncoder.getVelocity() != 0){
-      System.out.println("front: " + frontEncoder.getVelocity() + " back: " + backEncoder.getVelocity());
     }
     frontMotor.set(speedFront);
     backMotor.set(speedBack);

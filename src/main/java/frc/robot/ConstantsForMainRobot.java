@@ -11,7 +11,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 /** Constants for MainRobot */
 public class ConstantsForMainRobot {
     // Presence of subsystems
-    public static final boolean climberPresent = false;
+    public static final boolean climberPresent = true;
     public static final boolean indexerPresent = true;
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;

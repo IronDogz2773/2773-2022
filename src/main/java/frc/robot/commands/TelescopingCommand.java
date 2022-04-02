@@ -50,7 +50,6 @@ public class TelescopingCommand extends CommandBase {
     else{
       telescope.rightMotorOff();
     }
-    
   }
 
   // Called once the command ends or is interrupted.

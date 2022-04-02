@@ -23,7 +23,7 @@ public class TelescopingSubsystem extends SubsystemBase {
   private double leftMaxDistance = 168;
   private double rightMaxDistance = 165;
 
-  public double speed = .7;
+  public double speed = .5;
 
   NetworkTableEntry positionLeftEntry;
   NetworkTableEntry positionRightEntry;
