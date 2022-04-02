@@ -29,7 +29,7 @@ public class ConstantsForMainRobot {
 
     // autonomous shooting checks
     public static final boolean encoder = true; 
-    public static final boolean twoBallsShot = false;
+    public static final boolean twoBallsShot = true;
 
     // 2 motor shooter
     public static final boolean dosShooter = true;
