@@ -51,6 +51,7 @@ public class ShooterMainSubsystem extends ShooterBaseSubsystem {
   @Override
   public void periodic() {
     if (viaPid) {
+      System.out.println(pidBack.getSetpoint() + " " + pidFront.getSetpoint());
       var deltaFront = pidFront.calculate(frontEncoder.getVelocity());
       speedFront = MathUtil.clamp(speedFront + deltaFront, 0, 1);
       var deltaBack = pidBack.calculate(backEncoder.getVelocity());

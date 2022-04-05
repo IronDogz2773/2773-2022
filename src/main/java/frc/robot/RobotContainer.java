@@ -468,8 +468,8 @@ public class RobotContainer {
 
     // retracts intake, sets RPM, runs indexer, turns off shooter and index, drives
     // an amount of time
-    //Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(driveCommand);
+    Command autoCommand = autoIntakeCommand.andThen(autoShootCommand).andThen(driveCommand);
 
-    return driveCommand;
+    return autoCommand;
   }
 }

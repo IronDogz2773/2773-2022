@@ -68,7 +68,13 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
 
     if (vision) {
       // TODO change this to match preston's angle name
-      distance = piVisionTable.getEntry("retro_distance").getDouble(0);
+      if(piVisionTable.getEntry("retro_present").getBoolean(false)){
+        distance = piVisionTable.getEntry("retro_distance").getDouble(0);
+
+      }
+      else{
+        distance = 0;
+      }
     } else {
       NetworkTable table = inst.getTable("shooter");
       NetworkTableEntry manualDistanceEntry = table.getEntry("manualDistance");
@@ -83,7 +89,7 @@ public abstract class ShooterBaseSubsystem extends SubsystemBase {
     double frontRpm, backRpm;
     if (distance < LUTOffset) {
       frontRpm = 1000; // TODO change to 2150?
-      backRpm = 1000;
+      backRpm = 2000;
     } else {
       if (distance > LUTOffset + LutOfRpms.length - 1) {
         distance = LUTOffset + LutOfRpms.length - 1;

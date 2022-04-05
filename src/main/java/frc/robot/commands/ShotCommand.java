@@ -20,7 +20,7 @@ public class ShotCommand extends CommandBase {
   @Override
   public void initialize() {
     //subsystem.setNetworkRpm();
-    subsystem.setDetectedRpm();
+    subsystem.setNetworkRpm();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
