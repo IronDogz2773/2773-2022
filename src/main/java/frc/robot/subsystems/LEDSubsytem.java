@@ -28,8 +28,13 @@ public class LEDSubsytem extends SubsystemBase {
     }
   }
 
-  public void runTheRainbow(boolean enable) {
-    rainbow = enable;
+  public void toggleTheRainbow() {
+    if(rainbow = false){
+      rainbow = true;
+    }
+    else{
+      rainbow = false;
+    }
   }
   
 

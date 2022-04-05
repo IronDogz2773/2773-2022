@@ -24,6 +24,7 @@ import frc.robot.commands.HopperCommand;
 import frc.robot.commands.HopperCommand;
 import frc.robot.commands.IndexBackwardsCommand;
 import frc.robot.commands.IndexCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IndexerBaseSubsystem;
 import frc.robot.subsystems.IndexerMainSubsystem;
@@ -78,7 +79,7 @@ public class RobotContainer {
       : new IndexerTestSubsystem();
   private final TelescopingSubsystem telescopingSubsystem = Constants.climberPresent ? new TelescopingSubsystem()
       : null;
-  private final LEDSubsytem ledSubsytem = new LEDSubsytem();
+  private final LEDSubsytem ledSubsytem = Constants.ledPresent ? new LEDSubsytem() : null;
 
   // Commands
   // some commands will do nothing if on test or main robot
@@ -270,7 +271,11 @@ public class RobotContainer {
       toggleTurnVisionButton.whenPressed(toggleTurnVisionCommand);
     }
 
-
+    if(Constants.ledPresent){
+      JoystickButton toggleRainbowButton = new JoystickButton(gamepadCopilot, Constants.Y);
+      LEDCommand toggleRainbowCommand = new LEDCommand(ledSubsytem);
+      toggleRainbowButton.whenPressed(toggleRainbowCommand);
+    }
 
     // if B pressed, toggle distance vision
     JoystickButton toggleDistanceVisionButton = new JoystickButton(gamepadCopilot, Constants.B);
@@ -291,28 +296,6 @@ public class RobotContainer {
     };
     toggleDistanceVisionButton.whenPressed(toggleDistanceVisionCommand);
 
-
-
-    // if Y pressed, toggle using proximity sensor
-    if (Constants.proximity) {
-      JoystickButton toggleProximityButton = new JoystickButton(gamepadCopilot, Constants.Y);
-      final Command toggleProximityCommand = new CommandBase() {
-        @Override
-        public void initialize() {
-          if (proximityEntry.getBoolean(true)) {
-            proximityEntry.setBoolean(false);
-          } else {
-            proximityEntry.setBoolean(true);
-          }
-        }
-
-        @Override
-        public boolean isFinished() {
-          return true;
-        }
-      };
-      toggleProximityButton.whenPressed(toggleProximityCommand);
-    }
 
     JoystickButton toggleClimbDirectionButton = new JoystickButton(gamepadCopilot, Constants.LB);
     final Command toggleClimbDirectionCommand = new CommandBase(){
@@ -392,9 +375,7 @@ public class RobotContainer {
         intakeSubsystem.motorOff();
         indexerSubsystem.motorOff();
         hopperSubsystem.motorOff();
-        shooterSubsystem.stop();
-        ledSubsytem.runTheRainbow(false);
-      }
+        shooterSubsystem.stop();      }
 
       // Returns true when the command should end.
       @Override

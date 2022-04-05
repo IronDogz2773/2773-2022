@@ -16,6 +16,7 @@ public class ConstantsForMainRobot {
     public static final boolean hopperPresent = true;
     public static final boolean intakePresent = true;
     public static final boolean shooterPresent = true;
+    public static final boolean ledPresent = true;
     public static final boolean irPresent = true;
 
     // using turnvision or proximity sensor
